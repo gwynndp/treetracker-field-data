@@ -1,11 +1,11 @@
 class Repository {
 
-    constructor(impl) {
-        this.impl = impl;
+    constructor(repoImpl) {
+        this.repoImpl = repoImpl;
     }
 
     async save(data) {
-        return await this.impl.save(data);
+        return await this.repoImpl.save(data);
     }
 }
 
