@@ -1,12 +1,18 @@
 module.exports = {
     config: {
         "vhosts": {
-            "v1": {
-                "connection": process.env.RABBIT_MQ_URL
-            },
-            "exchanges": [
-                "treetracker_exchange"
-            ],
+            "test": {
+                "connection": {
+                    "url": process.env.RABBIT_MQ_URL
+                },
+                "exchanges": ["field-data"],
+                "queues": ["field-data-events"],
+                "publications": {
+                    "capture-created": {
+                        "exchange": "field-data"
+                    }
+                }
+            }
         }
     }
 }
