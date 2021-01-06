@@ -1,19 +1,18 @@
 const BaseRepository = require("./BaseRepository");
-const Session = require("./Session");
 
-class CaptureRepositoryImpl extends BaseRepository {
+class CaptureRepository extends BaseRepository {
     constructor(session) {
         super("captures", session);
         this._tableName = "captures";
         this._session = session;
     }
 
-    async saveCapture(capture) {
+    async save(capture) {
         return await super.create(capture);
     }
 }
 
-class EventRepositoryImpl extends BaseRepository {
+class EventRepository extends BaseRepository {
     constructor(session) {
         super("events", session);
         this._tableName = "events";
@@ -30,6 +29,6 @@ class EventRepositoryImpl extends BaseRepository {
 }
 
 module.exports = { 
-    CaptureRepositoryImpl,
-    EventRepositoryImpl,
+    CaptureRepository,
+    EventRepository,
 }

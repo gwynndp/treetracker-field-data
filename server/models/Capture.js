@@ -1,4 +1,3 @@
-const { CaptureRepository } = require('./CaptureRepository')
 const { raiseEvent, DomainEvent } = require('./DomainEvent');
 const { Repository } = require('./Repository');
 
@@ -29,8 +28,8 @@ const createCapture = (captureRepositoryImpl, eventRepositoryImpl) => (async (ca
         "created_at": new Date().toISOString(),
         "updated_at": new Date().toISOString()
     };
-    const captureRepository = new CaptureRepository(captureRepositoryImpl);
-    const capture = await captureRepository.saveCapture(newCapture);
+    const captureRepository = new Repository(captureRepositoryImpl);
+    const capture = await captureRepository.save(newCapture);
     const fieldDataCaptureCreated = FieldCaptureDataCreated({
         ...capture
     });
