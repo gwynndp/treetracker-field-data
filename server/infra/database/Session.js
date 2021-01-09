@@ -32,19 +32,13 @@ class Session{
   }
 
   async beginTransaction(){
-    if (this.dataMigration) {
-      throw new Error("Transaction not supported for data migration sessions");
-    }
     if(this.thx){
       throw new Error("Can not start transaction in transaction");
     }
-    this.thx = await knex.transaction();
+    this.thx = this.dataMigration ? await knexMainDB.transaction(): await knex.transaction();
   }
 
   async commitTransaction(){
-    if (this.dataMigration) {
-      throw new Error("Transaction not supported for data migration sessions");
-    }
     if(!this.thx){
       throw new Error("Can not commit transaction before start it!");
     }
@@ -53,9 +47,6 @@ class Session{
   }
 
   async rollbackTransaction(){
-    if (this.dataMigration) {
-      throw new Error("Transaction not supported for data migration sessions");
-    }
     if(!this.thx){
       throw new Error("Can not rollback transaction before start it!");
     }

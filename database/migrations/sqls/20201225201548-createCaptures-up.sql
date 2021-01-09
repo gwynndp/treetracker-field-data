@@ -12,6 +12,7 @@ CREATE TABLE captures
     planter_identifier varchar NOT NULL,
     device_identifier varchar NULL,
     note varchar NULL,
+    attributes jsonb NULL, 
     status varchar NOT NULL,
     rejected_reason varchar NULL,
     created_at timestamptz NOT NULL,

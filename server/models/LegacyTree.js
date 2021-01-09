@@ -15,13 +15,15 @@ const LegacyTree = ({ id, image_url, lat, lon, planter_id, planter_identifier })
     planter_id,
     planter_identifier,
     time_created: new Date().toISOString(),
-    time_updated: new Date().toISOString(),
-})
-const createTreesInMainDB = (legacyTreeRepositoryImpl) => (async (tree) => {
-    const legacyTree = { uuid: tree.id, ...tree };
-    const legacyTreeRepository = new Repository(legacyTreeRepositoryImpl);
-    const result = await legacyTreeRepository.save(legacyTree);
+    time_updated: new Date()
+});
+const createTreesInMainDB = (legacyTreeRepoImpl, legacyTreeAttrRepoImpl) => (async (tree, attributes) => {
+    const legacyTreeRepository = new Repository(legacyTreeRepoImpl);
+    const legacyAttributesRepository = new Repository(legacyTreeAttrRepoImpl);
+    const result = await legacyTreeRepository.save(tree);
+    const tree_attributes = attributes.map(attribute =>  Object.assign({ tree_id: result.id }, attribute));
+    legacyAttributesRepository.save(tree_attributes);
     return { entity: result, raisedEvents: [] };
-})
+});
 
 module.exports = { createTreesInMainDB, LegacyTree };
