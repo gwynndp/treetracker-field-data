@@ -28,6 +28,7 @@ class CaptureRepository extends BaseRepository {
             'updated_at'
         )
         .from('captures')
+        .orderBy('created_at', 'desc')
         .limit(options.limit)
         .offset(options.offset);
     }

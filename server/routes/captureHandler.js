@@ -13,7 +13,6 @@ const { LegacyTreeRepository, LegacyTreeAttributeRepository }  = require('../inf
 
 captureRouter.get("/", async function(req, res) {
     const session = new Session(false);
-    console.log(req.query);
     const captureRepo = new CaptureRepository(session);
     const executeGetCaptures = getCaptures(captureRepo);
     const result = await executeGetCaptures(req.query);
