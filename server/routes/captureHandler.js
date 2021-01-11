@@ -2,7 +2,7 @@ const express = require('express');
 const captureRouter = express.Router();
 
 const { createTreesInMainDB, LegacyTree } = require('../models/LegacyTree');
-const { createCapture, CaptureData }= require('../models/Capture');
+const { createCapture, NewCapture, getCaptures }= require('../models/Capture');
 const { dispatch } = require('../models/DomainEvent');
 
 const Session = require('../infra/database/Session');
@@ -11,8 +11,13 @@ const { publishToTopic } = require('../infra/messaging/RabbitMQMessaging');
 const { CaptureRepository, EventRepository } = require('../infra/database/PgRepositories');
 const { LegacyTreeRepository, LegacyTreeAttributeRepository }  = require('../infra/database/PgMigrationRepositories');
 
-captureRouter.get("/", function(req, res) {
-    res.send('hello world');
+captureRouter.get("/", async function(req, res) {
+    const session = new Session(false);
+    console.log(req.query);
+    const captureRepo = new CaptureRepository(session);
+    const executeGetCaptures = getCaptures(captureRepo);
+    const result = await executeGetCaptures(req.query);
+    res.send(result);
     res.end();
 })
 
@@ -30,7 +35,7 @@ captureRouter.post("/", async function(req, res) {
     try {
         await migrationSession.beginTransaction();
         const { entity: tree } = await legacyDataMigration(LegacyTree({ ...req.body }), [ ...req.body.attributes ]);
-        const captureData = CaptureData({reference_id: tree.id, ...req.body});
+        const captureData = NewCapture({reference_id: tree.id, ...req.body});
         await session.beginTransaction();
         const { entity, raisedEvents } = await executeCreateCapture(captureData);
         await session.commitTransaction();       

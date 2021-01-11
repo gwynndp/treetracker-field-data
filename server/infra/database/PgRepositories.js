@@ -7,6 +7,31 @@ class CaptureRepository extends BaseRepository {
         this._session = session;
     }
 
+    async getByFilter(filterCriteria, options) {
+        return await this._session.getDB()
+        .where(filterCriteria)
+        .select(
+            'id',
+            'reference_id',
+            'image_url',
+            'lat',
+            'lon',
+            'gps_accuracy',
+            'planter_id',
+            'planter_photo_url',
+            'planter_contact',
+            'device_identifier',
+            'note',
+            'attributes',
+            'status',
+            'created_at',
+            'updated_at'
+        )
+        .from('captures')
+        .limit(options.limit)
+        .offset(options.offset);
+    }
+
     async save(capture) {
         return await super.create(capture);
     }
