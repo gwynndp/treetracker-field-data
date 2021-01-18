@@ -2,8 +2,8 @@ const BaseRepository = require("./BaseRepository");
 
 class CaptureRepository extends BaseRepository {
     constructor(session) {
-        super("captures", session);
-        this._tableName = "captures";
+        super("capture", session);
+        this._tableName = "capture";
         this._session = session;
     }
 
@@ -27,7 +27,7 @@ class CaptureRepository extends BaseRepository {
             'created_at',
             'updated_at'
         )
-        .from('captures')
+        .from('capture')
         .orderBy('created_at', 'desc')
         .limit(options.limit)
         .offset(options.offset);
@@ -40,8 +40,8 @@ class CaptureRepository extends BaseRepository {
 
 class EventRepository extends BaseRepository {
     constructor(session) {
-        super("events", session);
-        this._tableName = "events";
+        super("domain_event", session);
+        this._tableName = "domain_event";
         this._session = session;
     }
 
