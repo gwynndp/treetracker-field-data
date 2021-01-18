@@ -1,5 +1,5 @@
 /* Replace with your SQL commands */
-CREATE TABLE captures
+CREATE TABLE capture
 (
     id uuid NOT NULL PRIMARY KEY,
     reference_id int8 NOT NULL,
@@ -19,8 +19,8 @@ CREATE TABLE captures
     updated_at timestamptz NOT NULL
 );
 
-CREATE INDEX captures_status_idx ON captures (status);
-CREATE INDEX captures_planter_idx ON captures (planter_id);
-CREATE INDEX captures_planter_ctct_idx ON captures(planter_contact);
-CREATE INDEX captures_crdate_idx ON captures(created_at);
-CREATE INDEX captures_update_idx ON captures(updated_at);
+CREATE INDEX capture_status_idx ON capture(status);
+CREATE INDEX capture_planter_idx ON capture(planter_id);
+CREATE INDEX capture_planter_ctct_idx ON capture(planter_contact);
+CREATE INDEX capture_crdate_idx ON capture(created_at);
+CREATE INDEX capture_update_idx ON capture(updated_at);

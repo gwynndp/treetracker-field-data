@@ -22,7 +22,7 @@ const createTreesInMainDB = (legacyTreeRepoImpl, legacyTreeAttrRepoImpl) => (asy
     const legacyAttributesRepository = new Repository(legacyTreeAttrRepoImpl);
     const result = await legacyTreeRepository.save(tree);
     const tree_attributes = attributes.map(attribute =>  Object.assign({ tree_id: result.id }, attribute));
-    legacyAttributesRepository.save(tree_attributes);
+    await legacyAttributesRepository.save(tree_attributes);
     return { entity: result, raisedEvents: [] };
 });
 

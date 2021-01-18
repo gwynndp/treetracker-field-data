@@ -1,5 +1,5 @@
 /* Replace with your SQL commands */
-CREATE TABLE events
+CREATE TABLE domain_event
 (
     id uuid NOT NULL PRIMARY KEY,
     payload jsonb NOT NULL,
@@ -7,5 +7,5 @@ CREATE TABLE events
     created_at timestamptz NOT NULL,
     updated_at timestamptz NOT NULL
 );
-CREATE INDEX event_status_idx ON events (status);
-CREATE INDEX event_type_idx ON events USING GIN (payload jsonb_path_ops);
+CREATE INDEX event_status_idx ON domain_event (status);
+CREATE INDEX event_type_idx ON domain_event USING GIN (payload jsonb_path_ops);
