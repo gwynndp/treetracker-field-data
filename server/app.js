@@ -5,7 +5,6 @@ const asyncHandler = require('express-async-handler');
 const { check, validationResult } = require('express-validator');
 const { body } = require('express-validator');
 const HttpError = require("./utils/HttpError");
-//const walletRouter = require("./routes/entityRouter"); // create your router
 const {errorHandler} = require("./routes/utils");
 const log = require("loglevel");
 const helper = require("./routes/utils");

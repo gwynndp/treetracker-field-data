@@ -10,7 +10,7 @@ const privateKEY = process.env.PRIVATE_KEY // FS.readFileSync(path.resolve(__dir
 const publicKEY = process.env.PUBLIC_KEY // FS.readFileSync(path.resolve(__dirname, '../../config/jwtRS256.key.pub'), 'utf8');
 
 
-class ApiKeyService{
+class ApiKeyService {
   constructor(session){
     this.apiKeyRepository = new ApiKeyRepository(session);
   }
