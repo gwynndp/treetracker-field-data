@@ -1,25 +1,35 @@
-# Name of this microservice
-   
-Description of this microservice
+# Field data service
 
-# Getting Started
-  
+A service exposing the device data collected from treetracker app. 
+
 ## Project Setup
 
 Open terminal and navigate to a folder to install this project:
 
 ```
-git clone https://github.com/Greenstand/treetracker-repository-name.git
-
+git clone https://github.com/Greenstand/treetracker-field-data.git
 ```
 Install all necessary dependencies: 
 
 ```
 npm install
+```
 
-### Database Setup
+## Databa/Message Queue Setup
 
-// TODO - add generic database setup instructions
+The app relies on a app specific postgres db, another legacy treetracker main db, and RabbitMQ messaging platform. Thus, connection urls for these infrastructure are required for the application to work.
+
+For the field database, you could choose to use a locally running database.To use a local db, install postgres and run `database/db_init.sql` found in the project folder.
+
+Create a `.env` file under the project folder and assign the value for
+```
+DATABASE_URL="postgresql://username:pwd@db_host:port/field_db?false"
+```
+Add one more URL value for the treetracker main db which is needed for the transition period during which `trees` table in main db acts as a source of device data. Check domain migration docs under https://github.com/Greenstand/system-design-docs for details on this migration project.
+
+```
+DATABASE_URL_MAINDB="<ping development channel to get the url for treetracker main db"
+```
 
 Here are some resources to get started on local database set up and migration:
 * https://postgresapp.com
@@ -27,19 +37,23 @@ Here are some resources to get started on local database set up and migration:
 * https://www.postgresql.org/docs/9.1/app-pgdump.html
 
 
-TODO: detailed description of database migration
-
+Database Migration to create tables needed by the app.
+From within the project folder issue the following command.
 ```
-db-migrate --env dev up
+db-migrate  up --migrations-dir=database/migrations
 ```
 
 If you have not installed db-migrate globally, you can run:
-
 ```
-../node_modules/db-migrate/bin/db-migrate --env dev up
+node_modules/db-migrate/bin/db-migrate up --migrations-dir=database/migrations
 ```
-
 See here to learn more about db-migrate: https://db-migrate.readthedocs.io/en/latest/
+
+This project publishes messages and hence relies on RabbitMQ messaging service. In the `.env` file in addition to the database, set the value for the rabbitmq url. Reach out in `development` channel in slack for the url.
+
+```
+RABBIT_MQ_URL=<value for the RabbitMQ messaging platform>
+```
 
 # Architecture of this project
 

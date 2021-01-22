@@ -3,7 +3,10 @@ module.exports = {
         "vhosts": {
             "test": {
                 "connection": {
-                    "url": process.env.RABBIT_MQ_URL
+                    "url": process.env.RABBIT_MQ_URL,
+                    "socketOptions": {
+                        "timeout": 1000
+                    }
                 },
                 "exchanges": ["field-data"],
                 "queues": ["field-data-events"],

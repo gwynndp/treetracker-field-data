@@ -15,13 +15,16 @@ const raiseEvent = (eventRepositoryImpl) => (async (domainEvent) => {
 });
 
 const dispatch = (eventRepositoryImpl, publishToTopic) => (async (domainEvent) => {
-    publishToTopic(domainEvent.payload);
-    eventRepositoryImpl.update(
-        {
-            ...domainEvent,
-            status: 'sent',
-            updated_at: new Date().toISOString(),
-        });
+    publishToTopic(domainEvent.payload)
+    .then(()=>{
+        eventRepositoryImpl.update(
+            {
+                ...domainEvent,
+                status: 'sent',
+                updated_at: new Date().toISOString(),
+            });
+        })
+    .catch(console.error);
 });
 
 module.exports = { DomainEvent, raiseEvent, dispatch }
