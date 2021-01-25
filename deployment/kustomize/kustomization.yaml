@@ -1,4 +1,6 @@
 resources:
-- microservice-deployment.yaml
-- microservice-mapping.yaml
-- microservice-service.yaml
+- treetracker-field-data-deployment.yaml
+- treetracker-field-data-mapping.yaml
+- treetracker-field-data-service.yaml
+- treetracker-dev-db-sealed-secret.yaml
+- treetracker-dev-rabbitmq-sealed-secret.yaml

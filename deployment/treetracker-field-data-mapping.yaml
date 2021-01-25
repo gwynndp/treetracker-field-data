@@ -1,0 +1,8 @@
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: treetracker-field-data
+spec:
+  prefix: /field-data/
+  service: treetracker-field-data
+  rewrite: /
