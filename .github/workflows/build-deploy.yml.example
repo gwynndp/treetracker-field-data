@@ -68,7 +68,7 @@ jobs:
         context: ./
         file: ./Dockerfile
         push: true
-        tags: greenstand/treetracker-microservice-name:latest
+        tags: greenstand/treetracker-field-data:latest
     - shell: bash
       run: |
         echo '${{ steps.package-version.outputs.current-version }}' > image-tag
@@ -116,5 +116,5 @@ jobs:
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save ${{ secrets.CLUSTER_NAME }}
     - name: Update kubernetes resources
-      run: kubectl -n wallet-api apply --wait -k ./deployment/
+      run: kubectl -n field-data-api apply --wait -k ./deployment/
 
