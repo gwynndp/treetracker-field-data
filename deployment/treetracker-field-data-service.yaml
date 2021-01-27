@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: #treetracker-microservice-name#
+  name: treetracker-field-data
 spec:
   selector:
-    app: #treetracker-microservice-name#
+    app: treetracker-field-data
   ports:
     - name: http
       protocol: TCP

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: treetracker-field-data
+  labels:
+    app: treetracker-field-data 
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: treetracker-field-data
+  template:
+    metadata:
+      labels:
+        app: treetracker-field-data
+    spec:
+      containers:
+      - name: treetracker-field-data
+        image: greenstand/treetracker-field-data:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: treetracker-api-database-connection
+                key: db
+          - name: DATABASE_SCHEMA
+            value: field-data
+          - name: NODE_LOG_LEVEL
+            value: trace
+          - name: REMOTE_LOG_URL
+            value: http://104.131.78.177:8000
+          - name: DATABASE_URL_MAINDB
+            valueFrom:
+              secretKeyRef:
+                name: treetracker-api-database-connection
+                key: db
+          - name: RABBIT_MQ_URL
+            valueFrom:
+              secretKeyRef:
+                name: treetracker-rabbitmq-connection
+                key: messageQueue
