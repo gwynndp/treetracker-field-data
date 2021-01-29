@@ -73,10 +73,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Greenstand/{project}.git"
+    "url": "git+https://github.com/Greenstand/treetracker-field-data.git"
   },
   "bugs": {
-    "url": "https://github.com/Greenstand/{project}/issues"
+    "url": "https://github.com/Greenstand/treetracker-field-data/issues"
   },
-  "homepage": "https://github.com/Greenstand/{project}#readme"
+  "homepage": "https://github.com/Greenstand/treetracker-field-data#readme"
 }
