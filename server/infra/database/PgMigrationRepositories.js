@@ -8,7 +8,19 @@ class LegacyTreeRepository extends BaseRepository {
     }
 
     async save(tree) {
-        return await super.create(tree);
+        // Since the query uses postgres function ST_PointFromText, knex raw function is used
+        const geometry = 'POINT( ' + tree.lon + ' ' + tree.lat + ')';
+        const result = await this._session.getDB().raw(`insert into trees (
+            planter_id, lat, lon, estimated_geometric_location, time_created,
+            time_updated, image_url, planter_photo_url, planter_identifier,
+            device_identifier, note, uuid)
+            values(?, ?, ?, ST_PointFromText(?, 4326), ?, ?, ?, ?, ?, ?, ?, ?)
+            returning id`,
+             [tree.planter_id, tree.lat, tree.lon, geometry, tree.time_created,
+              tree.time_updated, tree.image_url, '', tree.planter_identifier,
+              '', '', tree.uuid
+             ]);
+        return await result.rows[0];
     }
 }
 
