@@ -35,7 +35,7 @@ spec:
           - name: DATABASE_URL_MAINDB
             valueFrom:
               secretKeyRef:
-                name: treetracker-api-database-connection
+                name: treetracker-database-connection
                 key: db
           - name: RABBIT_MQ_URL
             valueFrom:
