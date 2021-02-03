@@ -17,7 +17,6 @@ spec:
       containers:
       - name: treetracker-field-data
         image: greenstand/treetracker-field-data:latest
-        imagePullPolicy: Always
         ports:
         - containerPort: 80
         env:
