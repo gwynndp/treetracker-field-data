@@ -2,6 +2,6 @@ resources:
 - treetracker-field-data-deployment.yaml
 - treetracker-field-data-mapping.yaml
 - treetracker-field-data-service.yaml
-- treetracker-dev-db-sealed-secret.yaml
-- treetracker-dev-rabbitmq-sealed-secret.yaml
 - treetracker-field-db-sealedsecret.yaml
+- treetracker-dev-rabbitmq-sealedsecret.yaml
+- treetracker-db-sealedsecret.yaml
