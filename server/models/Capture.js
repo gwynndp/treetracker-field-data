@@ -23,7 +23,7 @@ const NewCapture = ({ id, reference_id, image_url, lat, lon, planter_id, planter
     lon,
     planter_id,
     planter_contact: planter_identifier, //planter_identifier is legacy terminology replaced by planter_contact and exists for data-pipeline compatibility
-    status: 'unverified',
+    status: 'unprocessed',
     attributes,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
