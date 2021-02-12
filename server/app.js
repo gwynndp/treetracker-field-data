@@ -1,9 +1,6 @@
 const express = require('express');
 const Sentry = require('@sentry/node');
 const bodyParser = require('body-parser');
-const asyncHandler = require('express-async-handler');
-const { check, validationResult } = require('express-validator');
-const { body } = require('express-validator');
 const HttpError = require("./utils/HttpError");
 const {errorHandler} = require("./routes/utils");
 const log = require("loglevel");

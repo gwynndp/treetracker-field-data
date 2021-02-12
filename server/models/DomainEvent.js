@@ -10,12 +10,12 @@ const DomainEvent = (payload) => Object.freeze({
 
 const raiseEvent = (eventRepositoryImpl) => (async (domainEvent) => {
     const eventRepository = new Repository(eventRepositoryImpl);
-    return await eventRepository.save({ ...domainEvent, status: 'raised' });
+    return await eventRepository.add({ ...domainEvent, status: 'raised' });
 });
 
 const receiveEvent = (eventRepositoryImpl) => (async (domainEvent) => {
     const eventRepository = new Repository(eventRepositoryImpl);
-    return await eventRepository.save({ ...domainEvent, status: 'received' });
+    return await eventRepository.add({ ...domainEvent, status: 'received' });
 })
 
 const dispatch = (eventRepositoryImpl, publishToTopic) => (async (domainEvent) => {

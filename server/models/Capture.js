@@ -58,7 +58,7 @@ const createCapture = (captureRepositoryImpl, eventRepositoryImpl) => (async (aN
         attributes: { entries: aNewCapture.attributes }, 
     };
     const captureRepository = new Repository(captureRepositoryImpl);
-    const capture = await captureRepository.save(newCapture);
+    const capture = await captureRepository.add(newCapture);
     const filteredAttr = capture.attributes.entries
                             .filter(attribute => attribute.key === "app_flavor")
     const fieldDataCaptureCreated = FieldCaptureDataCreated({

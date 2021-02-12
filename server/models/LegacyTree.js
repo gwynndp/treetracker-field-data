@@ -20,9 +20,9 @@ const LegacyTree = ({ id, image_url, lat, lon, planter_id, planter_identifier })
 const createTreesInMainDB = (legacyTreeRepoImpl, legacyTreeAttrRepoImpl) => (async (tree, attributes) => {
     const legacyTreeRepository = new Repository(legacyTreeRepoImpl);
     const legacyAttributesRepository = new Repository(legacyTreeAttrRepoImpl);
-    const result = await legacyTreeRepository.save(tree);
+    const result = await legacyTreeRepository.add(tree);
     const tree_attributes = attributes.map(attribute =>  Object.assign({ tree_id: result.id }, attribute));
-    await legacyAttributesRepository.save(tree_attributes);
+    await legacyAttributesRepository.add(tree_attributes);
     return { entity: result, raisedEvents: [] };
 });
 
