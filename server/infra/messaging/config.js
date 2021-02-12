@@ -9,10 +9,15 @@ module.exports = {
                     }
                 },
                 "exchanges": ["field-data"],
-                "queues": ["field-data-events"],
+                "queues": ["field-data-events", "field-data:verifications"],
                 "publications": {
                     "capture-created": {
                         "exchange": "field-data"
+                    }
+                },
+                "subscriptions": {
+                    "admin-verification": {
+                        "queue": "field-data:verifications"
                     }
                 }
             }

@@ -1,14 +1,14 @@
 const { raiseEvent, DomainEvent } = require('./DomainEvent');
 const { Repository } = require('./Repository');
 
-const Capture = ({ id, reference_id, image_url, lat, lon, planter_id, planter_contact, attributes, status, created_at, updated_at }) => Object.freeze({
+const Capture = ({ id, reference_id, image_url, lat, lon, planter_id, planter_username, attributes, status, created_at, updated_at }) => Object.freeze({
     id,
     reference_id,
     image_url,
     lat,
     lon,
     planter_id,
-    planter_contact,
+    planter_username,
     attributes,
     status,
     created_at,
@@ -22,7 +22,7 @@ const NewCapture = ({ id, reference_id, image_url, lat, lon, planter_id, planter
     lat,
     lon,
     planter_id,
-    planter_contact: planter_identifier, //planter_identifier is legacy terminology replaced by planter_contact and exists for data-pipeline compatibility
+    planter_username: planter_identifier, //planter_identifier is legacy terminology, it represents the username of the planter, refactored to planterUsername
     status: 'unprocessed',
     attributes,
     created_at: new Date().toISOString(),
@@ -36,9 +36,18 @@ const FieldCaptureDataCreated = ({ id, lat, lon, planter_id, planter_identifier,
     lat,
     lon,
     planter_id,
-    planter_identifier,
+    planter_username:planter_identifier,
     attributes,
     created_at, 
+});
+
+const VerifyCaptureProcessed = ({ id, reference_id, type, approved, rejection_reason, created_at }) => Object.freeze({
+    id, 
+    reference_id,
+    type,
+    approved,
+    rejection_reason,
+    created_at
 });
 
 const createCapture = (captureRepositoryImpl, eventRepositoryImpl) => (async (aNewCapture) => {
@@ -64,8 +73,8 @@ const createCapture = (captureRepositoryImpl, eventRepositoryImpl) => (async (aN
 
 const FilterCriteria = ({
      status = undefined,
-     planter_contact = undefined,
-     planter_id = undefined
+     planterUsername = undefined,
+     planterId = undefined
 }) => {
     return Object.entries({ status, planter_contact, planter_id })
     .filter(entry => entry[1] !== undefined)
@@ -99,8 +108,22 @@ const getCaptures = (captureRepositoryImpl) => (async (filterCriteria = undefine
     return captures.map((row) => { return Capture({...row}); });
 });
 
+
+const applyVerification = (captureRepositoryImpl) => (async (verifyCaptureProcessed) => {
+    if (verifyCaptureProcessed.approved) {
+        await captureRepositoryImpl.update({ id: verifyCaptureProcessed.id, status: 'approved' });
+    } else {
+        await captureRepositoryImpl.update({
+            id: verifyCaptureProcessed.id,
+            status: 'rejected',
+            rejection_reason: verifyCaptureProcessed.rejection_reason
+        });
+    }
+});
+
 module.exports = {
     NewCapture,
     createCapture,
     getCaptures,
+    applyVerification
 }

@@ -6,7 +6,7 @@ const { createCapture, NewCapture, getCaptures }= require('../models/Capture');
 const { dispatch } = require('../models/DomainEvent');
 
 const Session = require('../infra/database/Session');
-const { publishToTopic } = require('../infra/messaging/RabbitMQMessaging');
+const { publishMessage } = require('../infra/messaging/RabbitMQMessaging');
 
 const { CaptureRepository, EventRepository } = require('../infra/database/PgRepositories');
 const { LegacyTreeRepository, LegacyTreeAttributeRepository }  = require('../infra/database/PgMigrationRepositories');
@@ -28,7 +28,7 @@ captureRouter.post("/", async function(req, res) {
     const legacyTreeRepository = new LegacyTreeRepository(migrationSession);
     const legacyTreeAttributeRepository = new LegacyTreeAttributeRepository(migrationSession);
     const executeCreateCapture = createCapture(captureRepo, eventRepository);
-    const eventDispatch = dispatch(eventRepository, publishToTopic);
+    const eventDispatch = dispatch(eventRepository, publishMessage);
     const legacyDataMigration = createTreesInMainDB(legacyTreeRepository, legacyTreeAttributeRepository);
 
     try {

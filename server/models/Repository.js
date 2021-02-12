@@ -5,7 +5,7 @@ class Repository {
     }
 
     async save(data) {
-        return await this.repoImpl.save(data);
+        return await this.repoImpl.create(data);
     }
 
     async getByFilter(filterCriteria, options) {

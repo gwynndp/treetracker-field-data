@@ -36,6 +36,10 @@ class CaptureRepository extends BaseRepository {
     async save(capture) {
         return await super.create(capture);
     }
+
+    async update(capture) {
+        return await super.update(capture);
+    }
 }
 
 class EventRepository extends BaseRepository {
