@@ -7,7 +7,7 @@ class LegacyTreeRepository extends BaseRepository {
         this._session = session;
     }
 
-    async save(tree) {
+    async add(tree) {
         // Since the query uses postgres function ST_PointFromText, knex raw function is used
         const geometry = 'POINT( ' + tree.lon + ' ' + tree.lat + ')';
         const result = await this._session.getDB().raw(`insert into trees (
@@ -31,7 +31,7 @@ class LegacyTreeAttributeRepository extends BaseRepository {
         this._session = session;
     }
 
-    async save(tree_attributes) {
+    async add(tree_attributes) {
         tree_attributes.forEach(attribute => {
             super.create(attribute);
         });

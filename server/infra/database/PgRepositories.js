@@ -19,7 +19,7 @@ class CaptureRepository extends BaseRepository {
             'gps_accuracy',
             'planter_id',
             'planter_photo_url',
-            'planter_contact',
+            'planter_username',
             'device_identifier',
             'note',
             'attributes',
@@ -32,10 +32,6 @@ class CaptureRepository extends BaseRepository {
         .limit(options.limit)
         .offset(options.offset);
     }
-
-    async save(capture) {
-        return await super.create(capture);
-    }
 }
 
 class EventRepository extends BaseRepository {
@@ -43,14 +39,6 @@ class EventRepository extends BaseRepository {
         super("domain_event", session);
         this._tableName = "domain_event";
         this._session = session;
-    }
-
-    async save(event) {
-        return await super.create(event);
-    }
-
-    async update(event) {
-        return await super.update(event);
     }
 }
 

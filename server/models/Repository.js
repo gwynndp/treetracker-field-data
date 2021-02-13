@@ -4,8 +4,12 @@ class Repository {
         this.repoImpl = repoImpl;
     }
 
-    async save(data) {
-        return await this.repoImpl.save(data);
+    async add(data) {
+        return await this.repoImpl.create(data);
+    }
+
+    async update(data) {
+        return await this.repoImpl.update(data);
     }
 
     async getByFilter(filterCriteria, options) {
