@@ -73,10 +73,10 @@ const createCapture = (captureRepositoryImpl, eventRepositoryImpl) => (async (aN
 
 const FilterCriteria = ({
      status = undefined,
-     planterUsername = undefined,
-     planterId = undefined
+     planter_username = undefined,
+     planter_id = undefined
 }) => {
-    return Object.entries({ status, planter_contact, planter_id })
+    return Object.entries({ status, planter_username, planter_id })
     .filter(entry => entry[1] !== undefined)
     .reduce((result, item) => {
          result[item[0]] = item[1];

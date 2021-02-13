@@ -19,7 +19,7 @@ class CaptureRepository extends BaseRepository {
             'gps_accuracy',
             'planter_id',
             'planter_photo_url',
-            'planter_contact',
+            'planter_username',
             'device_identifier',
             'note',
             'attributes',
