@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.1.0...v1.1.1) (2021-02-14)
+
+
+### Bug Fixes
+
+* use repository signature instead of baserepository ([70ba712](https://github.com/Greenstand/treetracker-field-data/commit/70ba712d06eb7fcb6d251f7aaa44f599e2c1e530))
+
 # [1.1.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.0.0...v1.1.0) (2021-02-13)
 
 
