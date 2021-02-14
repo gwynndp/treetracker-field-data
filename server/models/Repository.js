@@ -5,7 +5,7 @@ class Repository {
     }
 
     async add(data) {
-        return await this.repoImpl.create(data);
+        return await this.repoImpl.add(data);
     }
 
     async update(data) {

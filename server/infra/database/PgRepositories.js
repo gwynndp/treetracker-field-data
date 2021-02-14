@@ -32,6 +32,10 @@ class CaptureRepository extends BaseRepository {
         .limit(options.limit)
         .offset(options.offset);
     }
+
+    async add(capture) {
+        return await super.create(capture);
+    }
 }
 
 class EventRepository extends BaseRepository {
@@ -39,6 +43,10 @@ class EventRepository extends BaseRepository {
         super("domain_event", session);
         this._tableName = "domain_event";
         this._session = session;
+    }
+
+    async add(domainEvent) {
+        return await super.create(domainEvent);
     }
 }
 

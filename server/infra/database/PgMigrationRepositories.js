@@ -32,7 +32,7 @@ class LegacyTreeAttributeRepository extends BaseRepository {
     }
 
     async add(tree_attributes) {
-        tree_attributes.forEach(attribute => {
+        await tree_attributes.forEach(attribute => {
             super.create(attribute);
         });
     }
