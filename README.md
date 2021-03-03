@@ -21,7 +21,7 @@ The app relies on a app specific postgres db, another legacy treetracker main db
 
 For the field database, you could choose to use a locally running database.To use a local db, install postgres and run `database/db_init.sql` found in the project folder.
 
-Create a `.env` file under the project folder and assign the value for
+Create a `.env` file under the project folder and assign the value for 
 ```
 DATABASE_URL="postgresql://username:pwd@db_host:port/field_db?false"
 ```
@@ -54,6 +54,8 @@ This project publishes messages and hence relies on RabbitMQ messaging service. 
 ```
 RABBIT_MQ_URL=<value for the RabbitMQ messaging platform>
 ```
+
+For reference use the file .env.example that lists the necessary environment variables to run the application.
 
 # Architecture of this project
 
