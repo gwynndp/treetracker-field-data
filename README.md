@@ -1,10 +1,10 @@
 # Field data service
 
-A service exposing the device data collected from treetracker app. 
+A service that owns the raw tree tracking data uploaded from devices collected via treetracker app. 
 
-## Project Setup
+## Development Environment Quick Start
 
-Open terminal and navigate to a folder to install this project:
+1. Open terminal and navigate to a folder to install this project:
 
 ```
 git clone https://github.com/Greenstand/treetracker-field-data.git
@@ -12,12 +12,27 @@ git clone https://github.com/Greenstand/treetracker-field-data.git
 Install all necessary dependencies: 
 
 ```
+cd treetracker-field-data
 npm install
 ```
 
-## Databa/Message Queue Setup
+2. In the command line run the following to decrypt and create `.env` file that contains connection credentials to the database and message queues this project relies on.
 
-The app relies on a app specific postgres db, another legacy treetracker main db, and RabbitMQ messaging platform. Thus, connection urls for these infrastructure are required for the application to work.
+```
+npm run decrypt
+```
+The command will prompt for a password, please reach out in slack `engineering` or `microservices-working-group` channels for the credential.
+On successfully running the command, the file env.secret is decrypted and creates a `.env` file.
+
+3. Now run the app
+```
+node .
+```
+The above will start the app listening at port 3006. 
+
+## Developing with locally running Database - Advanced
+
+If you don't want to rely on the Greenstand's dev database, you can install the database on your machine.  The app relies on a app specific postgres db, and another legacy treetracker main db, along with RabbitMQ messaging platform. Thus, connection urls for these infrastructure are required for the application to work.
 
 For the field database, you could choose to use a locally running database.To use a local db, install postgres and run `database/db_init.sql` found in the project folder.
 
@@ -30,14 +45,16 @@ Add one more URL value for the treetracker main db which is needed for the trans
 ```
 DATABASE_URL_MAINDB="<ping development channel to get the url for treetracker main db"
 ```
+The main db is not specific dedicated to field-data service and hence it is preferable to connect to existing dev environment instead of running it locally.
 
-Here are some resources to get started on local database set up and migration:
+To install Postgres here are some resources to get started on local database set up and migration:
 * https://postgresapp.com
 * pgAdmin and DBeaver are great GUI options to use for navigating your local db 
 * https://www.postgresql.org/docs/9.1/app-pgdump.html
 
 
 Database Migration to create tables needed by the app.
+
 From within the project folder issue the following command.
 ```
 db-migrate  up --migrations-dir=database/migrations
