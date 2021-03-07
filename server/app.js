@@ -2,7 +2,7 @@ const express = require('express');
 const Sentry = require('@sentry/node');
 const bodyParser = require('body-parser');
 const HttpError = require("./utils/HttpError");
-const {errorHandler} = require("./routes/utils");
+const { errorHandler, handlerWrapper } = require("./utils/utils");
 const log = require("loglevel");
 const helper = require("./routes/utils");
 
@@ -16,7 +16,7 @@ Sentry.init({ dsn: config.sentry_dsn });
 /*
  * Check request
  */
-app.use(helper.handlerWrapper(async (req, _res, next) => {
+app.use(handlerWrapper(async (req, _res, next) => {
   if(req.method === "POST" || req.method === "PATCH"  || req.method === "PUT" ){
     if(req.headers['content-type'] !== "application/json"){
     throw new HttpError(415, "Invalid content type. API only supports application/json");
