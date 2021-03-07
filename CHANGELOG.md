@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.1.1...v1.1.2) (2021-03-07)
+
+
+### Bug Fixes
+
+* add error handler to express global error handler ([27d8e00](https://github.com/Greenstand/treetracker-field-data/commit/27d8e00397ef2de8f5592f8788e3a34f8e7a9891))
+
 ## [1.1.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.1.0...v1.1.1) (2021-02-14)
 
 
