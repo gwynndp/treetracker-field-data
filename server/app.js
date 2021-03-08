@@ -8,7 +8,7 @@ const helper = require("./routes/utils");
 
 const app = express();
 const config = require('../config/config.js');
-const captureRouter = require('./routes/captureRouter');
+const rawCaptureRouter = require('./routes/rawCaptureRouter');
 const registerEventHandlers = require('./services/EventHandlers');
 
 Sentry.init({ dsn: config.sentry_dsn });
@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-
 app.use(bodyParser.json()); // parse application/json
 
 //routers
-app.use('/captures', captureRouter);
+app.use('/raw-captures', rawCaptureRouter);
 
 // Global error handler
 app.use(errorHandler);

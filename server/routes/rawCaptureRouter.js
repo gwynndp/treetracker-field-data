@@ -1,8 +1,8 @@
 const express = require('express');
-const captureRouter = express.Router();
+const rawCaptureRouter = express.Router();
 
 const { createTreesInMainDB, LegacyTree } = require('../models/LegacyTree');
-const { createCapture, NewCapture, getCaptures }= require('../models/Capture');
+const { createRawCapture, rawCaptureFromRequest, getRawCaptures }= require('../models/RawCapture');
 const { dispatch } = require('../models/DomainEvent');
 
 const Session = require('../infra/database/Session');
@@ -11,32 +11,32 @@ const { publishMessage } = require('../infra/messaging/RabbitMQMessaging');
 const { CaptureRepository, EventRepository } = require('../infra/database/PgRepositories');
 const { LegacyTreeRepository, LegacyTreeAttributeRepository }  = require('../infra/database/PgMigrationRepositories');
 
-captureRouter.get("/", async function(req, res) {
+rawCaptureRouter.get("/", async function(req, res) {
     const session = new Session(false);
     const captureRepo = new CaptureRepository(session);
-    const executeGetCaptures = getCaptures(captureRepo);
-    const result = await executeGetCaptures(req.query);
+    const executeGetRawCaptures = getRawCaptures(captureRepo);
+    const result = await executeGetRawCaptures(req.query);
     res.send(result);
     res.end();
 })
 
-captureRouter.post("/", async function(req, res) {
+rawCaptureRouter.post("/", async function(req, res) {
     const session = new Session(false);
     const migrationSession = new Session(true);
     const captureRepo = new CaptureRepository(session);
     const eventRepository = new EventRepository(session);
     const legacyTreeRepository = new LegacyTreeRepository(migrationSession);
     const legacyTreeAttributeRepository = new LegacyTreeAttributeRepository(migrationSession);
-    const executeCreateCapture = createCapture(captureRepo, eventRepository);
+    const executeCreateRawCapture = createRawCapture(captureRepo, eventRepository);
     const eventDispatch = dispatch(eventRepository, publishMessage);
     const legacyDataMigration = createTreesInMainDB(legacyTreeRepository, legacyTreeAttributeRepository);
 
     try {
         await migrationSession.beginTransaction();
         const { entity: tree } = await legacyDataMigration(LegacyTree({ ...req.body }), [ ...req.body.attributes ]);
-        const captureData = NewCapture({reference_id: tree.id, ...req.body});
+        const captureData = rawCaptureFromRequest({id: tree.id, ...req.body});
         await session.beginTransaction();
-        const { entity, raisedEvents } = await executeCreateCapture(captureData);
+        const { entity, raisedEvents } = await executeCreateRawCapture(captureData);
         await session.commitTransaction();       
         await migrationSession.commitTransaction();
         raisedEvents.forEach(domainEvent => eventDispatch(domainEvent));
@@ -56,4 +56,4 @@ captureRouter.post("/", async function(req, res) {
     }
 })
 
-module.exports = captureRouter;
+module.exports = rawCaptureRouter;
