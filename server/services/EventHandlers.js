@@ -3,7 +3,7 @@ const { subscribe } = require('../infra/messaging/RabbitMQMessaging');
 
 const { CaptureRepository, EventRepository } = require('../infra/database/PgRepositories')
 const { DomainEvent, receiveEvent } = require('../models/DomainEvent');
-const { applyVerification } = require('../models/Capture');
+const { applyVerification } = require('../models/RawCapture');
 
 const  handleVerifyCaptureProcessed = (async (message) => {
     const session = new Session(false);

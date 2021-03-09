@@ -1,7 +1,7 @@
 /* Replace with your SQL commands */
-DROP INDEX capture_status_idx;
-DROP INDEX capture_planter_idx;
-DROP INDEX capture_planter_usrnm_idx;
-DROP INDEX capture_crdate_idx;
-DROP INDEX capture_update_idx;
-DROP TABLE capture;
+DROP INDEX rcapture_status_idx;
+DROP INDEX rcapture_fieldusr_idx;
+DROP INDEX rcapture_fieldusrname_idx;
+DROP INDEX rcapture_crdate_idx;
+DROP INDEX rcapture_update_idx;
+DROP TABLE raw_capture;

@@ -4,7 +4,7 @@ const config = require('./config').config
 const publishMessage = (async (payload, resultHandler) => {
     const broker = await Broker.create(config);
     try {
-        const publication = await broker.publish("capture-created", payload, "field-data.capture.creation");
+        const publication = await broker.publish("raw-capture-created", payload, "field-data.capture.creation");
         publication
         .on("success", resultHandler)
         .on("error", (err, messageId)=> {

@@ -11,7 +11,7 @@ module.exports = {
                 "exchanges": ["field-data"],
                 "queues": ["field-data-events", "field-data:verifications"],
                 "publications": {
-                    "capture-created": {
+                    "raw-capture-created": {
                         "exchange": "field-data"
                     }
                 },

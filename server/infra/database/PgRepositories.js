@@ -1,9 +1,9 @@
 const BaseRepository = require("./BaseRepository");
 
-class CaptureRepository extends BaseRepository {
+class RawCaptureRepository extends BaseRepository {
     constructor(session) {
-        super("capture", session);
-        this._tableName = "capture";
+        super("raw_capture", session);
+        this._tableName = "raw_capture";
         this._session = session;
     }
 
@@ -17,9 +17,9 @@ class CaptureRepository extends BaseRepository {
             'lat',
             'lon',
             'gps_accuracy',
-            'planter_id',
-            'planter_photo_url',
-            'planter_username',
+            'field_user_id',
+            'field_user_photo_url',
+            'field_username',
             'device_identifier',
             'note',
             'attributes',
@@ -27,14 +27,14 @@ class CaptureRepository extends BaseRepository {
             'created_at',
             'updated_at'
         )
-        .from('capture')
+        .from('raw_capture')
         .orderBy('created_at', 'desc')
         .limit(options.limit)
         .offset(options.offset);
     }
 
-    async add(capture) {
-        return await super.create(capture);
+    async add(rawCapture) {
+        return await super.create(rawCapture);
     }
 }
 
@@ -51,6 +51,6 @@ class EventRepository extends BaseRepository {
 }
 
 module.exports = { 
-    CaptureRepository,
+    RawCaptureRepository,
     EventRepository,
 }
