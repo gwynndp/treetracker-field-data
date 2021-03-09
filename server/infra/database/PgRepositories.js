@@ -51,6 +51,6 @@ class EventRepository extends BaseRepository {
 }
 
 module.exports = { 
-    CaptureRepository,
+    RawCaptureRepository,
     EventRepository,
 }

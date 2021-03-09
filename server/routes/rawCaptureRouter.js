@@ -8,12 +8,12 @@ const { dispatch } = require('../models/DomainEvent');
 const Session = require('../infra/database/Session');
 const { publishMessage } = require('../infra/messaging/RabbitMQMessaging');
 
-const { CaptureRepository, EventRepository } = require('../infra/database/PgRepositories');
+const { RawCaptureRepository, EventRepository } = require('../infra/database/PgRepositories');
 const { LegacyTreeRepository, LegacyTreeAttributeRepository }  = require('../infra/database/PgMigrationRepositories');
 
 rawCaptureRouter.get("/", async function(req, res) {
     const session = new Session(false);
-    const captureRepo = new CaptureRepository(session);
+    const captureRepo = new RawCaptureRepository(session);
     const executeGetRawCaptures = getRawCaptures(captureRepo);
     const result = await executeGetRawCaptures(req.query);
     res.send(result);
@@ -23,7 +23,7 @@ rawCaptureRouter.get("/", async function(req, res) {
 rawCaptureRouter.post("/", async function(req, res) {
     const session = new Session(false);
     const migrationSession = new Session(true);
-    const captureRepo = new CaptureRepository(session);
+    const captureRepo = new RawCaptureRepository(session);
     const eventRepository = new EventRepository(session);
     const legacyTreeRepository = new LegacyTreeRepository(migrationSession);
     const legacyTreeAttributeRepository = new LegacyTreeAttributeRepository(migrationSession);
@@ -34,16 +34,16 @@ rawCaptureRouter.post("/", async function(req, res) {
     try {
         await migrationSession.beginTransaction();
         const { entity: tree } = await legacyDataMigration(LegacyTree({ ...req.body }), [ ...req.body.attributes ]);
-        const captureData = rawCaptureFromRequest({id: tree.id, ...req.body});
+        const rawCapture = rawCaptureFromRequest({id: tree.id, ...req.body});
         await session.beginTransaction();
-        const { entity, raisedEvents } = await executeCreateRawCapture(captureData);
+        const { entity, raisedEvents } = await executeCreateRawCapture(rawCapture);
         await session.commitTransaction();       
         await migrationSession.commitTransaction();
         raisedEvents.forEach(domainEvent => eventDispatch(domainEvent));
         res.status(200).json({
             ...entity
         });
-    } catch(e){
+    } catch(e) {
         console.log(e);
         if (session.isTransactionInProgress()){
             await session.rollbackTransaction();

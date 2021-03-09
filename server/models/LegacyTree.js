@@ -7,16 +7,20 @@
  * trees table in treetracker db is really a tree capture table and do not represent a unique tree..
  */
 const { Repository } = require('./Repository');
-const LegacyTree = ({ id, image_url, lat, lon, planter_id, planter_identifier }) => Object.freeze({
-    uuid: id,
+const LegacyTree = ({ uuid, image_url, lat, lon, planter_id, planter_identifier, planter_photo_url, device_identifier=null, note = "", timestamp }) => Object.freeze({
+    uuid,
     image_url,
     lat,
     lon,
     planter_id,
     planter_identifier,
-    time_created: new Date().toISOString(),
-    time_updated: new Date()
+    planter_photo_url,
+    device_identifier,
+    note,
+    time_created: new Date(timestamp).toISOString(),
+    time_updated: new Date(timestamp).toISOString()
 });
+
 const createTreesInMainDB = (legacyTreeRepoImpl, legacyTreeAttrRepoImpl) => (async (tree, attributes) => {
     const legacyTreeRepository = new Repository(legacyTreeRepoImpl);
     const legacyAttributesRepository = new Repository(legacyTreeAttrRepoImpl);

@@ -39,6 +39,7 @@ const RawCapture = (
 const rawCaptureFromRequest = (
     {
         id,
+        uuid,
         image_url,
         lat,
         lon,
@@ -69,9 +70,9 @@ const rawCaptureFromRequest = (
 });
 
 
-const FieldCaptureDataCreated = ({ id, lat, lon, field_user_id, field_username, attributes, created_at }) => Object.freeze({
+const RawCaptureCreated = ({ id, lat, lon, field_user_id, field_username, attributes, created_at }) => Object.freeze({
     id,
-    type: 'FieldDataCaptureCreated',
+    type: 'RawCaptureCreated',
     lat,
     lon,
     field_user_id,
@@ -101,12 +102,12 @@ const createRawCapture = (captureRepositoryImpl, eventRepositoryImpl) => (async 
     const rawCapture = await captureRepository.add(newRawCapture);
     const filteredAttr = rawCapture.attributes.entries
         .filter(attribute => attribute.key === "app_flavor")
-    const fieldDataCaptureCreated = FieldCaptureDataCreated({
+    const rawCaptureCreated = RawCaptureCreated({
         ...rawCapture,
         attributes: filteredAttr
     });
     const raiseFieldDataEvent = raiseEvent(eventRepositoryImpl);
-    const domainEvent = await raiseFieldDataEvent(DomainEvent(fieldDataCaptureCreated));
+    const domainEvent = await raiseFieldDataEvent(DomainEvent(rawCaptureCreated));
     return { entity: rawCapture, raisedEvents: [domainEvent] };
 });
 
@@ -116,7 +117,7 @@ const FilterCriteria = ({
     field_username = undefined,
     field_user_id = undefined
 }) => {
-    return Object.entries({ status, planter_username, planter_id })
+    return Object.entries({ status, field_username, field_user_id })
         .filter(entry => entry[1] !== undefined)
         .reduce((result, item) => {
             result[item[0]] = item[1];
