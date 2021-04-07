@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/Greenstand/treetracker-field-data/compare/v1.1.2...v1.1.3) (2021-04-07)
+
+
+### Bug Fixes
+
+* use dns name for messaging system in k8 ([0c5b8ff](https://github.com/Greenstand/treetracker-field-data/commit/0c5b8ff86f830434c834607dc02d91ee5447bc16))
+
 ## [1.1.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.1.1...v1.1.2) (2021-03-07)
 
 
