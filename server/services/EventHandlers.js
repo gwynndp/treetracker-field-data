@@ -1,14 +1,14 @@
 const Session = require('../infra/database/Session');
 const { subscribe } = require('../infra/messaging/RabbitMQMessaging');
 
-const { CaptureRepository, EventRepository } = require('../infra/database/PgRepositories')
+const { RawCaptureRepository, EventRepository } = require('../infra/database/PgRepositories')
 const { DomainEvent, receiveEvent } = require('../models/DomainEvent');
 const { applyVerification } = require('../models/RawCapture');
 
-const  handleVerifyCaptureProcessed = (async (message) => {
+const handleVerifyCaptureProcessed = (async (message) => {
     const session = new Session(false);
     const eventRepository = new EventRepository(session);
-    const captureRepository = new CaptureRepository(session);
+    const captureRepository = new RawCaptureRepository(session);
     const receive = receiveEvent(eventRepository);
     const domainEvent = await receive(DomainEvent(message));
     try {
@@ -26,5 +26,6 @@ const registerEventHandlers = () => {
     subscribe("admin-verification", handleVerifyCaptureProcessed);
 }
 
-module.exports = registerEventHandlers;
-
+module.exports = {handleVerifyCaptureProcessed, registerEventHandlers};
+//module.exports = {handleVerifyCaptureProcessed}
+//module.exports = {handleVerifyCaptureProcessed}, registerEventHandlers;

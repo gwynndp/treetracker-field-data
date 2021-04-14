@@ -144,6 +144,7 @@ const getRawCaptures = (captureRepositoryImpl) => (async (filterCriteria = undef
         filter = FilterCriteria({ ...filterCriteria });
         options = { ...options, ...QueryOptions({ ...filterCriteria }) };
     }
+    console.log(filter);
     const captureRepository = new Repository(captureRepositoryImpl);
     const rawCaptures = await captureRepository.getByFilter(filter, options);
     return rawCaptures.map((row) => { return RawCapture({ ...row }); });
@@ -151,6 +152,7 @@ const getRawCaptures = (captureRepositoryImpl) => (async (filterCriteria = undef
 
 
 const applyVerification = (captureRepositoryImpl) => (async (verifyCaptureProcessed) => {
+    console.log(JSON.stringify(verifyCaptureProcessed));
     if (verifyCaptureProcessed.approved) {
         await captureRepositoryImpl.update({ id: verifyCaptureProcessed.id, status: 'approved' });
     } else {

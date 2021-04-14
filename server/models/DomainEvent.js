@@ -1,12 +1,64 @@
 const { v4: uuid } = require('uuid');
 const { Repository } = require('./Repository');
 
+const RawRepo = (
+    {
+        id,
+        payload,
+        status,
+        created_at,
+        updated_at
+    }) => Object.freeze({
+        id,
+        payload,
+        status,
+        created_at,
+        updated_at
+    });
+
+const FilterCriteria = ({
+    status = undefined,
+    id = undefined,
+}) => {
+    return Object.entries({ status,id })
+        .filter(entry => entry[1] !== undefined)
+        .reduce((result, item) => {
+            result[item[0]] = item[1];
+            return result;
+        }, {});
+}
+
+const QueryOptions = ({
+    limit = undefined,
+    offset = undefined,
+}) => {
+    return Object.entries({ limit, offset })
+        .filter(entry => entry[1] !== undefined)
+        .reduce((result, item) => {
+            result[item[0]] = item[1];
+            return result;
+        }, {});
+}
+
 const DomainEvent = (payload) => Object.freeze({
     id: uuid(),
     payload,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
 });
+
+const getDomainEvents = (eventRepositoryImpl) => (async (filterCriteria = undefined) => {
+    let filter = {}
+    let options = { limit: 1000, offset: 0 };
+    if (filterCriteria !== undefined) {
+        filter = {...filter, ...FilterCriteria({...filterCriteria }) };
+        options = { ...options, ...QueryOptions({ ...filterCriteria }) };
+    }
+    const eventRepository = new Repository(eventRepositoryImpl);
+    const rawRepos = await eventRepository.getByFilter(filter, options);
+    return rawRepos.map((row) => { return RawRepo({ ...row }); });
+});
+
 
 const raiseEvent = (eventRepositoryImpl) => (async (domainEvent) => {
     const eventRepository = new Repository(eventRepositoryImpl);
@@ -26,7 +78,13 @@ const dispatch = (eventRepositoryImpl, publishToTopic) => (async (domainEvent) =
                 status: 'sent',
                 updated_at: new Date().toISOString(),
             });
+            return eventRepositoryImpl;
         });
 });
 
-module.exports = { DomainEvent, raiseEvent, receiveEvent, dispatch }
+const handleEvent = (handleVerify) => (async (message) => {
+    handleVerify(message,()=>{
+        });
+});
+
+module.exports = { handleEvent, DomainEvent, getDomainEvents, raiseEvent, receiveEvent, dispatch }
