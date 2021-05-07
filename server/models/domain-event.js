@@ -1,13 +1,13 @@
 const { v4: uuid } = require('uuid');
 const { Repository } = require('./Repository');
 
-const RawRepo = (
+const DomainEvent = (
     {
-        id,
+        id = uuid(),
         payload,
         status,
-        created_at,
-        updated_at
+        created_at = new Date().toISOString(),
+        updated_at = new Date().toISOString()
     }) => Object.freeze({
         id,
         payload,
@@ -40,13 +40,6 @@ const QueryOptions = ({
         }, {});
 }
 
-const DomainEvent = (payload) => Object.freeze({
-    id: uuid(),
-    payload,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
-});
-
 const getDomainEvents = (eventRepositoryImpl) => (async (filterCriteria = undefined) => {
     let filter = {}
     let options = { limit: 1000, offset: 0 };
@@ -56,7 +49,7 @@ const getDomainEvents = (eventRepositoryImpl) => (async (filterCriteria = undefi
     }
     const eventRepository = new Repository(eventRepositoryImpl);
     const rawRepos = await eventRepository.getByFilter(filter, options);
-    return rawRepos.map((row) => { return RawRepo({ ...row }); });
+    return rawRepos.map((row) => { return DomainEvent({ ...row }); });
 });
 
 
@@ -82,9 +75,4 @@ const dispatch = (eventRepositoryImpl, publishToTopic) => (async (domainEvent) =
         });
 });
 
-const handleEvent = (handleVerify) => (async (message) => {
-    handleVerify(message,()=>{
-        });
-});
-
-module.exports = { handleEvent, DomainEvent, getDomainEvents, raiseEvent, receiveEvent, dispatch }
+module.exports = { DomainEvent, getDomainEvents, raiseEvent, receiveEvent, dispatch }

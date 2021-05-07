@@ -11,7 +11,7 @@ const config = require('../config/config.js');
 const rawCaptureRouter = require('./routes/rawCaptureRouter');
 const replayEventRouter = require('./routes/replayEventRouter');
 
-const {registerEventHandlers} = require('./services/EventHandlers');
+const {registerEventHandlers} = require('./services/event-handlers');
 
 Sentry.init({ dsn: config.sentry_dsn });
 

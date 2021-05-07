@@ -1,13 +1,21 @@
 const express = require('express');
 const replayEventRouter = express.Router();
 
-const { handleEvent, getDomainEvents, dispatch } = require('../models/DomainEvent');
+const { getDomainEvents, dispatch } = require('../models/domain-event');
 
 const Session = require('../infra/database/Session');
 const { publishMessage } = require('../infra/messaging/RabbitMQMessaging');
 
 const { EventRepository } = require('../infra/database/PgRepositories');
-const { handleVerifyCaptureProcessed } = require('../services/EventHandlers');
+const { dictEventHandlers, handleEvent} = require('../services/event-handlers');
+
+const processEvent = (event, executor) => {
+    try {
+        executor(event);
+    } catch (e) {
+        console.log(`Error processing event ${e}`);
+    }
+}
 
 replayEventRouter.post("/", async function(req, res) {
     const session = new Session(false);
@@ -16,42 +24,19 @@ replayEventRouter.post("/", async function(req, res) {
     const domainEvents = await executeGetDomainEvents({"status":req.body.status});
     if(req.body.status == "raised"){
         const eventDispatch = dispatch(eventRepository, publishMessage);
-        try {
             domainEvents.forEach(async (domainEvent) => {
-                const result = await executeGetDomainEvents({"id":domainEvent.id});
-                eventDispatch(domainEvent);
+                processEvent(domainEvent.payload,eventDispatch);
             });
-        } catch(e) {
-            console.log(e);
-            if (session.isTransactionInProgress()){
-                await session.rollbackTransaction();
-            }
-            if (migrationSession.isTransactionInProgress()) {
-               await migrationSession.rollbackTransaction();
-            }
-            let result = e;
-            res.status(422).json({...result[0]});
-        }
-    }else if(req.body.status == "received"){
-        const eventHandle = handleEvent(handleVerifyCaptureProcessed);
+    }else{
         domainEvents.forEach(async (domainEvent) => {
-            try {
-                eventHandle(domainEvent.payload);
-            } catch(e) {
-                console.log(e);
-                if (session.isTransactionInProgress()){
-                    await session.rollbackTransaction();
-                }
-                if (migrationSession.isTransactionInProgress()) {
-                    await migrationSession.rollbackTransaction();
-                }
-                let result = e;
-                res.status(422).json({...result[0]});
+            const eventHandler = dictEventHandlers()[domainEvent.payload.type];
+            if (typeof eventHandler !== "undefined" && eventHandler !== null){
+                const eventHandle = handleEvent(eventHandler);
+                processEvent(domainEvent.payload,eventHandle);
             }
         });
     }
-    res.status(200).json({"status":"Replay in progress..."});
-
+    res.status(201).json({"request":"accepted","status":"replay in progress..."});
 })
 
 module.exports = replayEventRouter;
