@@ -79,6 +79,7 @@ const RawCaptureCreated = ({
   field_username,
   attributes,
   created_at,
+  capture_taken_at,
 }) =>
   Object.freeze({
     id,
@@ -89,6 +90,7 @@ const RawCaptureCreated = ({
     field_username,
     attributes,
     created_at,
+    capture_taken_at,
   });
 
 const VerifyCaptureProcessed = ({
