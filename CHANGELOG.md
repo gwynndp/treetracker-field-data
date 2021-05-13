@@ -1,3 +1,16 @@
+# [1.2.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.1.3...v1.2.0) (2021-05-13)
+
+
+### Bug Fixes
+
+* add capture_taken_at to the RawCaptureCreated event ([2f3dbd0](https://github.com/Greenstand/treetracker-field-data/commit/2f3dbd0c9ee433dcfde867e68e4f13e4946332cf))
+* remove trailing comma ([3e4018b](https://github.com/Greenstand/treetracker-field-data/commit/3e4018bf4a229f59b6baebee9e2f2430fdef93be))
+
+
+### Features
+
+* add capture_taken_at column ([3832d7e](https://github.com/Greenstand/treetracker-field-data/commit/3832d7ea65971d67bf58b6c027e61be76fcd4b4f))
+
 ## [1.1.3](https://github.com/Greenstand/treetracker-field-data/compare/v1.1.2...v1.1.3) (2021-04-07)
 
 
