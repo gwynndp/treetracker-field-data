@@ -4,11 +4,11 @@ const bodyParser = require('body-parser');
 const HttpError = require("./utils/HttpError");
 const { errorHandler, handlerWrapper } = require("./utils/utils");
 const log = require("loglevel");
-const helper = require("./routes/utils");
+const helper = require("./handlers/utils");
+const router = require('./routes.js');
 
 const app = express();
 const config = require('../config/config.js');
-const rawCaptureRouter = require('./routes/rawCaptureRouter');
 const registerEventHandlers = require('./services/EventHandlers');
 
 Sentry.init({ dsn: config.sentry_dsn });
@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-
 app.use(bodyParser.json()); // parse application/json
 
 //routers
-app.use('/raw-captures', rawCaptureRouter);
+app.use('/', router);
 
 // Global error handler
 app.use(errorHandler);

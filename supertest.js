@@ -3,7 +3,7 @@
  */
 require('dotenv').config()
 const request = require('supertest');
-const server = require("../server/app");
+const server = require("./server/app");
 const { expect } = require('chai');
 const seed = require('./seed');
 const log = require('loglevel');
