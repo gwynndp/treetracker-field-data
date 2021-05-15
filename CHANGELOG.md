@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.2.0...v1.2.1) (2021-05-15)
+
+
+### Bug Fixes
+
+* update the capture_taken_at migrations ([6472afd](https://github.com/Greenstand/treetracker-field-data/commit/6472afdb27c3bd51474d54fcf90147e5f76637c2))
+
 # [1.2.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.1.3...v1.2.0) (2021-05-13)
 
 
