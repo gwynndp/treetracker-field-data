@@ -10,6 +10,21 @@ const { publishMessage } = require('../infra/messaging/RabbitMQMessaging');
 
 const { RawCaptureRepository, EventRepository } = require('../infra/database/PgRepositories');
 const { LegacyTreeRepository, LegacyTreeAttributeRepository }  = require('../infra/database/PgMigrationRepositories');
+const Joi = require('joi');
+
+const rawLegacyCaptureSchema = Joi.object({
+    uuid: Joi.string().required().guid(),
+    image_url: Joi.string().required().uri(),
+    lat: Joi.number().required().min(0).max(90),
+    lon: Joi.number().required().min(0).max(180),
+    note: Joi.string(),
+    device_identifier: Joi.string(),
+    planter_id: Joi.number().required(),
+    planter_identifier: Joi.string().required(),
+    planter_photo_url: Joi.string().uri(),
+    attributes: Joi.array(),
+    timestamp: Joi.date().timestamp('unix')
+}).unknown(false);
 
 const rawCaptureGet = async (req, res) => {
     const session = new Session(false);
@@ -21,6 +36,7 @@ const rawCaptureGet = async (req, res) => {
 };
 
 const rawCapturePost = async (req, res) => {
+    const value = await rawLegacyCaptureSchema.validateAsync(req.body, { abortEarly: false });
     const session = new Session(false);
     const migrationSession = new Session(true);
     const captureRepo = new RawCaptureRepository(session);
