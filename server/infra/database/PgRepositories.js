@@ -24,6 +24,7 @@ class RawCaptureRepository extends BaseRepository {
             'note',
             'attributes',
             'status',
+            'capture_taken_at',
             'created_at',
             'updated_at'
         )
