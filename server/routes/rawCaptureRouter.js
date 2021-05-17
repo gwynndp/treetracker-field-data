@@ -3,7 +3,7 @@ const rawCaptureRouter = express.Router();
 
 const { createTreesInMainDB, LegacyTree } = require('../models/LegacyTree');
 const { createRawCapture, rawCaptureFromRequest, getRawCaptures }= require('../models/RawCapture');
-const { dispatch } = require('../models/DomainEvent');
+const { dispatch } = require('../models/domain-event');
 
 const Session = require('../infra/database/Session');
 const { publishMessage } = require('../infra/messaging/RabbitMQMessaging');

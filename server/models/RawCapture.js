@@ -1,4 +1,4 @@
-const { raiseEvent, DomainEvent } = require('./DomainEvent');
+const { raiseEvent, DomainEvent } = require('./domain-event');
 const { Repository } = require('./Repository');
 
 const RawCapture = (
