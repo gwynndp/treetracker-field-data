@@ -1,3 +1,30 @@
+## [1.2.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.2.0...v1.2.1) (2021-05-15)
+
+
+### Bug Fixes
+
+* update the capture_taken_at migrations ([6472afd](https://github.com/Greenstand/treetracker-field-data/commit/6472afdb27c3bd51474d54fcf90147e5f76637c2))
+
+# [1.2.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.1.3...v1.2.0) (2021-05-13)
+
+
+### Bug Fixes
+
+* add capture_taken_at to the RawCaptureCreated event ([2f3dbd0](https://github.com/Greenstand/treetracker-field-data/commit/2f3dbd0c9ee433dcfde867e68e4f13e4946332cf))
+* remove trailing comma ([3e4018b](https://github.com/Greenstand/treetracker-field-data/commit/3e4018bf4a229f59b6baebee9e2f2430fdef93be))
+
+
+### Features
+
+* add capture_taken_at column ([3832d7e](https://github.com/Greenstand/treetracker-field-data/commit/3832d7ea65971d67bf58b6c027e61be76fcd4b4f))
+
+## [1.1.3](https://github.com/Greenstand/treetracker-field-data/compare/v1.1.2...v1.1.3) (2021-04-07)
+
+
+### Bug Fixes
+
+* use dns name for messaging system in k8 ([0c5b8ff](https://github.com/Greenstand/treetracker-field-data/commit/0c5b8ff86f830434c834607dc02d91ee5447bc16))
+
 ## [1.1.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.1.1...v1.1.2) (2021-03-07)
 
 

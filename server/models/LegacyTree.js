@@ -17,8 +17,8 @@ const LegacyTree = ({ uuid, image_url, lat, lon, planter_id, planter_identifier,
     planter_photo_url,
     device_identifier,
     note,
-    time_created: new Date(timestamp).toISOString(),
-    time_updated: new Date(timestamp).toISOString()
+    time_created: new Date(timestamp*1000).toISOString(), // convert timestamp to milliseconds
+    time_updated: new Date(timestamp*1000).toISOString()
 });
 
 const createTreesInMainDB = (legacyTreeRepoImpl, legacyTreeAttrRepoImpl) => (async (tree, attributes) => {

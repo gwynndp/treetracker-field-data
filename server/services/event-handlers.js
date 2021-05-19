@@ -1,3 +1,7 @@
+/**
+ * Contains functions used to process various incoming events subscribed in the application
+ * and update the status of the domain event.
+ */
 const Session = require('../infra/database/Session');
 const { subscribe } = require('../infra/messaging/RabbitMQMessaging');
 
@@ -5,17 +9,31 @@ const { RawCaptureRepository, EventRepository } = require('../infra/database/PgR
 const { DomainEvent, receiveEvent } = require('../models/domain-event');
 const { applyVerification } = require('../models/RawCapture');
 
-const handleVerifyCaptureProcessed = (async (message) => {
+// `session` here is expected to already be in a transaction since the caller might wish
+// to update domain event status along with any business logic specific updates to other
+// entities.
+const handleVerifyCaptureProcessed = async (payload, session) => {
+    const captureRepository = new RawCaptureRepository(session);
+    const executeApplyVerification = applyVerification(captureRepository);
+    executeApplyVerification(payload);
+};
+
+const processMessage = (eventHandler) => (async (message) => {
     const session = new Session(false);
     const eventRepository = new EventRepository(session);
-    const captureRepository = new RawCaptureRepository(session);
-    const receive = receiveEvent(eventRepository);
-    const domainEvent = await receive(DomainEvent({payload: message,status: 'handled'}));
+    const receiveAndStoreEvent = receiveEvent(eventRepository);
+    const domainEvent = await receiveAndStoreEvent(DomainEvent({payload: message}));
+    const executeApplyEventHandler = applyEventHandler(eventHandler);
+    executeApplyEventHandler(domainEvent);
+});
+
+const applyEventHandler = (eventHandler) => (async (domainEvent) => {
+    const session = new Session(false);
+    const eventRepository = new EventRepository(session);
     try {
         await session.beginTransaction();
-        const handleEvent = applyVerification(captureRepository);
-        handleEvent(message);
-        await eventRepository.update({ id: domainEvent.id, status: domainEvent.status});
+        eventHandler(domainEvent.payload, session);
+        await eventRepository.update({id: domainEvent.id, status: 'handled'});
         await session.commitTransaction();
     } catch(e) {
         await session.rollbackTransaction();
@@ -23,16 +41,11 @@ const handleVerifyCaptureProcessed = (async (message) => {
 });
 
 const registerEventHandlers = () => {
-    subscribe("admin-verification", handleVerifyCaptureProcessed);
+    subscribe("admin-verification", processMessage(dictEventHandlers["VerifyCaptureProcessed"]));
 }
 
-const handleEvent = (handleVerify) => (async (message) => {
-    handleVerify(message,()=>{
-        });
+const dictEventHandlers = Object.freeze({
+     "VerifyCaptureProcessed": handleVerifyCaptureProcessed,
 });
 
-const dictEventHandlers = () => {
-    return {"VerifyCaptureProcessed":handleVerifyCaptureProcessed};
-}
-
-module.exports = {dictEventHandlers, registerEventHandlers, handleEvent};
+module.exports = {dictEventHandlers, registerEventHandlers, applyEventHandler};

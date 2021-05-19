@@ -1,5 +1,5 @@
 /*
- * Some utils for router/express
+ * Global error handlers
  */
 const log = require("loglevel");
 const HttpError = require("./HttpError");
@@ -44,7 +44,7 @@ exports.errorHandler = (err, req, res, next) => {
   }else{
     res.status(500).send({
       code: 500,
-      message: `Unknown error is (${err.message})`,
+      message: `Unknown error (${err.message})`,
     });
   }
 };
