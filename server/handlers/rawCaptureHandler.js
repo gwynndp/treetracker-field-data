@@ -32,7 +32,10 @@ const rawLegacyCaptureSchema = Joi.object({
   planter_id: Joi.number().required(),
   planter_identifier: Joi.string().required(),
   planter_photo_url: Joi.string().uri(),
-  attributes: Joi.array().items(Joi.object()),
+  attributes: Joi.array().items(Joi.object({
+    key: Joi.string().required(),
+    value: Joi.string().required()
+  })),
   timestamp: Joi.date().timestamp('unix').required(),
 }).unknown(false);
 
