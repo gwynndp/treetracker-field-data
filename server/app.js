@@ -1,15 +1,15 @@
 const express = require('express');
 const Sentry = require('@sentry/node');
 const bodyParser = require('body-parser');
-const HttpError = require("./utils/HttpError");
-const { errorHandler, handlerWrapper } = require("./utils/utils");
+const HttpError = require("./handlers/HttpError");
+const { errorHandler, handlerWrapper } = require("./handlers/utils");
 const log = require("loglevel");
 const helper = require("./handlers/utils");
 const router = require('./routes.js');
 
 const app = express();
 const config = require('../config/config.js');
-const registerEventHandlers = require('./services/EventHandlers');
+const {registerEventHandlers} = require('./services/event-handlers');
 
 Sentry.init({ dsn: config.sentry_dsn });
 
@@ -30,7 +30,6 @@ app.use(bodyParser.json()); // parse application/json
 
 //routers
 app.use('/', router);
-
 // Global error handler
 app.use(errorHandler);
 
