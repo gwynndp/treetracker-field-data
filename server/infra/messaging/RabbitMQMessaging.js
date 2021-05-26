@@ -1,9 +1,10 @@
 const Broker = require('rascal').BrokerAsPromised
 const config = require('./config').config
+const log = require("loglevel");
 
 const publishMessage = (async (payload, resultHandler) => {
-    const broker = await Broker.create(config);
     try {
+        const broker = await Broker.create(config);
         const publication = await broker.publish("raw-capture-created", payload, "field-data.capture.creation");
         publication
         .on("success", resultHandler)
@@ -17,8 +18,8 @@ const publishMessage = (async (payload, resultHandler) => {
 });
 
 const subscribe = (async (subscriptionName, eventHandler) => {
-    const broker = await Broker.create(config);
     try {
+        const broker = await Broker.create(config);
         const subscription = await broker.subscribe(subscriptionName);
         subscription
         .on('message',(message, content, ackOrNack) => {

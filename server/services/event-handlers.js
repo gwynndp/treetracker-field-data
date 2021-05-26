@@ -8,6 +8,7 @@ const { subscribe } = require('../infra/messaging/RabbitMQMessaging');
 const { RawCaptureRepository, EventRepository } = require('../infra/database/PgRepositories')
 const { DomainEvent, receiveEvent } = require('../models/domain-event');
 const { applyVerification } = require('../models/RawCapture');
+const log = require("loglevel");
 
 // `session` here is expected to already be in a transaction since the caller might wish
 // to update domain event status along with any business logic specific updates to other
@@ -22,7 +23,7 @@ const processMessage = (eventHandler) => (async (message) => {
     const session = new Session(false);
     const eventRepository = new EventRepository(session);
     const receiveAndStoreEvent = receiveEvent(eventRepository);
-    const domainEvent = await receiveAndStoreEvent(DomainEvent({payload: message}));
+    const domainEvent = await receiveAndStoreEvent(DomainEvent({payload: message, status: 'received'}));
     const executeApplyEventHandler = applyEventHandler(eventHandler);
     executeApplyEventHandler(domainEvent);
 });
@@ -30,6 +31,7 @@ const processMessage = (eventHandler) => (async (message) => {
 const applyEventHandler = (eventHandler) => (async (domainEvent) => {
     const session = new Session(false);
     const eventRepository = new EventRepository(session);
+    log.debug(JSON.stringify(domainEvent));
     try {
         await session.beginTransaction();
         eventHandler(domainEvent.payload, session);

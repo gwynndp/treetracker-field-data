@@ -129,7 +129,7 @@ const createRawCapture = (captureRepositoryImpl, eventRepositoryImpl) => async (
     attributes: filteredAttr,
   });
   const raiseFieldDataEvent = raiseEvent(eventRepositoryImpl);
-  const domainEvent = await raiseFieldDataEvent(DomainEvent(rawCaptureCreated));
+  const domainEvent = await raiseFieldDataEvent(DomainEvent({ payload: rawCaptureCreated }));
   return { entity: rawCapture, raisedEvents: [domainEvent] };
 };
 

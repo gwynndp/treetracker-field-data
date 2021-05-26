@@ -30,7 +30,6 @@ app.use(bodyParser.json()); // parse application/json
 
 //routers
 app.use('/', router);
-
 // Global error handler
 app.use(errorHandler);
 

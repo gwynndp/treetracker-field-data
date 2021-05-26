@@ -9,7 +9,7 @@ const replayEventAPISchema = Joi.object({
     status: Joi.string().valid('raised', 'received')
 })
 
-const replayEventPost = async (req, res) => {
+const replayEventPost = async (req, res, next) => {
     await replayEventAPISchema.validateAsync(req.body, { abortEarly: false });
     const session = new Session(false);
     const eventRepository = new EventRepository(session);
@@ -17,7 +17,6 @@ const replayEventPost = async (req, res) => {
 
     const domainEvents = await executeGetDomainEvents({"status":req.body.status});
     const eventDispatch = dispatch(eventRepository, publishMessage);
-    const eventHandler = dictEventHandlers[domainEvent.payload.type];
     domainEvents.forEach(async (domainEvent) => {
         switch (domainEvent.status) {
             case "raised":
