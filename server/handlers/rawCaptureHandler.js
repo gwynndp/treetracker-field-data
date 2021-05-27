@@ -33,14 +33,16 @@ const rawLegacyCaptureSchema = Joi.object({
   planter_id: Joi.number().required(),
   planter_identifier: Joi.string().required(),
   planter_photo_url: Joi.string().uri(),
-  attributes: Joi.array().items(Joi.object({
-    key: Joi.string().required(),
-    value: Joi.string().required()
-  })),
+  attributes: Joi.array().items(
+    Joi.object({
+      key: Joi.string().required(),
+      value: Joi.string().required(),
+    }),
+  ),
   timestamp: Joi.date().timestamp('unix').required(),
 }).unknown(false);
 
-const rawCaptureGet = async (req, res) => {
+const rawCaptureGet = async (req, res, next) => {
   const session = new Session(false);
   const captureRepo = new RawCaptureRepository(session);
   const executeGetRawCaptures = getRawCaptures(captureRepo);
