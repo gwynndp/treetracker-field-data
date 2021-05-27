@@ -1,31 +1,29 @@
 const expect = require('expect-runtime');
 const connection = require('../../../config/config').connectionString;
-const connectionMainDB = require('../../../config/config')
-  .connectionStringMainDB;
+const connectionMainDB = require('../../../config/config').connectionStringMainDB;
 expect(connection).to.match(/^postgresql:\//);
-const log = require('loglevel');
+const log = require("loglevel");
 
 let knexConfig = {
   client: 'pg',
-  debug: process.env.NODE_LOG_LEVEL === 'debug' ? true : false,
+  debug: process.env.NODE_LOG_LEVEL === "debug"? true:false,
   connection,
-  pool: { min: 0, max: 10 },
-};
+  pool: { min:0, max: 10 },
+}
 
 let knexConfigMainDB = {
   client: 'pg',
-  debug: process.env.NODE_LOG_LEVEL === 'debug' ? true : false,
+  debug: process.env.NODE_LOG_LEVEL === "debug"? true: false,
   connection: connectionMainDB,
-  pool: { min: 0, max: 10 },
-};
-
-log.debug(process.env.DATABASE_SCHEMA);
-if (process.env.DATABASE_SCHEMA) {
-  log.info('setting a schema');
-  knexConfig.searchPath = [process.env.DATABASE_SCHEMA];
+  pool: { min:0, max:10 },
 }
-log.debug(knexConfig.searchPath);
-console.log(knexConfig);
+
+log.debug(process.env.DATABASE_SCHEMA)
+if(process.env.DATABASE_SCHEMA){
+  log.info('setting a schema')
+  knexConfig.searchPath = [process.env.DATABASE_SCHEMA]
+}
+log.debug(knexConfig.searchPath)
 
 const knex = require('knex')(knexConfig);
 const knexMainDB = require('knex')(knexConfigMainDB);
