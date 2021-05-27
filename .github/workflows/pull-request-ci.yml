@@ -51,3 +51,5 @@ jobs:
 
       - name: run api-tests
         run: npm run test-api
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@postgres/postgres
