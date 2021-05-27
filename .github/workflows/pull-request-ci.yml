@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> github-pr-workflow
 name: CI for New Pull Requests
 
 on:
