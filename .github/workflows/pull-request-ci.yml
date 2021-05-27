@@ -40,16 +40,20 @@ jobs:
           node-version: '12.x'
       - name: Install dependencies
         run: npm install
+        working-directory: ${{ env.project-directory }}
 
       - name: Install db-migrate
         run: npm install db-migrate
+        working-directory: ${{ env.project-directory }}
 
       - name: run db-migrate
         run: npm run db-migrate-ci
         env:
           DATABASE_URL: postgresql://postgres:postgres@postgres/postgres
+        working-directory: ${{ env.project-directory }}
 
       - name: run api-tests
         run: npm run test-api
         env:
           DATABASE_URL: postgresql://postgres:postgres@postgres/postgres
+        working-directory: ${{ env.project-directory }}
