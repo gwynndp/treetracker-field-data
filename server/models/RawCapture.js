@@ -1,4 +1,4 @@
-const { raiseEvent, DomainEvent } = require('./DomainEvent');
+const { raiseEvent, DomainEvent } = require('./domain-event');
 const { Repository } = require('./Repository');
 
 const RawCapture = ({
@@ -129,7 +129,7 @@ const createRawCapture = (captureRepositoryImpl, eventRepositoryImpl) => async (
     attributes: filteredAttr,
   });
   const raiseFieldDataEvent = raiseEvent(eventRepositoryImpl);
-  const domainEvent = await raiseFieldDataEvent(DomainEvent(rawCaptureCreated));
+  const domainEvent = await raiseFieldDataEvent(DomainEvent({ payload: rawCaptureCreated }));
   return { entity: rawCapture, raisedEvents: [domainEvent] };
 };
 
@@ -172,7 +172,7 @@ const getRawCaptures = (captureRepositoryImpl) => async (
 };
 
 const applyVerification = (captureRepositoryImpl) => async (
-  verifyCaptureProcessed,
+  verifyCaptureProcessed
 ) => {
   if (verifyCaptureProcessed.approved) {
     await captureRepositoryImpl.update({
@@ -189,8 +189,8 @@ const applyVerification = (captureRepositoryImpl) => async (
 };
 
 module.exports = {
-  rawCaptureFromRequest,
-  createRawCapture,
-  getRawCaptures,
-  applyVerification,
-};
+    rawCaptureFromRequest,
+    createRawCapture,
+    getRawCaptures,
+    applyVerification
+}

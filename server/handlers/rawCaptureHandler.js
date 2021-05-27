@@ -7,7 +7,7 @@ const {
   rawCaptureFromRequest,
   getRawCaptures,
 } = require('../models/RawCapture');
-const { dispatch } = require('../models/DomainEvent');
+const { dispatch } = require('../models/domain-event');
 
 const Session = require('../infra/database/Session');
 const { publishMessage } = require('../infra/messaging/RabbitMQMessaging');
@@ -21,6 +21,7 @@ const {
   LegacyTreeAttributeRepository,
 } = require('../infra/database/PgMigrationRepositories');
 const Joi = require('joi');
+const { ValidationError } = require('joi');
 
 const rawLegacyCaptureSchema = Joi.object({
   uuid: Joi.string().required().guid(),
@@ -48,7 +49,8 @@ const rawCaptureGet = async (req, res) => {
   res.end();
 };
 
-const rawCapturePost = async (req, res) => {
+const rawCapturePost = async (req, res, next) => {
+  await rawLegacyCaptureSchema.validateAsync(req.body, { abortEarly: false });
   const session = new Session(false);
   const migrationSession = new Session(true);
   const captureRepo = new RawCaptureRepository(session);
@@ -68,9 +70,6 @@ const rawCapturePost = async (req, res) => {
   );
 
   try {
-    const value = await rawLegacyCaptureSchema.validateAsync(req.body, {
-      abortEarly: false,
-    });
     await migrationSession.beginTransaction();
     const { entity: tree } = await legacyDataMigration(
       LegacyTree({ ...req.body }),
@@ -93,8 +92,7 @@ const rawCapturePost = async (req, res) => {
     if (migrationSession.isTransactionInProgress()) {
       await migrationSession.rollbackTransaction();
     }
-    let result = e;
-    res.status(422).json({ ...result });
+    res.status(422).json({ ...e });
   }
 };
 

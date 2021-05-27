@@ -1,7 +1,7 @@
 const FS = require('fs');
 const log = require("loglevel");
 const path = require("path");
-const HttpError = require("../utils/HttpError");
+const HttpError = require("../handlers/HttpError");
 // const ApiKeyRepository = require("../repositories/ApiKeyRepository");
 const expect = require("expect-runtime");
 

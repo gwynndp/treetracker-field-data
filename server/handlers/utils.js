@@ -1,12 +1,9 @@
 /*
- * Some utils for router/express
+ * Global error handlers
  */
 const log = require("loglevel");
-const HttpError = require("../utils/HttpError");
-const ApiKeyService = require("../services/ApiKeyService");
-// const JWTService = require("../services/JWTService.js");
+const HttpError = require("./HttpError");
 const {ValidationError} = require("joi");
-// const Session = require("../models/Session");
 
 /*
  * This is from the library https://github.com/Abazhenov/express-async-handler
@@ -51,21 +48,3 @@ exports.errorHandler = (err, req, res, next) => {
     });
   }
 };
-
-exports.apiKeyHandler = exports.handlerWrapper(async (req, res, next) => {
- // const session = new Session();
- // const apiKey = new ApiKeyService(session);
- // await apiKey.check(req.headers['treetracker-api-key']);
- // log.debug('Valid Access');
-  next();
-});
-
-/** 
-exports.verifyJWTHandler = exports.handlerWrapper(async (req, res, next) => {
-  const jwtService = new JWTService();
-  const decode = jwtService.verify(req.headers.authorization);
-  res.locals.wallet_id = decode.id;
-  next();
-});
-*/
-
