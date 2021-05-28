@@ -461,7 +461,6 @@ describe('field-data raw-capture api tests.', () => {
           payment_id integer,
           contract_id integer,
           token_issued boolean NOT NULL DEFAULT false,
-          morphology morphology_type,
           age age_type,
           species character varying COLLATE pg_catalog."default",
           capture_approval_tag capture_approval_type,
