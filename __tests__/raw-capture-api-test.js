@@ -468,11 +468,7 @@ describe('field-data raw-capture api tests.', () => {
           domain_specific_data jsonb,
           token_id uuid,
           name character varying COLLATE pg_catalog."default",
-          CONSTRAINT tree_id_key PRIMARY KEY (id),
-          CONSTRAINT trees_payment_id_fk FOREIGN KEY (payment_id)
-              REFERENCES public.payment (id) MATCH SIMPLE
-              ON UPDATE NO ACTION
-              ON DELETE NO ACTION
+          CONSTRAINT tree_id_key PRIMARY KEY (id)
       )
       `,
         )
