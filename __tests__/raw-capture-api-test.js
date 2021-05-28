@@ -428,7 +428,7 @@ describe('field-data raw-capture api tests.', () => {
         .raw(
           `CREATE TABLE IF NOT EXISTS trees
       (
-          id integer,
+          id integer DEFAULT 10,
           time_created timestamp without time zone NOT NULL,
           time_updated timestamp without time zone NOT NULL,
           missing boolean DEFAULT false,
