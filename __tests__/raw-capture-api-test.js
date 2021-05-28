@@ -3,6 +3,7 @@ const request = require('supertest');
 const server = require('../server/app');
 const { expect } = require('chai');
 const { v4: uuidv4 } = require('uuid');
+const { knexMainDB } = require('../server/infra/database/knex');
 
 class RequestObject {
   constructor() {
@@ -421,6 +422,70 @@ describe('field-data raw-capture api tests.', () => {
   });
 
   describe('Raw capture should be added sucessfully', () => {
+    before((done) => {
+      knexMainDB.schema
+        .raw(
+          `CREATE TABLE IF NOT EXISTS public.trees
+      (
+          id integer NOT NULL DEFAULT nextval('trees_id_seq'::regclass),
+          time_created timestamp without time zone NOT NULL,
+          time_updated timestamp without time zone NOT NULL,
+          missing boolean DEFAULT false,
+          priority boolean DEFAULT false,
+          cause_of_death_id integer,
+          planter_id integer,
+          primary_location_id integer,
+          settings_id integer,
+          override_settings_id integer,
+          dead integer NOT NULL DEFAULT 0,
+          photo_id integer,
+          image_url character varying COLLATE pg_catalog."default",
+          certificate_id integer,
+          estimated_geometric_location geometry(Point,4326),
+          lat numeric,
+          lon numeric,
+          gps_accuracy integer,
+          active boolean DEFAULT true,
+          planter_photo_url character varying COLLATE pg_catalog."default",
+          planter_identifier character varying COLLATE pg_catalog."default",
+          device_id integer,
+          sequence integer,
+          note character varying COLLATE pg_catalog."default",
+          verified boolean NOT NULL DEFAULT false,
+          uuid character varying COLLATE pg_catalog."default",
+          approved boolean NOT NULL DEFAULT false,
+          status character varying COLLATE pg_catalog."default" NOT NULL DEFAULT 'planted'::character varying,
+          cluster_regions_assigned boolean NOT NULL DEFAULT false,
+          species_id integer,
+          planting_organization_id integer,
+          payment_id integer,
+          contract_id integer,
+          token_issued boolean NOT NULL DEFAULT false,
+          morphology morphology_type,
+          age age_type,
+          species character varying COLLATE pg_catalog."default",
+          capture_approval_tag capture_approval_type,
+          rejection_reason rejection_reason_type,
+          matching_hash character varying COLLATE pg_catalog."default",
+          device_identifier character varying COLLATE pg_catalog."default",
+          images jsonb,
+          domain_specific_data jsonb,
+          token_id uuid,
+          name character varying COLLATE pg_catalog."default",
+          CONSTRAINT tree_id_key PRIMARY KEY (id),
+          CONSTRAINT trees_payment_id_fk FOREIGN KEY (payment_id)
+              REFERENCES public.payment (id) MATCH SIMPLE
+              ON UPDATE NO ACTION
+              ON DELETE NO ACTION
+      )
+      `,
+        )
+        .then(() => done())
+        .catch((e) => {
+          console.log(e);
+          done();
+        });
+    });
     const request_object = new RequestObject();
     it(`Raw capture should be successfully added`, function (done) {
       request(server)
