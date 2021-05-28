@@ -423,11 +423,12 @@ describe('field-data raw-capture api tests.', () => {
 
   describe('Raw capture should be added sucessfully', () => {
     before((done) => {
+      // Sql query to create table for testing in the github actions environment
       knexMainDB.schema
         .raw(
           `CREATE TABLE IF NOT EXISTS trees
       (
-          id integer NOT NULL,
+          id integer,
           time_created timestamp without time zone NOT NULL,
           time_updated timestamp without time zone NOT NULL,
           missing boolean DEFAULT false,
