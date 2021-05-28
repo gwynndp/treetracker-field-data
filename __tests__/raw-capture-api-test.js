@@ -425,9 +425,9 @@ describe('field-data raw-capture api tests.', () => {
     before((done) => {
       knexMainDB.schema
         .raw(
-          `CREATE TABLE IF NOT EXISTS public.trees
+          `CREATE TABLE IF NOT EXISTS trees
       (
-          id integer NOT NULL DEFAULT,
+          id integer NOT NULL,
           time_created timestamp without time zone NOT NULL,
           time_updated timestamp without time zone NOT NULL,
           missing boolean DEFAULT false,
