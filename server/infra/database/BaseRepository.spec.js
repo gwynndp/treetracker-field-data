@@ -4,7 +4,7 @@ const knex = require("../database/knex");
 const mockKnex = require("mock-knex");
 const tracker = mockKnex.getTracker();
 const jestExpect = require("expect");
-const Session = require("../models/Session");
+const Session = require("./Session");
 
 describe("BaseRepository", () => {
   let baseRepository;
@@ -12,7 +12,7 @@ describe("BaseRepository", () => {
   beforeEach(() => {
     mockKnex.mock(knex);
     tracker.install();
-    const session = new Session();
+    const session = new Session(false);
     baseRepository = new BaseRepository("testTable", session);
   })
 

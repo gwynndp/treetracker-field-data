@@ -3,7 +3,6 @@ const request = require('supertest');
 const server = require('../server/app');
 const { expect } = require('chai');
 const { v4: uuidv4 } = require('uuid');
-const { createLegacyTable } = require('./legacy-table-creation');
 
 class RequestObject {
   constructor() {
@@ -422,15 +421,6 @@ describe('field-data raw-capture api tests.', () => {
   });
 
   describe('Raw capture should be added sucessfully', () => {
-    before((done) => {
-      //create legacy table for testing in the github actions environment
-        createLegacyTable
-        .then(() => done())
-        .catch((e) => {
-          console.log(e);
-          done();
-        });
-    });
     const request_object = new RequestObject();
     it(`Raw capture should be successfully added`, function (done) {
       request(server)

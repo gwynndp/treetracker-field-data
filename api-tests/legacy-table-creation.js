@@ -1,7 +1,8 @@
 const { knexMainDB } = require('../server/infra/database/knex');
 
-const createLegacyTable = knexMainDB.schema.raw(
-  `CREATE TABLE IF NOT EXISTS trees
+before(async () => {
+  knexMainDB.schema.raw(
+      `CREATE TABLE IF NOT EXISTS trees
       (
           id integer DEFAULT 10,
           time_created timestamp without time zone NOT NULL,
@@ -54,9 +55,5 @@ const createLegacyTable = knexMainDB.schema.raw(
             key character varying COLLATE pg_catalog."default",
             value character varying COLLATE pg_catalog."default"
         );
-      `,
-);
-
-module.exports = {
-  createLegacyTable,
-};
+      `)
+        });
