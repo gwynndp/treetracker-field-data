@@ -2,7 +2,7 @@ const { knexMainDB } = require('../server/infra/database/knex');
 
 before(async () => {
   knexMainDB.schema.raw(
-      `CREATE TABLE IF NOT EXISTS trees
+    `CREATE TABLE IF NOT EXISTS trees
       (
           id integer DEFAULT 10,
           time_created timestamp without time zone NOT NULL,
@@ -49,11 +49,11 @@ before(async () => {
       );
 
       CREATE TABLE IF NOT EXISTS tree_attributes
-        (
-            id integer NOT NULL DEFAULT 20,
-            tree_id integer,
-            key character varying COLLATE pg_catalog."default",
-            value character varying COLLATE pg_catalog."default"
-        );
-      `)
-        });
+      (
+          id integer NOT NULL DEFAULT 20,
+          tree_id integer,
+          key character varying COLLATE pg_catalog."default",
+          value character varying COLLATE pg_catalog."default"
+      );`
+    );
+});
