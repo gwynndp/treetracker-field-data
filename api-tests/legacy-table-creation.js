@@ -54,5 +54,5 @@ before(async () => {
           tree_id integer,
           key character varying COLLATE pg_catalog."default",
           value character varying COLLATE pg_catalog."default"
-      );`).then((result)=> { console.log(`Result is ${result}`); })
+      );`)
 });
