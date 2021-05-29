@@ -29,12 +29,17 @@ const rawLegacyCaptureSchema = Joi.object({
   lat: Joi.number().required().min(0).max(90),
   lon: Joi.number().required().min(0).max(180),
   note: Joi.string(),
-  device_identifier: Joi.string(),
+  device_identifier: Joi.string().required(),
   planter_id: Joi.number().required(),
   planter_identifier: Joi.string().required(),
   planter_photo_url: Joi.string().uri(),
-  attributes: Joi.array(),
-  timestamp: Joi.date().timestamp('unix'),
+  attributes: Joi.array().items(
+    Joi.object({
+      key: Joi.string().required(),
+      value: Joi.string().required(),
+    }),
+  ),
+  timestamp: Joi.date().timestamp('unix').required(),
 }).unknown(false);
 
 const rawCaptureGet = async (req, res, next) => {
@@ -78,7 +83,7 @@ const rawCapturePost = async (req, res, next) => {
     await session.commitTransaction();
     await migrationSession.commitTransaction();
     raisedEvents.forEach((domainEvent) => eventDispatch(domainEvent));
-    res.status(200).json({
+    res.status(201).json({
       ...entity,
     });
   } catch (e) {
