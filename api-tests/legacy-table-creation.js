@@ -1,7 +1,7 @@
 const { knexMainDB } = require('../server/infra/database/knex');
 
 before(async () => {
-  knexMainDB.schema.raw(
+  await knexMainDB.raw(
     `CREATE TABLE IF NOT EXISTS trees
       (
           id integer DEFAULT 10,
@@ -54,6 +54,5 @@ before(async () => {
           tree_id integer,
           key character varying COLLATE pg_catalog."default",
           value character varying COLLATE pg_catalog."default"
-      );`
-    );
+      );`).then((result)=> { console.log(`Result is ${result}`); })
 });
