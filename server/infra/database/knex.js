@@ -7,7 +7,7 @@ const log = require("loglevel");
 // We need to parse the connection string into a connection object
 // so that pg 8  won't throw an SSL error when connecting to the postgres database 
 // when running node version greater than 12
-const urlregexp = /postgresql:\/\/(.+):(.+)@(.+):(\d+)\/(.+)\?ssl=true/g;
+const urlregexp = /postgresql:\/\/(.+):(.+)@(.+):(\d+)\/(.+)(\?ssl=true)?/g;
 const dbConnValues = [...connection.matchAll(urlregexp)][0];
 const mainDBConnValues =[...connectionMainDB.matchAll(urlregexp)][0];
 
