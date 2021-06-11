@@ -47,12 +47,12 @@ jobs:
         run: npm run db-migrate-ci
         working-directory: ${{ env.project-directory }}
         env:
-          DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres?ssl=true
+          DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
 
       - name: run api-tests
         run: npm run test-api
         working-directory: ${{ env.project-directory }}
         env:
-          DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres?ssl=true
-          DATABASE_URL_MAINDB: postgresql://postgres:postgres@postgres:5432/postgres?ssl=true
+          DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
+          DATABASE_URL_MAINDB: postgresql://postgres:postgres@postgres:5432/postgres
           CI: true
