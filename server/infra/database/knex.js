@@ -35,7 +35,7 @@ let knexConfigMainDB = {
     password: mainDBConnValues[2],
     database: mainDBConnValues[5],
     port: mainDBConnValues[4],
-    ssl: { rejectUnauthorized: false }
+    // ssl: { rejectUnauthorized: false }
   },
   pool: { min:0, max:10 },
 };
