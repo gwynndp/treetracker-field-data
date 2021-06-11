@@ -28,7 +28,7 @@ const subscribe = (async (subscriptionName, eventHandler) => {
         })
         .on('error', console.error);
     } catch(err) {
-        console.error(`Error subscribing to the queue ${queueName}, error: ${err}`);
+        console.error(`Error subscribing to the queue ${subscriptionName}, error: ${err}`);
     }
 });
 
