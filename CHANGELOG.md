@@ -1,3 +1,50 @@
+# [1.3.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.2.1...v1.3.0) (2021-07-29)
+
+
+### Bug Fixes
+
+* add eslint configurations ([8c42f34](https://github.com/Greenstand/treetracker-field-data/commit/8c42f3423bc7a8a2145473c2578bd5399c3d9473))
+* add install db-migrate to workflow ([8bafc4d](https://github.com/Greenstand/treetracker-field-data/commit/8bafc4d9c7b7ec0b14c99874fa32d4399c7a8481))
+* add postgis docker image ([1a64ffa](https://github.com/Greenstand/treetracker-field-data/commit/1a64ffabaa6d0e1740c79b578e2b4bbd7c87fa5f))
+* add sql query to test file ([755632c](https://github.com/Greenstand/treetracker-field-data/commit/755632cdcd66bda5b17cffcc4f20d8edf6ba6e09))
+* api test script ([2fd6d15](https://github.com/Greenstand/treetracker-field-data/commit/2fd6d159a873219a2c397da2b79be36877689070))
+* broken test: BaseRepository ([3f2d504](https://github.com/Greenstand/treetracker-field-data/commit/3f2d5047c91683ea2635c0043fe705106ad972ad))
+* correct naming of overlays directory ([5942508](https://github.com/Greenstand/treetracker-field-data/commit/5942508463483b23b5cb739cc402e5dd7213263a))
+* correct sql query ([fa62065](https://github.com/Greenstand/treetracker-field-data/commit/fa6206526c119102bcd8925d09c935f41fec77ba))
+* correct sql query ([bf35f92](https://github.com/Greenstand/treetracker-field-data/commit/bf35f9257b3356d1b0800d2536e8eec3b2f1b65d))
+* disable tests and lint for now ([39ec27f](https://github.com/Greenstand/treetracker-field-data/commit/39ec27f83f075076c5452330787e3c9f8c69d7c2))
+* fix issues around legacy tree_attributes table ([fc6b7f0](https://github.com/Greenstand/treetracker-field-data/commit/fc6b7f09229ad9e9b13021d023e6a675a482669a))
+* fix sql query ([32497ac](https://github.com/Greenstand/treetracker-field-data/commit/32497ac9959b8434558f79c69c233c138797e293))
+* force trigger build ([54a99a9](https://github.com/Greenstand/treetracker-field-data/commit/54a99a93baeeb4ff159e6ce2b17f2104bc4e5217))
+* modify sql query ([c625360](https://github.com/Greenstand/treetracker-field-data/commit/c6253600553c9f9bfb02e141af3e379f5e137542))
+* modify sql query ([9bd909b](https://github.com/Greenstand/treetracker-field-data/commit/9bd909b17987119291be931dc5e95facd1d89051))
+* modify sql query ([c17b6df](https://github.com/Greenstand/treetracker-field-data/commit/c17b6df7bdf3b2f8ddd9bcd403c6619d5a17c4ac))
+* pr github workflow ([fa9f6d1](https://github.com/Greenstand/treetracker-field-data/commit/fa9f6d121826b18433085bf60dedcd06ab9dc433))
+* pr github workflow ([146a88b](https://github.com/Greenstand/treetracker-field-data/commit/146a88b26a9827ae953ffd45b35994b462578cd2))
+* pr github workflow ([b084785](https://github.com/Greenstand/treetracker-field-data/commit/b0847857bfce23750071a8ba7bef2b062694d4b2))
+* pr github workflow ([b655f6c](https://github.com/Greenstand/treetracker-field-data/commit/b655f6cf817c3c6706c6ef0ffab2af7185f0e2f0))
+* pr github workflow ([816dd22](https://github.com/Greenstand/treetracker-field-data/commit/816dd22bf7195f2b74effaf8aaa2d023784d7912))
+* pr github workflow ([6ef1adc](https://github.com/Greenstand/treetracker-field-data/commit/6ef1adc21a7731fbc63fd968b428fbe1d9cf6825))
+* pr github workflow ([087331b](https://github.com/Greenstand/treetracker-field-data/commit/087331bdff23fa562d0bba686749848ae019d0ad))
+* pr github workflow ([f2795e8](https://github.com/Greenstand/treetracker-field-data/commit/f2795e8d1f63874bd77fb16f839c833dfe727940))
+* pull-request-ci workflow ([2c146ec](https://github.com/Greenstand/treetracker-field-data/commit/2c146ece728b2eea265f2b96b9d30f5184327c1c))
+* refactor raw_captures api test ([1a0eaa0](https://github.com/Greenstand/treetracker-field-data/commit/1a0eaa04ef684c79cdbf5b1ddf473364a637a44e))
+* remove custom tree_id_seq  from sql query ([b2127dd](https://github.com/Greenstand/treetracker-field-data/commit/b2127dd99dba95f07239292d129757115c12886b))
+* remove custom types from sql query ([2d15617](https://github.com/Greenstand/treetracker-field-data/commit/2d156171d63abb8a1f9336af6a16e7f159b0fd62))
+* remove morphology_type from sql query ([09b629b](https://github.com/Greenstand/treetracker-field-data/commit/09b629b2517e79380441c77f3fb4d52fd96a9799))
+* remove on push github action ([c50c279](https://github.com/Greenstand/treetracker-field-data/commit/c50c279550832dfd7efd1a76bf6087e667298817))
+* switch to main branch in workflows ([80df363](https://github.com/Greenstand/treetracker-field-data/commit/80df3637e0fd8f9dd12edb086b0dfc2defd38f20))
+* update deployment to follow overlay pattern for kustomize ([68b46c7](https://github.com/Greenstand/treetracker-field-data/commit/68b46c71ad5826c637ad61fa45cf900a7c071660))
+* use main branch in releaserc ([39d0948](https://github.com/Greenstand/treetracker-field-data/commit/39d0948120eb56df4f1c3a2eb6bc3966484e7a03))
+
+
+### Features
+
+* add github actions for running of test ([6c2690f](https://github.com/Greenstand/treetracker-field-data/commit/6c2690f8f7db71bb37553e6100893f6c41bd0c29))
+* add raw_captures api test ([3ef8b9e](https://github.com/Greenstand/treetracker-field-data/commit/3ef8b9e832ecfca1901a7de0b4babc88f3a771ea))
+* event replay feature added ([99ab052](https://github.com/Greenstand/treetracker-field-data/commit/99ab0523ecb94136fbb17aaeab2264fe0b4fede5))
+* event replay feature added ([b7d9e33](https://github.com/Greenstand/treetracker-field-data/commit/b7d9e33d51b2bad4e6480cc5caa289caac304c12))
+
 ## [1.2.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.2.0...v1.2.1) (2021-05-15)
 
 
