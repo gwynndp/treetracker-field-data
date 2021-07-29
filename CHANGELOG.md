@@ -1,3 +1,10 @@
+## [1.3.4](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.3...v1.3.4) (2021-07-29)
+
+
+### Bug Fixes
+
+* add kustomization.yaml to test and prod overlays ([95dceb1](https://github.com/Greenstand/treetracker-field-data/commit/95dceb1887cf379d28006717018d190806499bdb))
+
 ## [1.3.3](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.2...v1.3.3) (2021-07-29)
 
 
