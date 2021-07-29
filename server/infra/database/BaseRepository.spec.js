@@ -1,6 +1,6 @@
 const BaseRepository = require("./BaseRepository");
 const {expect} = require("chai");
-const knex = require("../database/knex");
+const {knex} = require("./knex");
 const mockKnex = require("mock-knex");
 const tracker = mockKnex.getTracker();
 const jestExpect = require("expect");
