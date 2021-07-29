@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.1...v1.3.2) (2021-07-29)
+
+
+### Bug Fixes
+
+* use standardized secret file name ([ce4b3fd](https://github.com/Greenstand/treetracker-field-data/commit/ce4b3fd58bde95791875d8bef383aec3b3822812))
+
 ## [1.3.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.0...v1.3.1) (2021-07-29)
 
 
