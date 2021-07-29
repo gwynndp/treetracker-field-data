@@ -1,0 +1,5 @@
+bases:
+  - ../../base
+patchesStrategicMerge:
+  - treetracker-rabbitmq-connection-sealed-secret.yaml
+  - treetracker-db-sealedsecret.yaml
