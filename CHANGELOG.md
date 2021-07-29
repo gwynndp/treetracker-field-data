@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.0...v1.3.1) (2021-07-29)
+
+
+### Bug Fixes
+
+* use correct name for development overlay dir ([a390a5c](https://github.com/Greenstand/treetracker-field-data/commit/a390a5cadc5d3b63558011a43fbe81882195f2c1))
+
 # [1.3.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.2.1...v1.3.0) (2021-07-29)
 
 
