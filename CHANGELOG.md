@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.2...v1.3.3) (2021-07-29)
+
+
+### Bug Fixes
+
+* add namespace to configuration ([5c85ca6](https://github.com/Greenstand/treetracker-field-data/commit/5c85ca61dcf76113e922abdbb17f9aab009986b3))
+
 ## [1.3.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.1...v1.3.2) (2021-07-29)
 
 
