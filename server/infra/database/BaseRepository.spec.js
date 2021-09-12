@@ -12,7 +12,7 @@ describe("BaseRepository", () => {
   beforeEach(() => {
     mockKnex.mock(knex);
     tracker.install();
-    const session = new Session();
+    const session = new Session(false);
     baseRepository = new BaseRepository("testTable", session);
   })
 

@@ -1,6 +1,4 @@
-
-name: Deploy to Test Env
-
+name: Deploy Service to Test Env
 
 on:
   workflow_dispatch:
@@ -9,7 +7,7 @@ on:
         description: 'git-tag'
         required: true
 
-env: 
+env:
   project-directory: ./
 
 jobs:
@@ -17,7 +15,7 @@ jobs:
     name: Deploy latest to test environment, requires approval
     runs-on: ubuntu-latest
     if: |
-      github.repository_owner == 'Greenstand'
+      github.repository == "Greenstand/${{ github.event.repository.name }}"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -26,18 +24,18 @@ jobs:
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
         with:
-          path: ./
+          path: ${{ env.project-directory }}
       - name: Install kustomize
         run: curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-      - name: Copy kustomize.yml
-        run: cp deployment/kustomize/kustomization.yaml deployment/kustomization.yaml
+        working-directory: ${{ env.project-directory }}
       - name: Run kustomize
-        run: (cd deployment && ../kustomize edit set image greenstand/${{ github.event.repository.name }}:${{ steps.package-version.outputs.current-version }} )
+        run: (cd deployment/base && ../../kustomize edit set image greenstand/${{ github.event.repository.name }}:${{ steps.package-version.outputs.current-version }} )
+        working-directory: ${{ env.project-directory }}
       - name: Install doctl for kubernetes
         uses: digitalocean/action-doctl@v2
         with:
-          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          token: ${{ secrets.TEST_DIGITALOCEAN_TOKEN }}
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save ${{ secrets.TEST_CLUSTER_NAME }}
       - name: Update kubernetes resources
-        run: kubectl -n wallet-api apply --wait -k ./deployment/
+        run: kustomize build deployment/overlays/test | kubectl apply -n ${{ secrets.K8S_NAMESPACE }} --wait -f -
