@@ -1,3 +1,11 @@
+## [1.3.5](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.4...v1.3.5) (2021-10-05)
+
+
+### Bug Fixes
+
+* update database connection sealed secrets to follow standard format ([37781b1](https://github.com/Greenstand/treetracker-field-data/commit/37781b1f605fc5eb09e982628a368af23dbbd3e4))
+* update to node 16 ([7a58950](https://github.com/Greenstand/treetracker-field-data/commit/7a58950f901a88e4d11deb52c8dd06656623f7da))
+
 ## [1.3.4](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.3...v1.3.4) (2021-07-29)
 
 
