@@ -1,3 +1,10 @@
+## [1.3.6](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.5...v1.3.6) (2021-10-05)
+
+
+### Bug Fixes
+
+* fix name of sealed secret file ([5363530](https://github.com/Greenstand/treetracker-field-data/commit/536353082160c4718cd28695dd14c07c2d26bb47))
+
 ## [1.3.5](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.4...v1.3.5) (2021-10-05)
 
 
