@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.1...v1.4.2) (2021-10-05)
+
+
+### Bug Fixes
+
+* sealed secret was sealed against wrong cluster ([6f661e1](https://github.com/Greenstand/treetracker-field-data/commit/6f661e1435c45f5030b8a4b14f1d3704475b84a5))
+
 ## [1.4.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.0...v1.4.1) (2021-10-05)
 
 
