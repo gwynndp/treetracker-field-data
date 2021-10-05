@@ -1,3 +1,23 @@
+# [1.4.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.8...v1.4.0) (2021-10-05)
+
+
+### Bug Fixes
+
+* add port number to github postgres connection string ([2ceaf9e](https://github.com/Greenstand/treetracker-field-data/commit/2ceaf9ee6daf9c634758c517c6d1a9bce70c1080))
+* fix name of sealed secret file ([67bf201](https://github.com/Greenstand/treetracker-field-data/commit/67bf20169ca2392557b94ce744ca8c24cf82640b))
+* fix path and name of sealed secret ([d3218b7](https://github.com/Greenstand/treetracker-field-data/commit/d3218b745f48433f9267905031a9467a1ca2f8f2))
+* fix path and name of sealed secret ([fbdbf0a](https://github.com/Greenstand/treetracker-field-data/commit/fbdbf0a38d8a1d479276c10fb16d7c7f4f45e073))
+* modify github connection string ([9db06a8](https://github.com/Greenstand/treetracker-field-data/commit/9db06a836c9d4e591cb6d6c71ba0e3644e34abf5))
+* update amqplib ([935c40e](https://github.com/Greenstand/treetracker-field-data/commit/935c40ef4708a37df490430899bb579e5d6b5a7b))
+* update database connection sealed secrets to follow standard format ([340a209](https://github.com/Greenstand/treetracker-field-data/commit/340a2091efe9e5c983b41d643730757aa21b1a39))
+* update to node 16 ([b13b63d](https://github.com/Greenstand/treetracker-field-data/commit/b13b63d1366ea8014cf380f1f30066e42890b9a6))
+
+
+### Features
+
+* add support for node 16 ([6bb13aa](https://github.com/Greenstand/treetracker-field-data/commit/6bb13aaef4423656302ee329f67f076184903f9e))
+* add support for node 16 to pull request github action ([d491a13](https://github.com/Greenstand/treetracker-field-data/commit/d491a130e0963197026996cf538eff9dc00855cb))
+
 ## [1.3.8](https://github.com/Greenstand/treetracker-field-data/compare/v1.3.7...v1.3.8) (2021-10-05)
 
 
