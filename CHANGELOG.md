@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.2...v1.4.3) (2021-10-05)
+
+
+### Bug Fixes
+
+* correct rabbitmq sealed secret for dev ([eeaed82](https://github.com/Greenstand/treetracker-field-data/commit/eeaed82954eace7e7572f977a154cad8f754881f))
+
 ## [1.4.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.1...v1.4.2) (2021-10-05)
 
 
