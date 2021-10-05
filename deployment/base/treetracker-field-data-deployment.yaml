@@ -27,10 +27,6 @@ spec:
                 key: db
           - name: DATABASE_SCHEMA
             value: field_data
-          - name: NODE_LOG_LEVEL
-            value: trace
-          - name: REMOTE_LOG_URL
-            value: http://104.131.78.177:8000
           - name: DATABASE_URL_MAINDB
             valueFrom:
               secretKeyRef:
