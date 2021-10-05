@@ -1,3 +1,13 @@
+## [1.4.4](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.3...v1.4.4) (2021-10-05)
+
+
+### Bug Fixes
+
+* add production database connection sealed secret ([07afd61](https://github.com/Greenstand/treetracker-field-data/commit/07afd615f49316a4b9915b9caa387ea63e614740))
+* add production rabbitmq sealed secret ([8e2ddd7](https://github.com/Greenstand/treetracker-field-data/commit/8e2ddd744e82c3aa4a8c33bf6c7c9b58e57e4013))
+* correct kustomization for rabbitmq ([98e952e](https://github.com/Greenstand/treetracker-field-data/commit/98e952e73e2bc7c1715db60ae0326c374d9709d4))
+* correct rabbitmq sealed secret for test ([9e4b330](https://github.com/Greenstand/treetracker-field-data/commit/9e4b33029655bcaa44c7aaff5c906d158b005adf))
+
 ## [1.4.3](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.2...v1.4.3) (2021-10-05)
 
 
