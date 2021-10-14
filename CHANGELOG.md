@@ -1,3 +1,10 @@
+## [1.4.6](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.5...v1.4.6) (2021-10-14)
+
+
+### Bug Fixes
+
+* update rabbitmq secrets to use new namespace ([5c6d621](https://github.com/Greenstand/treetracker-field-data/commit/5c6d621ab25806da55640d1f322274fd76821d60))
+
 ## [1.4.5](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.4...v1.4.5) (2021-10-05)
 
 
