@@ -1,3 +1,10 @@
+## [1.4.7](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.6...v1.4.7) (2021-10-14)
+
+
+### Bug Fixes
+
+* correct namespace on sealed secret ([c6a4a71](https://github.com/Greenstand/treetracker-field-data/commit/c6a4a71700947a0feba54ce29603a0b5127a7f4d))
+
 ## [1.4.6](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.5...v1.4.6) (2021-10-14)
 
 
