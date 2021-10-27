@@ -26,8 +26,8 @@ const { ValidationError } = require('joi');
 const rawLegacyCaptureSchema = Joi.object({
   uuid: Joi.string().required().guid(),
   image_url: Joi.string().required().uri(),
-  lat: Joi.number().required().min(0).max(90),
-  lon: Joi.number().required().min(0).max(180),
+  lat: Joi.number().required().min(-90).max(90),
+  lon: Joi.number().required().min(-180).max(180),
   note: Joi.string(),
   device_identifier: Joi.string().required(),
   planter_id: Joi.number().required(),
