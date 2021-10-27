@@ -1,3 +1,10 @@
+## [1.4.12](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.11...v1.4.12) (2021-10-27)
+
+
+### Bug Fixes
+
+* allow empty value in attributes ([96ff272](https://github.com/Greenstand/treetracker-field-data/commit/96ff272fd3026a5d76dc4adcc90572a0c131ec97))
+
 ## [1.4.11](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.10...v1.4.11) (2021-10-27)
 
 
