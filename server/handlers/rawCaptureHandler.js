@@ -28,7 +28,8 @@ const rawLegacyCaptureSchema = Joi.object({
   image_url: Joi.string().required().uri(),
   lat: Joi.number().required().min(-90).max(90),
   lon: Joi.number().required().min(-180).max(180),
-  note: Joi.string(),
+  gps_accuracy: Joi.number(),
+  note: Joi.string().allow(null, ''),
   device_identifier: Joi.string().required(),
   planter_id: Joi.number().required(),
   planter_identifier: Joi.string().required(),
@@ -37,7 +38,7 @@ const rawLegacyCaptureSchema = Joi.object({
     Joi.object({
       key: Joi.string().required(),
       value: Joi.string().required(),
-    }),
+    }).allow(null),
   ),
   timestamp: Joi.date().timestamp('unix').required(),
 }).unknown(false);
