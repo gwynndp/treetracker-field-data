@@ -1,3 +1,10 @@
+## [1.4.9](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.8...v1.4.9) (2021-10-27)
+
+
+### Bug Fixes
+
+* update to node 16 image ([ed86c28](https://github.com/Greenstand/treetracker-field-data/commit/ed86c2827642b38257ca111984871c5da6579236))
+
 ## [1.4.8](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.7...v1.4.8) (2021-10-27)
 
 
