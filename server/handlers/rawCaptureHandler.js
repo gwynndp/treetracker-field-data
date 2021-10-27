@@ -38,8 +38,8 @@ const rawLegacyCaptureSchema = Joi.object({
     Joi.object({
       key: Joi.string().required(),
       value: Joi.string().required(),
-    }).allow(null),
-  ),
+    }),
+  ).allow(null),
   timestamp: Joi.date().timestamp('unix').required(),
 }).unknown(false);
 
@@ -53,6 +53,7 @@ const rawCaptureGet = async (req, res, next) => {
 };
 
 const rawCapturePost = async (req, res, next) => {
+  console.log(req.body);
   await rawLegacyCaptureSchema.validateAsync(req.body, { abortEarly: false });
   const session = new Session(false);
   const migrationSession = new Session(true);
