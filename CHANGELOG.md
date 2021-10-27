@@ -1,3 +1,10 @@
+## [1.4.11](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.10...v1.4.11) (2021-10-27)
+
+
+### Bug Fixes
+
+* cannot use empty array as allow ([b7903bf](https://github.com/Greenstand/treetracker-field-data/commit/b7903bfad56814aea37c5e913a36f738af3b48a3))
+
 ## [1.4.10](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.9...v1.4.10) (2021-10-27)
 
 
