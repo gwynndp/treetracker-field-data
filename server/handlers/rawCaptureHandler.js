@@ -37,7 +37,7 @@ const rawLegacyCaptureSchema = Joi.object({
   attributes: Joi.array().items(
     Joi.object({
       key: Joi.string().required(),
-      value: Joi.string().required(),
+      value: Joi.string().required().allow(''),
     }),
   ).allow(null),
   timestamp: Joi.date().timestamp('unix').required(),
