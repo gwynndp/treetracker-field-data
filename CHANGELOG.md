@@ -1,3 +1,11 @@
+## [1.4.10](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.9...v1.4.10) (2021-10-27)
+
+
+### Bug Fixes
+
+* allow empty array ([9ef4dc9](https://github.com/Greenstand/treetracker-field-data/commit/9ef4dc97514cb2be6bfc5ccc5e2bb8ee34537cab))
+* allow null array ([4cb6b58](https://github.com/Greenstand/treetracker-field-data/commit/4cb6b58723516f64e93adf5ef0dd7e42c0781275))
+
 ## [1.4.9](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.8...v1.4.9) (2021-10-27)
 
 
