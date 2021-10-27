@@ -1,3 +1,12 @@
+## [1.4.8](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.7...v1.4.8) (2021-10-27)
+
+
+### Bug Fixes
+
+* correct range for lat and lon ([b727bfa](https://github.com/Greenstand/treetracker-field-data/commit/b727bfa8fe05e31634ee81225a7471bae490a17b))
+* improve raw capture body schema ([74e217d](https://github.com/Greenstand/treetracker-field-data/commit/74e217d4f03b99d58b4635cfa033a3b41eee9955))
+* update package-lock ([e723c91](https://github.com/Greenstand/treetracker-field-data/commit/e723c919c0d91e05d73fe1141152f5da203c8f45))
+
 ## [1.4.7](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.6...v1.4.7) (2021-10-14)
 
 
