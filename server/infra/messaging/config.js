@@ -10,6 +10,9 @@ module.exports = {
                 },
                 "exchanges": ["field-data"],
                 "queues": ["field-data-events", "field-data:verifications"],
+                "bindings": [
+                  "field-data -> field-data-events"
+                ],
                 "publications": {
                     "raw-capture-created": {
                         "exchange": "field-data"
