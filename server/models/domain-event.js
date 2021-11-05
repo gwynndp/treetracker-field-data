@@ -1,5 +1,6 @@
 const { v4: uuid } = require('uuid');
 const { Repository } = require('./Repository');
+const log = require('loglevel');
 
 const DomainEvent = (
     {
@@ -65,6 +66,7 @@ const receiveEvent = (eventRepositoryImpl) => (async (domainEvent) => {
 
 const dispatch = (eventRepositoryImpl, publishToTopic) => (async (domainEvent) => {
     publishToTopic(domainEvent.payload,()=>{
+        log.warn('publish result handler...');
         eventRepositoryImpl.update(
             {
                 ...domainEvent,

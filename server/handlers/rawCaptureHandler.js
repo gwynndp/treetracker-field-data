@@ -1,4 +1,5 @@
 const express = require('express');
+const log = require('loglevel');
 const { v4: uuidv4 } = require('uuid');
 
 const { createTreesInMainDB, LegacyTree } = require('../models/LegacyTree');
@@ -53,6 +54,7 @@ const rawCaptureGet = async (req, res, next) => {
 };
 
 const rawCapturePost = async (req, res, next) => {
+  log.warn('raw capture post...');
   console.log(req.body);
   await rawLegacyCaptureSchema.validateAsync(req.body, { abortEarly: false });
   const session = new Session(false);
@@ -85,10 +87,12 @@ const rawCapturePost = async (req, res, next) => {
     await session.commitTransaction();
     await migrationSession.commitTransaction();
     raisedEvents.forEach((domainEvent) => eventDispatch(domainEvent));
+    log.warn('succeeded.');
     res.status(201).json({
       ...entity,
     });
   } catch (e) {
+    log.warn('catch error in transaction');
     console.log(e);
     if (session.isTransactionInProgress()) {
       await session.rollbackTransaction();

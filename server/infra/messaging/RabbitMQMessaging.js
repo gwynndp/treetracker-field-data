@@ -3,8 +3,10 @@ const config = require('./config').config
 const log = require("loglevel");
 
 const publishMessage = (async (payload, resultHandler) => {
+  log.warn('publishMessage...');
     try {
         const broker = await Broker.create(config);
+      log.warn('the broker:', broker);
         const publication = await broker.publish("raw-capture-created", payload, "field-data.capture.creation");
         publication
         .on("success", resultHandler)

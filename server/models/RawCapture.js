@@ -1,5 +1,6 @@
 const { raiseEvent, DomainEvent } = require('./domain-event');
 const { Repository } = require('./Repository');
+const log = require('loglevel');
 
 const RawCapture = ({
   id,
@@ -113,6 +114,7 @@ const VerifyCaptureProcessed = ({
 const createRawCapture = (captureRepositoryImpl, eventRepositoryImpl) => async (
   inputRawCapture,
 ) => {
+  log.warn('createRawCapture...');
   // json wrap the 'attributes' array for storage in jsonb (storing array not suppported in jsonb)
   const newRawCapture = {
     ...inputRawCapture,
@@ -130,6 +132,7 @@ const createRawCapture = (captureRepositoryImpl, eventRepositoryImpl) => async (
   });
   const raiseFieldDataEvent = raiseEvent(eventRepositoryImpl);
   const domainEvent = await raiseFieldDataEvent(DomainEvent({ payload: rawCaptureCreated }));
+  log.warn('finish createRawCapture, raised event:', domainEvent);
   return { entity: rawCapture, raisedEvents: [domainEvent] };
 };
 
