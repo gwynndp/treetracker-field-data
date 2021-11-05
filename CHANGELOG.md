@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.12...v1.5.0) (2021-11-05)
+
+
+### Features
+
+* add log ([25ffb2d](https://github.com/Greenstand/treetracker-field-data/commit/25ffb2dcf7d507fcaabf613b32298463ab18d477))
+
 ## [1.4.12](https://github.com/Greenstand/treetracker-field-data/compare/v1.4.11...v1.4.12) (2021-10-27)
 
 
