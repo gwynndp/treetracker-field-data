@@ -5,16 +5,20 @@ const log = require('loglevel');
 const RawCapture = ({
   id,
   reference_id,
+  session_id,
+  abs_step_count,
+  delta_step_count,
+  rotation_matrix,
   image_url,
   lat,
   lon,
   gps_accuracy,
   note,
   device_identifier,
-  field_user_id,
-  field_username,
-  field_user_photo_url,
-  attributes,
+  grower_account_id,
+  wallet,
+  user_photo_url,
+  extra_attributes,
   status,
   created_at,
   updated_at,
@@ -23,16 +27,20 @@ const RawCapture = ({
   Object.freeze({
     id,
     reference_id,
+    session_id,
+    abs_step_count,
+    delta_step_count,
+    rotation_matrix,
     image_url,
     lat,
     lon,
     gps_accuracy,
     note,
     device_identifier,
-    field_user_id,
-    field_username,
-    field_user_photo_url,
-    attributes,
+    grower_account_id,
+    wallet,
+    user_photo_url,
+    extra_attributes,
     status,
     created_at,
     updated_at,
@@ -41,35 +49,36 @@ const RawCapture = ({
 
 const rawCaptureFromRequest = ({
   id,
-  uuid,
-  image_url,
+  reference_id,
   lat,
   lon,
   gps_accuracy,
+  image_url,
+  session_id,
+  abs_step_count,
+  delta_step_count,
+  rotation_matrix,
   note,
-  device_identifier,
-  planter_id,
-  planter_identifier,
-  planter_photo_url,
-  attributes,
-  timestamp,
+  extra_attributes,
+  capture_taken_at,
 }) =>
   Object.freeze({
-    id: uuid,
-    reference_id: id,
+    id,
+    reference_id,
+    session_id,
+    abs_step_count,
+    delta_step_count,
+    rotation_matrix,
     image_url,
     lat,
     lon,
     gps_accuracy,
     note,
-    device_identifier,
-    field_user_id: planter_id,
-    field_username: planter_identifier,
-    field_user_photo_url: planter_photo_url,
-    attributes,
+    status: 'unprocessed',
+    extra_attributes: { entries: extra_attributes },
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-    capture_taken_at: new Date(timestamp * 1000).toISOString(),
+    capture_taken_at,
   });
 
 const RawCaptureCreated = ({
@@ -78,9 +87,9 @@ const RawCaptureCreated = ({
   lon,
   field_user_id,
   field_username,
-  attributes,
+  extra_attributes,
   created_at,
-  capture_taken_at
+  capture_taken_at,
 }) =>
   Object.freeze({
     id,
@@ -89,49 +98,29 @@ const RawCaptureCreated = ({
     lon,
     field_user_id,
     field_username,
-    attributes,
+    extra_attributes,
     created_at,
-    capture_taken_at
-  });
-
-const VerifyCaptureProcessed = ({
-  id,
-  reference_id,
-  type,
-  approved,
-  rejection_reason,
-  created_at,
-}) =>
-  Object.freeze({
-    id,
-    reference_id,
-    type,
-    approved,
-    rejection_reason,
-    created_at,
+    capture_taken_at,
   });
 
 const createRawCapture = (captureRepositoryImpl, eventRepositoryImpl) => async (
   inputRawCapture,
 ) => {
   log.warn('createRawCapture...');
-  // json wrap the 'attributes' array for storage in jsonb (storing array not suppported in jsonb)
-  const newRawCapture = {
-    ...inputRawCapture,
-    status: 'unprocessed',
-    attributes: { entries: inputRawCapture.attributes },
-  };
+  const newRawCapture = { ...inputRawCapture };
   const captureRepository = new Repository(captureRepositoryImpl);
   const rawCapture = await captureRepository.add(newRawCapture);
-  const filteredAttr = rawCapture.attributes.entries.filter(
+  const filteredAttr = rawCapture.extra_attributes.entries?.filter(
     (attribute) => attribute.key === 'app_flavor',
   );
   const rawCaptureCreated = RawCaptureCreated({
     ...rawCapture,
-    attributes: filteredAttr,
+    extra_attributes: filteredAttr,
   });
   const raiseFieldDataEvent = raiseEvent(eventRepositoryImpl);
-  const domainEvent = await raiseFieldDataEvent(DomainEvent({ payload: rawCaptureCreated }));
+  const domainEvent = await raiseFieldDataEvent(
+    DomainEvent({ payload: rawCaptureCreated }),
+  );
   log.warn('finish createRawCapture, raised event:', domainEvent);
   return { entity: rawCapture, raisedEvents: [domainEvent] };
 };
@@ -175,7 +164,7 @@ const getRawCaptures = (captureRepositoryImpl) => async (
 };
 
 const applyVerification = (captureRepositoryImpl) => async (
-  verifyCaptureProcessed
+  verifyCaptureProcessed,
 ) => {
   if (verifyCaptureProcessed.approved) {
     await captureRepositoryImpl.update({
@@ -192,8 +181,8 @@ const applyVerification = (captureRepositoryImpl) => async (
 };
 
 module.exports = {
-    rawCaptureFromRequest,
-    createRawCapture,
-    getRawCaptures,
-    applyVerification
-}
+  rawCaptureFromRequest,
+  createRawCapture,
+  getRawCaptures,
+  applyVerification,
+};

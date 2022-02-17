@@ -2,7 +2,7 @@ const Broker = require('rascal').BrokerAsPromised
 const config = require('./config').config
 const log = require("loglevel");
 
-log.warn("config for MQ:", config);
+// log.warn("config for MQ:", config);
 
 const publishMessage = (async (payload, resultHandler) => {
   log.warn('publishMessage...');

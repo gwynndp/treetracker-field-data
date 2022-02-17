@@ -6,28 +6,59 @@
  * is really capture_metadata and has to be owned by a future capture service context and the current
  * trees table in treetracker db is really a tree capture table and do not represent a unique tree..
  */
+const HttpError = require('../handlers/HttpError');
 const { Repository } = require('./Repository');
-const LegacyTree = ({ uuid, image_url, lat, lon, planter_id, planter_identifier, planter_photo_url, device_identifier=null, note = "", timestamp }) => Object.freeze({
-    uuid,
+const LegacyPlanterRepository = require('../infra/database/LegacyPlanterRepository');
+const LegacyTree = async ({
+  id,
+  image_url,
+  lat,
+  lon,
+  device_identifier = null,
+  wallet = null,
+  user_photo_url = null,
+  note = '',
+  capture_taken_at,
+  session,
+}) => {
+  const legacyPlanterRepo = new LegacyPlanterRepository(session);
+  const planter = await legacyPlanterRepo.findUser(wallet);
+
+  console.log('planter', planter);
+
+  if (!planter)
+    throw new HttpError(
+      422,
+      'Legacy planter has not been created for the legacy tree',
+    );
+
+  return Object.freeze({
+    uuid: id,
     image_url,
     lat,
     lon,
-    planter_id,
-    planter_identifier,
-    planter_photo_url,
+    planter_id: planter.id,
+    planter_identifier: wallet,
+    planter_photo_url: user_photo_url,
     device_identifier,
     note,
-    time_created: new Date(timestamp*1000).toISOString(), // convert timestamp to milliseconds
-    time_updated: new Date(timestamp*1000).toISOString()
-});
+    time_created: capture_taken_at,
+    time_updated: capture_taken_at,
+  });
+};
 
-const createTreesInMainDB = (legacyTreeRepoImpl, legacyTreeAttrRepoImpl) => (async (tree, attributes) => {
-    const legacyTreeRepository = new Repository(legacyTreeRepoImpl);
-    const legacyAttributesRepository = new Repository(legacyTreeAttrRepoImpl);
-    const result = await legacyTreeRepository.add(tree);
-    const tree_attributes = attributes.map(attribute =>  Object.assign({ tree_id: result.id }, attribute));
-    await legacyAttributesRepository.add(tree_attributes);
-    return { entity: result, raisedEvents: [] };
-});
+const createTreesInMainDB = (
+  legacyTreeRepoImpl,
+  legacyTreeAttrRepoImpl,
+) => async (tree, attributes) => {
+  const legacyTreeRepository = new Repository(legacyTreeRepoImpl);
+  const legacyAttributesRepository = new Repository(legacyTreeAttrRepoImpl);
+  const result = await legacyTreeRepository.add(tree);
+  const tree_attributes = attributes.map((attribute) =>
+    Object.assign({ tree_id: result.id }, attribute),
+  );
+  await legacyAttributesRepository.add(tree_attributes);
+  return { entity: result, raisedEvents: [] };
+};
 
 module.exports = { createTreesInMainDB, LegacyTree };
