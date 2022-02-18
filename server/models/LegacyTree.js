@@ -9,6 +9,7 @@
 const HttpError = require('../handlers/HttpError');
 const { Repository } = require('./Repository');
 const LegacyPlanterRepository = require('../infra/database/LegacyPlanterRepository');
+
 const LegacyTree = async ({
   id,
   image_url,
@@ -55,7 +56,7 @@ const createTreesInMainDB = (
   const legacyAttributesRepository = new Repository(legacyTreeAttrRepoImpl);
   const result = await legacyTreeRepository.add(tree);
   const tree_attributes = attributes.map((attribute) =>
-    Object.assign({ tree_id: result.id }, attribute),
+    ({tree_id: result.id, ...attribute}),
   );
   await legacyAttributesRepository.add(tree_attributes);
   return { entity: result, raisedEvents: [] };

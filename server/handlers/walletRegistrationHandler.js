@@ -4,6 +4,7 @@ const log = require('loglevel');
 const Session = require('../infra/database/Session');
 
 const WalletRegistrationRepository = require('../infra/database/WalletRegistrationRepository');
+const HttpError = require('./HttpError');
 
 const walletRegistrationPostSchema = Joi.object({
   id: Joi.string().uuid().required(),
@@ -49,11 +50,13 @@ const walletRegistrationPost = async function (req, res, next) {
 
     if (!walletRegistration) {
       await session.beginTransaction();
-      await walletRegistrationRepo.create(newWalletRegistration);
+      const createdWalletRegistration = await walletRegistrationRepo.create(
+        newWalletRegistration,
+      );
       await session.commitTransaction();
+      return res.status(201).json(createdWalletRegistration);
     }
-
-    res.status(200).json();
+    res.status(200).json(walletRegistration);
   } catch (e) {
     log.warn(e);
     if (session.isTransactionInProgress()) {

@@ -46,10 +46,13 @@ const deviceConfigurationPost = async function (req, res, next) {
 
     if (!deviceConfiguration) {
       await session.beginTransaction();
-      await deviceConfigurationRepo.create(newDeviceConfiguration);
+      const createdDeviceConfiguration = await deviceConfigurationRepo.create(
+        newDeviceConfiguration,
+      );
       await session.commitTransaction();
+      return res.status(201).json(createdDeviceConfiguration);
     }
-    res.status(200).json();
+    res.status(200).json(deviceConfiguration);
   } catch (e) {
     log.warn(e);
     if (session.isTransactionInProgress()) {

@@ -1,5 +1,6 @@
 const log = require('loglevel');
 
+const Joi = require('joi');
 const { createTreesInMainDB, LegacyTree } = require('../models/LegacyTree');
 const {
   createRawCapture,
@@ -7,7 +8,6 @@ const {
   getRawCaptures,
 } = require('../models/RawCapture');
 const { dispatch } = require('../models/domain-event');
-const Joi = require('joi');
 
 const Session = require('../infra/database/Session');
 const { publishMessage } = require('../infra/messaging/RabbitMQMessaging');

@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const {
   rawCapturePost,
@@ -15,7 +16,11 @@ const {
   deviceConfigurationSingleGet,
 } = require('./handlers/deviceConfigurationHandler.js');
 const replayEventPost = require('./handlers/replayEventHandler');
-const { sessionPost } = require('./handlers/sessionHandler.js');
+const {
+  sessionPost,
+  sessionGet,
+  sessionSingleGet,
+} = require('./handlers/sessionHandler.js');
 const { handlerWrapper } = require('./handlers/utils');
 
 router
@@ -34,7 +39,12 @@ router
   .route('/device-configuration/:device_configuration_id')
   .get(handlerWrapper(deviceConfigurationSingleGet));
 
-router.post('/session', handlerWrapper(sessionPost));
+router
+  .route('/session')
+  .post(handlerWrapper(sessionPost))
+  .get(handlerWrapper(sessionGet));
+router.route('/session/:session_id').get(handlerWrapper(sessionSingleGet));
+
 router.post('/raw-captures', handlerWrapper(rawCapturePost));
 router.get('/raw-captures', handlerWrapper(rawCaptureGet));
 router.post('/replay-events', handlerWrapper(replayEventPost));

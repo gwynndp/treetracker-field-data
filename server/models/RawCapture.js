@@ -1,6 +1,6 @@
+const log = require('loglevel');
 const { raiseEvent, DomainEvent } = require('./domain-event');
 const { Repository } = require('./Repository');
-const log = require('loglevel');
 
 const RawCapture = ({
   id,

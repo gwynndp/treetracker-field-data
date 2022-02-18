@@ -56,7 +56,7 @@ before(async () => {
           value character varying COLLATE pg_catalog."default"
       );
       
-      CREATE TABLE IF NOT EXISTS public.planter
+      CREATE TABLE IF NOT EXISTS planter
       (
           id serial,
           first_name character varying(30) COLLATE pg_catalog."default" NOT NULL,

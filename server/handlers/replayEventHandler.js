@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const { getDomainEvents, dispatch } = require('../models/domain-event');
 const Session = require('../infra/database/Session');
 const { publishMessage } = require('../infra/messaging/RabbitMQMessaging');
@@ -6,7 +7,6 @@ const {
   dictEventHandlers,
   applyEventHandler,
 } = require('../services/event-handlers');
-const Joi = require('joi');
 
 const replayEventAPISchema = Joi.object({
   status: Joi.string().valid('raised', 'received'),
@@ -32,13 +32,15 @@ const replayEventPost = async (req, res, next) => {
         }
         break;
       case 'received':
-        const eventHandler = dictEventHandlers[domainEvent.payload.type];
-        if (typeof eventHandler !== 'undefined' && eventHandler !== null) {
-          const executeApplyEventHandler = applyEventHandler(eventHandler);
-          executeApplyEventHandler(domainEvent);
-        } else {
-          console.log(`Event handler not found for the payload type 
+        {
+          const eventHandler = dictEventHandlers[domainEvent.payload.type];
+          if (typeof eventHandler !== 'undefined' && eventHandler !== null) {
+            const executeApplyEventHandler = applyEventHandler(eventHandler);
+            executeApplyEventHandler(domainEvent);
+          } else {
+            console.log(`Event handler not found for the payload type 
                     ${domainEvent.payload.type}`);
+          }
         }
         break;
       default:

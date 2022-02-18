@@ -14,6 +14,10 @@ const sessionPostSchema = Joi.object({
   organization: Joi.string(),
 }).unknown(false);
 
+const sessionIdParamSchema = Joi.object({
+  session_id: Joi.string().uuid().required(),
+}).unknown(false);
+
 const sessionPost = async function (req, res, next) {
   await sessionPostSchema.validateAsync(req.body, {
     abortEarly: false,
@@ -29,13 +33,15 @@ const sessionPost = async function (req, res, next) {
     };
     const { id } = newSession;
     const existingSession = await sessionRepo.getByFilter({ id });
+    const [dbSession] = existingSession;
 
-    if (existingSession.length === 0) {
+    if (!dbSession) {
       await session.beginTransaction();
-      await sessionRepo.create(newSession);
+      const createdSession = await sessionRepo.create(newSession);
       await session.commitTransaction();
+      return res.status(201).json(createdSession);
     }
-    res.status(200).json();
+    res.status(200).json(dbSession);
   } catch (e) {
     log.warn(e);
     if (session.isTransactionInProgress()) {
@@ -45,6 +51,34 @@ const sessionPost = async function (req, res, next) {
   }
 };
 
+const sessionGet = async function (req, res) {
+  const session = new Session();
+  const sessionRepo = new SessionRepository(session);
+
+  const sessions = await sessionRepo.getByFilter({});
+
+  res.send(sessions);
+};
+
+const sessionSingleGet = async function (req, res) {
+  await sessionIdParamSchema.validateAsync(req.params, {
+    abortEarly: false,
+  });
+
+  const session = new Session();
+  const sessionRepo = new SessionRepository(session);
+
+  const dbSessions = await sessionRepo.getByFilter({
+    id: req.params.session_id,
+  });
+
+  const [dbSession = {}] = dbSessions;
+
+  res.send(dbSession);
+};
+
 module.exports = {
   sessionPost,
+  sessionGet,
+  sessionSingleGet,
 };

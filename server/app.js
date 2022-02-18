@@ -1,9 +1,9 @@
 const express = require('express');
 const Sentry = require('@sentry/node');
 const bodyParser = require('body-parser');
+const log = require("loglevel");
 const HttpError = require("./handlers/HttpError");
 const { errorHandler, handlerWrapper } = require("./handlers/utils");
-const log = require("loglevel");
 const helper = require("./handlers/utils");
 const router = require('./routes.js');
 
@@ -28,12 +28,13 @@ app.use(handlerWrapper(async (req, _res, next) => {
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
 
-//routers
+// routers
 app.use('/', router);
 // Global error handler
 app.use(errorHandler);
 
-const version = require('../package.json').version
+const {version} = require('../package.json')
+
 app.get('*',function (req, res) {
   res.status(200).send(version)
 });
