@@ -4,7 +4,7 @@ before(async () => {
   await knexMainDB.raw(
     `CREATE TABLE IF NOT EXISTS trees
       (
-          id integer DEFAULT 10,
+          id serial,
           time_created timestamp without time zone NOT NULL,
           time_updated timestamp without time zone NOT NULL,
           missing boolean DEFAULT false,
@@ -50,9 +50,26 @@ before(async () => {
 
       CREATE TABLE IF NOT EXISTS tree_attributes
       (
-          id integer NOT NULL DEFAULT 20,
+          id serial,
           tree_id integer,
           key character varying COLLATE pg_catalog."default",
           value character varying COLLATE pg_catalog."default"
-      );`)
+      );
+      
+      CREATE TABLE IF NOT EXISTS planter
+      (
+          id serial,
+          first_name character varying(30) COLLATE pg_catalog."default" NOT NULL,
+          last_name character varying(30) COLLATE pg_catalog."default" NOT NULL,
+          email character varying COLLATE pg_catalog."default",
+          organization character varying COLLATE pg_catalog."default",
+          phone text COLLATE pg_catalog."default",
+          pwd_reset_required boolean DEFAULT false,
+          image_url character varying COLLATE pg_catalog."default",
+          person_id integer,
+          organization_id integer,
+          image_rotation integer,
+          CONSTRAINT planter_id_key PRIMARY KEY (id)
+      )`,
+  );
 });

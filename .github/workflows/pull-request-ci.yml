@@ -39,8 +39,12 @@ jobs:
         run: npm install
         working-directory: ${{ env.project-directory }}
 
-      - name: Install db-migrate
-        run: npm install db-migrate
+      - name: npm clean install
+        run: npm ci
+        working-directory: ${{ env.project-directory }}
+
+      - name: run ESLint
+        run: npm run lint
         working-directory: ${{ env.project-directory }}
 
       - name: run db-migrate
@@ -50,9 +54,8 @@ jobs:
           DATABASE_URL: postgresql://postgres:postgres@postgres/postgres
 
       - name: run api-tests
-        run: npm run test-api
+        run: npm run test
         working-directory: ${{ env.project-directory }}
         env:
           DATABASE_URL: postgresql://postgres:postgres@postgres/postgres
           DATABASE_URL_MAINDB: postgresql://postgres:postgres@postgres/postgres
-          CI: true

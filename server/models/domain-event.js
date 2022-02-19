@@ -1,6 +1,6 @@
 const { v4: uuid } = require('uuid');
-const { Repository } = require('./Repository');
 const log = require('loglevel');
+const { Repository } = require('./Repository');
 
 const DomainEvent = (
     {

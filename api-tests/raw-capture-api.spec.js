@@ -2,27 +2,34 @@ require('dotenv').config();
 const request = require('supertest');
 const server = require('../server/app');
 const { expect } = require('chai');
-const { v4: uuidv4 } = require('uuid');
-
+const sinon = require('sinon');
+const Broker = require('rascal').BrokerAsPromised;
+const { knex, knexMainDB } = require('../server/infra/database/knex');
+const { sessionObject } = require('./session-api.spec');
+const { walletRegistrationObject } = require('./wallet-registration-api.spec');
+const {
+  deviceConfigurationObject,
+} = require('./device-configuration-api.spec');
 class RequestObject {
   constructor() {
     this.request_object = {
-      uuid: uuidv4(),
+      id: '21ae129d-4233-4705-ac24-f4c96051e5ef',
+      session_id: sessionObject.id,
       image_url: 'https://www.htpplkjl.com',
       lat: 37.421998333333335,
       lon: 122.08400000000002,
-      planter_id: 1,
-      planter_identifier: 'arunbakt@live.com',
-      device_identifier: 'check@live.com',
-      planter_photo_url: 'https://www.nting,com',
-      attributes: [
+      gps_accuracy: 12,
+      abs_step_count: 1,
+      delta_step_count: 2,
+      rotation_matrix: [1, 2, 3],
+      note: '123',
+      extra_attributes: [
         {
-          key: 'rotation_matrix',
-          value:
-            '0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0',
+          key: 'extra',
+          value: "extra's value",
         },
       ],
-      timestamp: 1620943368,
+      capture_taken_at: new Date().toISOString(),
     };
 
     this.delete_property = function (property) {
@@ -35,420 +42,128 @@ class RequestObject {
   }
 }
 
-describe('field-data raw-capture api tests.', () => {
-  it(`Should raise validation error with error code 422 -- uuid is required `, function (done) {
-    const request_object = new RequestObject();
-    request_object.delete_property('uuid');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
+const requestObject = new RequestObject();
+const capture = {
+  ...requestObject.request_object,
+  id: 'f385f789-d08a-4c19-b8d8-c78370089bb3',
+};
 
-  it(`Should raise validation error with error code 422 -- uuid is not valid `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('uuid', 'sdf');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
+const domainEventObject = {
+  id: 'e876107a-2a7c-442b-9e57-880d596e1025',
+  payload: {
+    id: capture.id,
+  },
+  status: 'raised',
+  created_at: '2021-05-04 11:24:43',
+  updated_at: '2021-05-04 11:24:43',
+};
 
-  it(`Should raise validation error with error code 422 -- image_url is required `, function (done) {
-    const request_object = new RequestObject();
-    request_object.delete_property('image_url');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- image_url is not a valid url `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('image_url', 'sasdf');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- lat is required `, function (done) {
-    const request_object = new RequestObject();
-    request_object.delete_property('lat');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- lat should be a number `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('lat', 'sasdf');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- lat should be less than 90 `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('lat', 100);
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- lat should be greater than 0 `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('lat', -100);
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- lon is required `, function (done) {
-    const request_object = new RequestObject();
-    request_object.delete_property('lon');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- lon should be a number `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('lon', 'sasdf');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- lon should be less than 180 `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('lat', 190);
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- lon should be greater than 0 `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('lat', -100);
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- note should be a string `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('note', -100);
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- device_identifiers is required `, function (done) {
-    const request_object = new RequestObject();
-    request_object.delete_property('device_identifier');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- device_identifiers should be a string `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('device_identifier', -100);
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- planter_id is required `, function (done) {
-    const request_object = new RequestObject();
-    request_object.delete_property('planter_id');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- planter_id should be a number `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('planter_id', 'number');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- planter_identifier is required `, function (done) {
-    const request_object = new RequestObject();
-    request_object.delete_property('planter_identifier');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- planter_identifier should be a string `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('planter_identifier', 500);
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- planter_photo_url should be a url `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('planter_photo_url', '5000');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- attributes should be an array `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('attributes', '5000');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- attributes should be an array of objects `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('attributes', ['5000']);
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- attributes should be an array of objects with properties, key and value`, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('attributes', [
-      '5000',
-      ...request_object.request_object.attributes,
-    ]);
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- attributes should be an array of objects with properties, key and value`, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('attributes', [
-      { text: 'Checking this out' },
-      ...request_object.request_object.attributes,
-    ]);
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- planter_identifier is required `, function (done) {
-    const request_object = new RequestObject();
-    request_object.delete_property('planter_identifier');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- timestamp is required `, function (done) {
-    const request_object = new RequestObject();
-    request_object.delete_property('timestamp');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- should be of type unixtimestamp in seconds `, function (done) {
-    const request_object = new RequestObject();
-    request_object.change_property('timestamp', 'ashbfhd');
-    request(server)
-      .post(`/raw-captures`)
-      .send(request_object.request_object)
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  describe('Raw capture should be added sucessfully', () => {
-    const request_object = new RequestObject();
-    it(`Raw capture should be successfully added`, function (done) {
-      request(server)
-        .post(`/raw-captures`)
-        .send(request_object.request_object)
-        .set('Accept', 'application/json')
-        .expect(201)
-        .end(function (err, res) {
-          if (err) return done(err);
-          expect(res.body.id).equal(request_object.request_object.uuid);
-          return done();
-        });
+describe('Raw Captures', () => {
+  let brokerStub;
+  before(async () => {
+    brokerStub = sinon.stub(Broker, 'create').resolves({
+      publish: () => {
+        return {
+          on: (state, callback) => {
+            if (state === 'success') callback();
+          },
+        };
+      },
     });
 
-    it('Added raw capture should be persisted', function (done) {
-      request(server)
-        .get(`/raw-captures`)
-        .expect(200)
-        .end(function (err, res) {
-          if (err) return done(err);
-          expect(
-            res.body.some(
-              (raw_capture) =>
-                raw_capture.id === request_object.request_object.uuid,
-            ),
-          ).to.equal(true);
-          return done();
-        });
+    await knexMainDB('public.planter').insert({
+      email: walletRegistrationObject.wallet,
+      first_name: 'first_name',
+      last_name: 'last_name',
     });
+    await knex('device_configuration').insert({
+      ...deviceConfigurationObject,
+      created_at: new Date(),
+    });
+    await knex('wallet_registration').insert(walletRegistrationObject);
+    await knex('session').insert({ ...sessionObject, created_at: new Date() });
+    await knex('domain_event').insert(domainEventObject);
+    await knex('raw_capture').insert({
+      ...capture,
+      extra_attributes: { entries: capture.extra_attributes },
+      reference_id: 23,
+      status: 'active',
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
+  });
+
+  after(async () => {
+    brokerStub.restore();
+
+    await knexMainDB('tree_attributes').del();
+    await knexMainDB('trees').del();
+    await knexMainDB('planter').del();
+    await knex('domain_event').del();
+    await knex('raw_capture').del();
+    await knex('session').del();
+    await knex('device_configuration').del();
+    await knex('wallet_registration').del();
+  });
+
+  const request_object = new RequestObject();
+  it(`Raw capture should be successfully added`, function (done) {
+    request(server)
+      .post(`/raw-captures`)
+      .send(request_object.request_object)
+      .set('Accept', 'application/json')
+      .expect(201)
+      .end(function (err, res) {
+        expect(res.body.id).to.eql(request_object.request_object.id);
+        if (err) return done(err);
+        return done();
+      });
+  });
+
+  it(`Should handle duplicates`, function (done) {
+    request(server)
+      .post(`/raw-captures`)
+      .send(request_object.request_object)
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end(function (err, res) {
+        expect(res.body.id).to.eql(request_object.request_object.id);
+        if (err) return done(err);
+        return done();
+      });
+  });
+
+  it('should resend capture created event if it wasnt successful last time and capture already exists', async () => {
+    const res = await request(server)
+      .post(`/raw-captures`)
+      .send({ ...request_object.request_object, id: capture.id })
+      .set('Accept', 'application/json')
+      .expect(200);
+    expect(res.body.id).to.eql(capture.id);
+  });
+
+  it('Added raw capture should be persisted', async function () {
+    const res = await request(server).get(`/raw-captures`).expect(200);
+
+    expect(
+      res.body.some(
+        (raw_capture) => raw_capture.id === request_object.request_object.id,
+      ),
+    ).to.equal(true);
+  });
+
+  it('should get a single raw capture', async function () {
+    const res = await request(server)
+      .get(`/raw-captures/${request_object.request_object.id}`)
+      .expect(200);
+
+    expect(res.body.id).to.eql(requestObject.request_object.id);
+  });
+
+  it('should confirm number of sent capture-created events', async () => {
+    const numOfEmittedEvents = await knex('domain_event')
+      .count()
+      .where({ status: 'sent' });
+    expect(+numOfEmittedEvents[0].count).to.eql(2);
   });
 });

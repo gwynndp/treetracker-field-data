@@ -2,8 +2,8 @@
  * Global error handlers
  */
 const log = require("loglevel");
-const HttpError = require("./HttpError");
 const {ValidationError} = require("joi");
+const HttpError = require("./HttpError");
 
 /*
  * This is from the library https://github.com/Abazhenov/express-async-handler

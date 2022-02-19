@@ -9,7 +9,27 @@
     }
   },
   "paths": {
-    "/captures": {
+    "/raw-captures/raw_capture_id": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-raw-captures-raw_capture_id"
+      }
+    },
+    "/raw-captures": {
       "description": "A list of http methods that supports creation, retrieval, and update of capture data.",
       "summary": "Operations supported for captures resource",
       "get": {
@@ -28,27 +48,10 @@
             "type": "object",
             "enum": [],
             "properties": {},
-            "name": "status"
-          },
-          {
-            "name": "planter_contact",
-            "in": "query",
-            "example": "",
-            "required": false,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "description": "Search capture data containing planter's email or phone number ",
-            "x-last-modified": 1611167296641
-          },
-          {
-            "name": "planter_id",
-            "in": "query",
-            "example": "",
-            "required": false,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "description": "Retrieve capture data with the given planter_id",
-            "x-last-modified": 1611167349326
+            "name": "status",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "limit",
@@ -58,7 +61,10 @@
             "deprecated": false,
             "allowEmptyValue": false,
             "description": "The number of captures to retrieve, this defaults to 1000 if not specified.",
-            "x-last-modified": 1611167795903
+            "x-last-modified": 1611167795903,
+            "schema": {
+              "type": "integer"
+            }
           },
           {
             "name": "offset",
@@ -68,7 +74,18 @@
             "deprecated": false,
             "allowEmptyValue": false,
             "description": "To paginate the results, use `offset` to skip the number of records that has already been consumed by prior API invocations. For e.g. if there are 100 capture records and each invocation has `limit` value set to 10, an incrementing `offset` value by  10 would paginate to show all 100 records in 10 invocations. The first one with no offset, second invocation with 20, third with 30, and all the way to last one with offset value of 90.",
-            "x-last-modified": 1611168282092
+            "x-last-modified": 1611168282092,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "query",
+            "name": "grower_account_id"
           }
         ],
         "description": "Retrieves capture data based on a filtering criteria or without filtering criteria. Result is in the form of an array of capture objects. Pagination is supported by utilizing the `limit` and `offset` parameters. ",
@@ -179,8 +196,10 @@
                     }
                   ],
                   "type": "array",
-                  "items": {},
-                  "description": "An array of Capture objects"
+                  "description": "An array of Capture objects",
+                  "items": {
+                    "$ref": "#/components/schemas/Raw-Capture"
+                  }
                 },
                 "example": [
                   {
@@ -386,17 +405,517 @@
         }
       },
       "post": {
-        "tags": []
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Raw-Capture"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "session_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "lat": {
+                    "type": "integer"
+                  },
+                  "lon": {
+                    "type": "integer"
+                  },
+                  "image_url": {
+                    "type": "string"
+                  },
+                  "gps_accuracy": {
+                    "type": "string"
+                  },
+                  "abs_step_count": {
+                    "type": "integer"
+                  },
+                  "delta_step_count": {
+                    "type": "integer"
+                  },
+                  "rotation_matrix": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "note": {
+                    "type": "string"
+                  },
+                  "extra_attributes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "key",
+                        "value"
+                      ]
+                    }
+                  },
+                  "capture_taken_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "id",
+                  "session_id",
+                  "lat",
+                  "lon",
+                  "image_url",
+                  "gps_accuracy",
+                  "abs_step_count",
+                  "delta_step_count",
+                  "rotation_matrix",
+                  "capture_taken_at"
+                ]
+              }
+            }
+          }
+        }
       },
-      "patch": {
-        "tags": []
+      "x-last-modified": 1611166894472,
+      "parameters": []
+    },
+    "/session": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Session"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-session"
       },
-      "x-last-modified": 1611166894472
+      "post": {
+        "summary": "",
+        "operationId": "post-session",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "device_configuration_id": {
+                    "type": "string"
+                  },
+                  "originating_wallet_registration_id": {
+                    "type": "string"
+                  },
+                  "target_wallet": {
+                    "type": "string"
+                  },
+                  "check_in_photo_url": {
+                    "type": "string"
+                  },
+                  "track_url": {
+                    "type": "string"
+                  },
+                  "organization": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "device_configuration_id",
+                  "originating_wallet_registration_id"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/session/:session_id": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-session-:session_id"
+      }
+    },
+    "/device-configuration": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Device-Configuration"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-device-configuration"
+      },
+      "post": {
+        "summary": "",
+        "operationId": "post-device-configuration",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Device-Configuration"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Device-Configuration"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "device_identifier": {
+                    "type": "string"
+                  },
+                  "brand": {
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "device": {
+                    "type": "string"
+                  },
+                  "serial": {
+                    "type": "string"
+                  },
+                  "hardware": {
+                    "type": "string"
+                  },
+                  "manufacturer": {
+                    "type": "string"
+                  },
+                  "app_build": {
+                    "type": "string"
+                  },
+                  "app_version": {
+                    "type": "string"
+                  },
+                  "os_version": {
+                    "type": "string"
+                  },
+                  "sdk_version": {
+                    "type": "string"
+                  },
+                  "logged_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "id",
+                  "device_identifier",
+                  "brand",
+                  "model",
+                  "device",
+                  "serial",
+                  "hardware",
+                  "manufacturer",
+                  "app_build",
+                  "app_version",
+                  "os_version",
+                  "sdk_version",
+                  "logged_at"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/device-configuration/:device_configuration_id": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Device-Configuration"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-device-configuration-:device_configuration_id"
+      }
+    },
+    "/wallet-registration": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Wallet-Registration"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-wallet-registration"
+      },
+      "post": {
+        "summary": "",
+        "operationId": "post-wallet-registration",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wallet-Registration"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wallet-Registration"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "wallet": {
+                    "type": "string"
+                  },
+                  "user_photo_url": {
+                    "type": "string"
+                  },
+                  "grower_account_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "first_name": {
+                    "type": "string"
+                  },
+                  "last_name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "lat": {
+                    "type": "integer"
+                  },
+                  "lon": {
+                    "type": "integer"
+                  },
+                  "registered_at": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "v1_legacy_organization": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "wallet",
+                  "user_photo_url",
+                  "grower_account_id",
+                  "first_name",
+                  "last_name",
+                  "lat",
+                  "lon",
+                  "registered_at"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wallet-registration/:wallet_registration_id": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wallet-Registration"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-wallet-registration-:wallet_registration_id"
+      }
+    },
+    "/replay-events": {
+      "post": {
+        "summary": "",
+        "operationId": "post-replay-events",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "request": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "raised",
+                      "received"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "Capture": {
+      "Raw-Capture": {
         "description": "Represents the snapshot of a tree captured by a device with its associated data and meta data. It contains the photo of the tree, location, planter details.",
         "type": "object",
         "properties": {
@@ -427,27 +946,10 @@
             "description": "The longitude location value of the tree capture."
           },
           "gps_accuracy": {},
-          "planter_id": {
-            "type": [
-              "string",
-              "integer"
-            ],
-            "minLength": 1,
-            "description": "The identifier of the planter record associated with this capture."
-          },
-          "planter_photo_url": {
-            "type": "string"
-          },
-          "planter_contact": {
-            "type": "string",
-          },
-          "device_identifier": {
-            "type": "string"
-          },
           "note": {
             "type": "string"
           },
-          "attributes": {
+          "extra_attributes": {
             "type": "object",
             "required": [
               "entries"
@@ -487,6 +989,39 @@
           "updated_at": {
             "type": "string",
             "minLength": 1
+          },
+          "capture_taken_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "abs_step_count": {
+            "type": "integer"
+          },
+          "delta_step_count": {
+            "type": "integer"
+          },
+          "rotation_matrix": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "device_identifier": {
+            "type": "string"
+          },
+          "grower_account_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "wallet": {
+            "type": "string"
+          },
+          "user_photo_url": {
+            "type": "string"
           }
         },
         "required": [
@@ -494,11 +1029,145 @@
           "image_url",
           "lat",
           "lon",
-          "planter_id",
-          "planter_contact",
-          "device_identifier",
-          "attributes"
+          "extra_attributes",
+          "status",
+          "created_at",
+          "updated_at",
+          "capture_taken_at",
+          "session_id",
+          "abs_step_count",
+          "delta_step_count",
+          "rotation_matrix"
         ]
+      },
+      "Session": {
+        "title": "Session",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "device_configuration_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "originating_wallet_registration_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "target_wallet": {
+            "type": "string"
+          },
+          "check_in_photo_url": {
+            "type": "string"
+          },
+          "track_url": {
+            "type": "string"
+          },
+          "organization": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Device-Configuration": {
+        "title": "Device-Configuration",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "device_identifier": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "device": {
+            "type": "string"
+          },
+          "serial": {
+            "type": "string"
+          },
+          "hardware": {
+            "type": "string"
+          },
+          "manufacturer": {
+            "type": "string"
+          },
+          "app_build": {
+            "type": "string"
+          },
+          "app_version": {
+            "type": "string"
+          },
+          "os_version": {
+            "type": "string"
+          },
+          "sdk_version": {
+            "type": "string"
+          },
+          "logged_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Wallet-Registration": {
+        "title": "Wallet-Registration",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "wallet": {
+            "type": "string"
+          },
+          "user_photo_url": {
+            "type": "string"
+          },
+          "grower_account_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "lat": {
+            "type": "number"
+          },
+          "lon": {
+            "type": "number"
+          },
+          "registered_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "v1_legacy_organization": {
+            "type": "string"
+          }
+        }
       }
     },
     "responses": {},
