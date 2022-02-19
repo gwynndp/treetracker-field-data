@@ -9,6 +9,26 @@
     }
   },
   "paths": {
+    "/raw-captures/raw_capture_id": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-raw-captures-raw_capture_id"
+      }
+    },
     "/raw-captures": {
       "description": "A list of http methods that supports creation, retrieval, and update of capture data.",
       "summary": "Operations supported for captures resource",

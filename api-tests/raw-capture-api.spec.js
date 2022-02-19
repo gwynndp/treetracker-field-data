@@ -142,20 +142,22 @@ describe('Raw Captures', () => {
     expect(res.body.id).to.eql(capture.id);
   });
 
-  it('Added raw capture should be persisted', function (done) {
-    request(server)
-      .get(`/raw-captures`)
-      .expect(200)
-      .end(function (err, res) {
-        if (err) return done(err);
-        expect(
-          res.body.some(
-            (raw_capture) =>
-              raw_capture.id === request_object.request_object.id,
-          ),
-        ).to.equal(true);
-        return done();
-      });
+  it('Added raw capture should be persisted', async function () {
+    const res = await request(server).get(`/raw-captures`).expect(200);
+
+    expect(
+      res.body.some(
+        (raw_capture) => raw_capture.id === request_object.request_object.id,
+      ),
+    ).to.equal(true);
+  });
+
+  it('should get a single raw capture', async function () {
+    const res = await request(server)
+      .get(`/raw-captures/${request_object.request_object.id}`)
+      .expect(200);
+
+    expect(res.body.id).to.eql(requestObject.request_object.id);
   });
 
   it('should confirm number of sent capture-created events', async () => {

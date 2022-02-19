@@ -6,6 +6,7 @@ const {
   createRawCapture,
   rawCaptureFromRequest,
   getRawCaptures,
+  RawCapture,
 } = require('../models/RawCapture');
 const { dispatch } = require('../models/domain-event');
 
@@ -40,6 +41,10 @@ const rawCaptureSchema = Joi.object({
   capture_taken_at: Joi.date().iso().required(),
 }).unknown(false);
 
+const rawCaptureIdParamSchema = Joi.object({
+  raw_capture_id: Joi.string().uuid().required(),
+}).unknown(false);
+
 const rawCaptureGet = async (req, res, next) => {
   const session = new Session(false);
   const captureRepo = new RawCaptureRepository(session);
@@ -51,7 +56,6 @@ const rawCaptureGet = async (req, res, next) => {
 
 const rawCapturePost = async (req, res, next) => {
   log.warn('raw capture post...');
-  // console.log(req.body);
   await rawCaptureSchema.validateAsync(req.body, { abortEarly: false });
   const session = new Session(false);
   const migrationSession = new Session(true);
@@ -94,14 +98,12 @@ const rawCapturePost = async (req, res, next) => {
         });
         [sessionObject] = sessionArray;
       }
-      console.log('sessionObject', sessionObject);
       await migrationSession.beginTransaction();
       const legacyTreeObject = await LegacyTree({
         ...req.body,
         ...sessionObject,
         session: migrationSession,
       });
-      console.log('legacytreeobject', legacyTreeObject);
       const { entity: tree } = await legacyDataMigration(
         { ...legacyTreeObject },
         req.body.attributes || [],
@@ -134,7 +136,29 @@ const rawCapturePost = async (req, res, next) => {
   }
 };
 
+const rawCaptureSingleGet = async function (req, res) {
+  try {
+    await rawCaptureIdParamSchema.validateAsync(req.params, {
+      abortEarly: false,
+    });
+
+    const session = new Session();
+    const rawCaptureRepo = new RawCaptureRepository(session);
+
+    const rawCaptures = await rawCaptureRepo.getByFilter({
+      'raw_capture.id': req.params.raw_capture_id,
+    });
+
+    const [rawCapture = {}] = rawCaptures;
+
+    res.send(RawCapture(rawCapture));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 module.exports = {
   rawCaptureGet,
   rawCapturePost,
+  rawCaptureSingleGet,
 };

@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   rawCapturePost,
   rawCaptureGet,
+  rawCaptureSingleGet,
 } = require('./handlers/rawCaptureHandler.js');
 const {
   walletRegistrationPost,
@@ -45,8 +46,14 @@ router
   .get(handlerWrapper(sessionGet));
 router.route('/session/:session_id').get(handlerWrapper(sessionSingleGet));
 
-router.post('/raw-captures', handlerWrapper(rawCapturePost));
-router.get('/raw-captures', handlerWrapper(rawCaptureGet));
+router
+  .route('/raw-captures')
+  .post(handlerWrapper(rawCapturePost))
+  .get(handlerWrapper(rawCaptureGet));
+router
+  .route('/raw-captures/:raw_capture_id')
+  .get(handlerWrapper(rawCaptureSingleGet));
+
 router.post('/replay-events', handlerWrapper(replayEventPost));
 
 module.exports = router;

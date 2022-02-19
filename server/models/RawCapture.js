@@ -184,4 +184,5 @@ module.exports = {
   createRawCapture,
   getRawCaptures,
   applyVerification,
+  RawCapture,
 };

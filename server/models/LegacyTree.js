@@ -25,8 +25,6 @@ const LegacyTree = async ({
   const legacyPlanterRepo = new LegacyPlanterRepository(session);
   const planter = await legacyPlanterRepo.findUser(wallet);
 
-  console.log('planter', planter);
-
   if (!planter)
     throw new HttpError(
       422,
@@ -55,9 +53,10 @@ const createTreesInMainDB = (
   const legacyTreeRepository = new Repository(legacyTreeRepoImpl);
   const legacyAttributesRepository = new Repository(legacyTreeAttrRepoImpl);
   const result = await legacyTreeRepository.add(tree);
-  const tree_attributes = attributes.map((attribute) =>
-    ({tree_id: result.id, ...attribute}),
-  );
+  const tree_attributes = attributes.map((attribute) => ({
+    tree_id: result.id,
+    ...attribute,
+  }));
   await legacyAttributesRepository.add(tree_attributes);
   return { entity: result, raisedEvents: [] };
 };
