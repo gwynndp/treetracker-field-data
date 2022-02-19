@@ -1,3 +1,16 @@
+# [1.7.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.6.1...v1.7.0) (2022-02-19)
+
+
+### Bug Fixes
+
+* add tests and other endpoint updates ([6a5f4cd](https://github.com/Greenstand/treetracker-field-data/commit/6a5f4cdce1cee4194c42a55cdd30bb72b08ec191))
+
+
+### Features
+
+* add bulk-pack v2 endpoints ([ae429f1](https://github.com/Greenstand/treetracker-field-data/commit/ae429f1acd6d73777793458035a6004a0e96d050))
+* add rawCapture single endpoint ([5d06aad](https://github.com/Greenstand/treetracker-field-data/commit/5d06aadd52c1c83b248bf2fcdebea658e9a220c5))
+
 ## [1.6.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.6.0...v1.6.1) (2022-02-09)
 
 
