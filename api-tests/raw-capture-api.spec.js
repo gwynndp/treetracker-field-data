@@ -85,7 +85,7 @@ describe('Raw Captures', () => {
     await knex('domain_event').insert(domainEventObject);
     await knex('raw_capture').insert({
       ...capture,
-      extra_attributes: { attributes: capture.extra_attributes },
+      extra_attributes: { entries: capture.extra_attributes },
       reference_id: 23,
       status: 'active',
       created_at: new Date(),

@@ -3,6 +3,7 @@ const log = require('loglevel');
 
 const Session = require('../infra/database/Session');
 const SessionRepository = require('../infra/database/SessionRepository');
+const { getSession, SessionModel } = require('../models/SessionModel');
 
 const sessionPostSchema = Joi.object({
   id: Joi.string().uuid().required(),
@@ -55,7 +56,8 @@ const sessionGet = async function (req, res) {
   const session = new Session();
   const sessionRepo = new SessionRepository(session);
 
-  const sessions = await sessionRepo.getByFilter({});
+  const executeGetSession = getSession(sessionRepo);
+  const sessions = await executeGetSession();
 
   res.send(sessions);
 };
@@ -74,7 +76,7 @@ const sessionSingleGet = async function (req, res) {
 
   const [dbSession = {}] = dbSessions;
 
-  res.send(dbSession);
+  res.send(SessionModel(dbSession));
 };
 
 module.exports = {

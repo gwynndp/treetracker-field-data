@@ -4,6 +4,10 @@ const log = require('loglevel');
 const Session = require('../infra/database/Session');
 
 const WalletRegistrationRepository = require('../infra/database/WalletRegistrationRepository');
+const {
+  getWalletRegistration,
+  WalletRegistration,
+} = require('../models/WalletRegistration');
 const HttpError = require('./HttpError');
 
 const walletRegistrationPostSchema = Joi.object({
@@ -70,7 +74,10 @@ const walletRegistrationGet = async function (req, res) {
   const session = new Session();
   const walletRegistrationRepo = new WalletRegistrationRepository(session);
 
-  const walletRegistrations = await walletRegistrationRepo.getByFilter({});
+  const executeGetWalletRegistration = getWalletRegistration(
+    walletRegistrationRepo,
+  );
+  const walletRegistrations = await executeGetWalletRegistration();
 
   res.send(walletRegistrations);
 };
@@ -89,7 +96,7 @@ const walletRegistrationSingleGet = async function (req, res) {
 
   const [walletRegistration = {}] = walletRegistrations;
 
-  res.send(walletRegistration);
+  res.send(WalletRegistration(walletRegistration));
 };
 
 module.exports = {

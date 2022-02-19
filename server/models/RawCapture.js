@@ -127,10 +127,9 @@ const createRawCapture = (captureRepositoryImpl, eventRepositoryImpl) => async (
 
 const FilterCriteria = ({
   status = undefined,
-  field_username = undefined,
-  field_user_id = undefined,
+  grower_account_id = undefined,
 }) => {
-  return Object.entries({ status, field_username, field_user_id })
+  return Object.entries({ status, grower_account_id })
     .filter((entry) => entry[1] !== undefined)
     .reduce((result, item) => {
       result[item[0]] = item[1];

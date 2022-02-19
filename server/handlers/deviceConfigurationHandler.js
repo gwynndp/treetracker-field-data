@@ -3,6 +3,10 @@ const log = require('loglevel');
 
 const Session = require('../infra/database/Session');
 const DeviceConfigurationRepository = require('../infra/database/DeviceConfigurationRepository');
+const {
+  getDeviceConfiguration,
+  DeviceConfiguration,
+} = require('../models/DeviceConfiguration');
 
 const deviceConfigurationPostSchema = Joi.object({
   id: Joi.string().uuid().required(),
@@ -66,7 +70,10 @@ const deviceConfigurationGet = async function (req, res) {
   const session = new Session();
   const deviceConfigurationRepo = new DeviceConfigurationRepository(session);
 
-  const deviceConfigurations = await deviceConfigurationRepo.getByFilter({});
+  const executeGetDeviceConfigurations = getDeviceConfiguration(
+    deviceConfigurationRepo,
+  );
+  const deviceConfigurations = await executeGetDeviceConfigurations();
 
   res.send(deviceConfigurations);
 };
@@ -85,7 +92,7 @@ const deviceConfigurationSingleGet = async function (req, res) {
 
   const [deviceConfiguration = {}] = deviceConfigurations;
 
-  res.send(deviceConfiguration);
+  res.send(DeviceConfiguration(deviceConfiguration));
 };
 
 module.exports = {
