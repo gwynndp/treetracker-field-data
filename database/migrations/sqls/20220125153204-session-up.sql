@@ -7,5 +7,5 @@ CREATE TABLE session
     check_in_photo_url varchar,
     track_url varchar,
     organization varchar,
-    created_at timestamptz NOT NULL
+    created_at timestamptz NOT NULL DEFAULT now()
 );

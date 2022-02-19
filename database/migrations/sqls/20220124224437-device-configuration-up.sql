@@ -13,5 +13,5 @@ CREATE TABLE device_configuration
     os_version varchar NOT NULL,
     sdk_version varchar NOT NULL,
     logged_at timestamptz NOT NULL,
-    created_at timestamptz NOT NULL
+    created_at timestamptz NOT NULL DEFAULT now()
 );
