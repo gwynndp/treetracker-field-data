@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.6.0...v1.6.1) (2022-02-09)
+
+
+### Bug Fixes
+
+* update sealed secret to remove treetracker_dev ([c9b027b](https://github.com/Greenstand/treetracker-field-data/commit/c9b027b6f2721122ae5719c2ccf633f94006afc8))
+
 # [1.6.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.5.0...v1.6.0) (2021-11-05)
 
 
