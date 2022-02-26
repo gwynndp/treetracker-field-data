@@ -29,14 +29,14 @@ const rawCaptureSchema = Joi.object({
   delta_step_count: Joi.number().integer().allow(null),
   rotation_matrix: Joi.array().items(Joi.number().integer()).allow(null),
   note: Joi.string().allow(null, ''),
-  extra_attributes: Joi.array()
-    .items(
-      Joi.object({
-        key: Joi.string().required(),
-        value: Joi.string().required().allow(''),
-      }),
-    )
-    .allow(null),
+ // extra_attributes: Joi.array()
+ //   .items(
+ //     Joi.object({
+ //       key: Joi.string().required(),
+ //       value: Joi.string().required().allow(''),
+ //     }),
+ //   )
+ //   .allow(null),
   capture_taken_at: Joi.date().iso().required(),
 }).unknown(false);
 
@@ -55,6 +55,7 @@ const rawCaptureGet = async (req, res, next) => {
 
 const rawCapturePost = async (req, res, next) => {
   log.warn('raw capture post...');
+  delete req.body.extra_attribures; // remove extra_attributes until implemented on mobile side
   await rawCaptureSchema.validateAsync(req.body, { abortEarly: false });
   const session = new Session(false);
   const migrationSession = new Session(true);
