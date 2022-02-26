@@ -1,3 +1,11 @@
+## [1.7.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.7.0...v1.7.1) (2022-02-26)
+
+
+### Bug Fixes
+
+* allow nulls for advanced properties ([a807562](https://github.com/Greenstand/treetracker-field-data/commit/a80756237ae1f6d275abd62c0a1ce727822a0cfc))
+* skip extra_attributes until implemented on mobile side ([b847a49](https://github.com/Greenstand/treetracker-field-data/commit/b847a4937d6fb8cf30e5fbff10642dddb1d0097c))
+
 # [1.7.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.6.1...v1.7.0) (2022-02-19)
 
 
