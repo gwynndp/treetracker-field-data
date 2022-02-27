@@ -26,18 +26,19 @@ const rawCaptureSchema = Joi.object({
   lat: Joi.number().required().min(-90).max(90),
   lon: Joi.number().required().min(-180).max(180),
   image_url: Joi.string().uri().required(),
+  gps_accuracy: Joi.number().integer().allow(null),
   abs_step_count: Joi.number().integer().allow(null),
   delta_step_count: Joi.number().integer().allow(null),
   rotation_matrix: Joi.array().items(Joi.number().integer()).allow(null),
   note: Joi.string().allow(null, ''),
   extra_attributes: Joi.any().allow(null), // skip validation, field not currently processed
-  //Joi.array()
- //   .items(
- //     Joi.object({
- //       key: Joi.string().required(),
- //       value: Joi.string().required().allow(''),
- //     }),
- //   )
+  // Joi.array()
+  //   .items(
+  //     Joi.object({
+  //       key: Joi.string().required(),
+  //       value: Joi.string().required().allow(''),
+  //     }),
+  //   )
   //  .allow(null),
   captured_at: Joi.date().iso().required(),
 }).unknown(false);

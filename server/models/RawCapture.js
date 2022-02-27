@@ -110,12 +110,13 @@ const createRawCapture = (captureRepositoryImpl, eventRepositoryImpl) => async (
   const newRawCapture = { ...inputRawCapture };
   const captureRepository = new Repository(captureRepositoryImpl);
   const rawCapture = await captureRepository.add(newRawCapture);
-  const filteredAttr = rawCapture.extra_attributes.entries?.filter(
-    (attribute) => attribute.key === 'app_flavor',
-  );
+  // remove extra_attributes until implemented on mobile side
+  // const filteredAttr = rawCapture.extra_attributes.entries?.filter(
+  //   (attribute) => attribute.key === 'app_flavor',
+  // );
   const rawCaptureCreated = RawCaptureCreated({
     ...rawCapture,
-    extra_attributes: filteredAttr,
+    // extra_attributes: filteredAttr,
   });
   const raiseFieldDataEvent = raiseEvent(eventRepositoryImpl);
   const domainEvent = await raiseFieldDataEvent(
