@@ -477,7 +477,7 @@
                       ]
                     }
                   },
-                  "capture_taken_at": {
+                  "captured_at": {
                     "type": "string",
                     "format": "date-time"
                   }
@@ -492,7 +492,7 @@
                   "abs_step_count",
                   "delta_step_count",
                   "rotation_matrix",
-                  "capture_taken_at"
+                  "captured_at"
                 ]
               }
             }
@@ -990,7 +990,7 @@
             "type": "string",
             "minLength": 1
           },
-          "capture_taken_at": {
+          "captured_at": {
             "type": "string",
             "format": "date-time"
           },
@@ -1033,7 +1033,7 @@
           "status",
           "created_at",
           "updated_at",
-          "capture_taken_at",
+          "captured_at",
           "session_id",
           "abs_step_count",
           "delta_step_count",

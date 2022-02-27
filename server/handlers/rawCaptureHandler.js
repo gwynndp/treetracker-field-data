@@ -37,7 +37,7 @@ const rawCaptureSchema = Joi.object({
  //     }),
  //   )
  //   .allow(null),
-  capture_taken_at: Joi.date().iso().required(),
+  captured_at: Joi.date().iso().required(),
 }).unknown(false);
 
 const rawCaptureIdParamSchema = Joi.object({

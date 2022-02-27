@@ -22,7 +22,7 @@ const RawCapture = ({
   status,
   created_at,
   updated_at,
-  capture_taken_at,
+  captured_at,
 }) =>
   Object.freeze({
     id,
@@ -44,7 +44,7 @@ const RawCapture = ({
     status,
     created_at,
     updated_at,
-    capture_taken_at,
+    captured_at,
   });
 
 const rawCaptureFromRequest = ({
@@ -60,7 +60,7 @@ const rawCaptureFromRequest = ({
   rotation_matrix,
   note,
   extra_attributes,
-  capture_taken_at,
+  captured_at,
 }) =>
   Object.freeze({
     id,
@@ -78,7 +78,7 @@ const rawCaptureFromRequest = ({
     extra_attributes: { entries: extra_attributes },
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-    capture_taken_at,
+    captured_at,
   });
 
 const RawCaptureCreated = ({
@@ -89,7 +89,7 @@ const RawCaptureCreated = ({
   field_username,
   extra_attributes,
   created_at,
-  capture_taken_at,
+  captured_at,
 }) =>
   Object.freeze({
     id,
@@ -100,7 +100,7 @@ const RawCaptureCreated = ({
     field_username,
     extra_attributes,
     created_at,
-    capture_taken_at,
+    captured_at,
   });
 
 const createRawCapture = (captureRepositoryImpl, eventRepositoryImpl) => async (

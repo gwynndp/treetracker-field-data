@@ -29,7 +29,7 @@ class RequestObject {
           value: "extra's value",
         },
       ],
-      capture_taken_at: new Date().toISOString(),
+      captured_at: new Date().toISOString(),
     };
 
     this.delete_property = function (property) {
