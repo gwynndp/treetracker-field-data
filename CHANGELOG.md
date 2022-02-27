@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.7.1...v1.8.0) (2022-02-27)
+
+
+### Features
+
+* change capture_taken_at to captured_at ([2ada720](https://github.com/Greenstand/treetracker-field-data/commit/2ada72090306d55a322f3dd177f76ff1196421ae))
+
 ## [1.7.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.7.0...v1.7.1) (2022-02-26)
 
 
