@@ -29,14 +29,15 @@ const rawCaptureSchema = Joi.object({
   delta_step_count: Joi.number().integer().allow(null),
   rotation_matrix: Joi.array().items(Joi.number().integer()).allow(null),
   note: Joi.string().allow(null, ''),
- // extra_attributes: Joi.array()
+  extra_attributes: true, // skip validation, field not currently processed
+  //Joi.array()
  //   .items(
  //     Joi.object({
  //       key: Joi.string().required(),
  //       value: Joi.string().required().allow(''),
  //     }),
  //   )
- //   .allow(null),
+  //  .allow(null),
   captured_at: Joi.date().iso().required(),
 }).unknown(false);
 
