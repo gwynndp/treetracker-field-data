@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.0...v1.8.1) (2022-02-27)
+
+
+### Bug Fixes
+
+* skip validation on extra_attributes for now, field not processed ([e9d57a3](https://github.com/Greenstand/treetracker-field-data/commit/e9d57a3e86dbac492beed4524501991b7ae040c3))
+
 # [1.8.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.7.1...v1.8.0) (2022-02-27)
 
 
