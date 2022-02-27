@@ -18,6 +18,7 @@ const EventRepository = require('../infra/database/EventRepository');
 const SessionRepository = require('../infra/database/SessionRepository');
 const LegacyTreeRepository = require('../infra/database/LegacyTreeRepository');
 const LegacyTreeAttributeRepository = require('../infra/database/LegacyTreeAttributeRepository');
+const HttpError = require('./HttpError');
 
 const rawCaptureSchema = Joi.object({
   id: Joi.string().required().guid().required(),
@@ -92,12 +93,16 @@ const rawCapturePost = async (req, res, next) => {
       res.status(200).json(rawCapture);
     } else {
       let sessionObject = {};
-      if (req.body.session_id) {
-        const sessionArray = await sessionRepo.getSession({
-          'session.id': req.body.session_id,
-        });
-        [sessionObject] = sessionArray;
+      const sessionArray = await sessionRepo.getSession({
+        'session.id': req.body.session_id,
+      });
+      if (!sessionArray.length) {
+        throw new HttpError(
+          409,
+          `A session resource with id, ${req.body.session_id} has yet to be created, kindly retry later`,
+        );
       }
+      [sessionObject] = sessionArray;
       await migrationSession.beginTransaction();
       const legacyTreeObject = await LegacyTree({
         ...req.body,
