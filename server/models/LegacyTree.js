@@ -19,7 +19,7 @@ const LegacyTree = async ({
   wallet = null,
   user_photo_url = null,
   note = '',
-  capture_taken_at,
+  captured_at,
   session,
 }) => {
   const legacyPlanterRepo = new LegacyPlanterRepository(session);
@@ -41,8 +41,8 @@ const LegacyTree = async ({
     planter_photo_url: user_photo_url,
     device_identifier,
     note,
-    time_created: capture_taken_at,
-    time_updated: capture_taken_at,
+    time_created: captured_at,
+    time_updated: captured_at,
   });
 };
 

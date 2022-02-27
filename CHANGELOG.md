@@ -1,3 +1,45 @@
+## [1.8.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.1...v1.8.2) (2022-02-27)
+
+
+### Bug Fixes
+
+* skip validation on extra_attributes for now, field not processed ([4b75a2c](https://github.com/Greenstand/treetracker-field-data/commit/4b75a2c28dff136bfd24830e9c2a8043870ad778))
+
+## [1.8.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.0...v1.8.1) (2022-02-27)
+
+
+### Bug Fixes
+
+* skip validation on extra_attributes for now, field not processed ([e9d57a3](https://github.com/Greenstand/treetracker-field-data/commit/e9d57a3e86dbac492beed4524501991b7ae040c3))
+
+# [1.8.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.7.1...v1.8.0) (2022-02-27)
+
+
+### Features
+
+* change capture_taken_at to captured_at ([2ada720](https://github.com/Greenstand/treetracker-field-data/commit/2ada72090306d55a322f3dd177f76ff1196421ae))
+
+## [1.7.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.7.0...v1.7.1) (2022-02-26)
+
+
+### Bug Fixes
+
+* allow nulls for advanced properties ([a807562](https://github.com/Greenstand/treetracker-field-data/commit/a80756237ae1f6d275abd62c0a1ce727822a0cfc))
+* skip extra_attributes until implemented on mobile side ([b847a49](https://github.com/Greenstand/treetracker-field-data/commit/b847a4937d6fb8cf30e5fbff10642dddb1d0097c))
+
+# [1.7.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.6.1...v1.7.0) (2022-02-19)
+
+
+### Bug Fixes
+
+* add tests and other endpoint updates ([6a5f4cd](https://github.com/Greenstand/treetracker-field-data/commit/6a5f4cdce1cee4194c42a55cdd30bb72b08ec191))
+
+
+### Features
+
+* add bulk-pack v2 endpoints ([ae429f1](https://github.com/Greenstand/treetracker-field-data/commit/ae429f1acd6d73777793458035a6004a0e96d050))
+* add rawCapture single endpoint ([5d06aad](https://github.com/Greenstand/treetracker-field-data/commit/5d06aadd52c1c83b248bf2fcdebea658e9a220c5))
+
 ## [1.6.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.6.0...v1.6.1) (2022-02-09)
 
 

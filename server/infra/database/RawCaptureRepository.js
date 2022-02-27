@@ -32,7 +32,7 @@ class RawCaptureRepository extends BaseRepository {
         'raw_capture.status',
         'raw_capture.created_at',
         'raw_capture.updated_at',
-        'raw_capture.capture_taken_at',
+        'raw_capture.captured_at',
       )
       .leftJoin('session', 'raw_capture.session_id', '=', 'session.id')
       .leftJoin(
@@ -89,7 +89,7 @@ class RawCaptureRepository extends BaseRepository {
         'createdRawCapture.status',
         'createdRawCapture.created_at',
         'createdRawCapture.updated_at',
-        'createdRawCapture.capture_taken_at',
+        'createdRawCapture.captured_at',
       )
       .from('createdRawCapture')
       .leftJoin('session', 'createdRawCapture.session_id', '=', 'session.id')
