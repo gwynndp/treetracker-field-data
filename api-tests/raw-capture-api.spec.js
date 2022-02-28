@@ -114,7 +114,6 @@ describe('Raw Captures', () => {
       .set('Accept', 'application/json')
       .expect(201)
       .end(function (err, res) {
-        console.log(res.body);
         expect(res.body.id).to.eql(request_object.request_object.id);
         if (err) return done(err);
         return done();
