@@ -30,7 +30,7 @@ const rawCaptureSchema = Joi.object({
   rotation_matrix: Joi.array().items(Joi.number().integer()).allow(null),
   note: Joi.string().allow(null, ''),
   extra_attributes: Joi.any().allow(null), // skip validation, field not currently processed
-  //Joi.array()
+  // Joi.array()
  //   .items(
  //     Joi.object({
  //       key: Joi.string().required(),
