@@ -1,3 +1,10 @@
+## [1.8.13](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.12...v1.8.13) (2022-03-01)
+
+
+### Bug Fixes
+
+* update migration test env ([4314de8](https://github.com/Greenstand/treetracker-field-data/commit/4314de8a7fca9c899634a76182718d7e39c01d4a))
+
 ## [1.8.12](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.11...v1.8.12) (2022-03-01)
 
 
