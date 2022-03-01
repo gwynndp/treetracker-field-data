@@ -1,3 +1,11 @@
+## [1.8.8](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.7...v1.8.8) (2022-03-01)
+
+
+### Bug Fixes
+
+* add missing base file ([2a63cc4](https://github.com/Greenstand/treetracker-field-data/commit/2a63cc4dbc8b61c37e664bc3cdace37b58dd6106))
+* return valid error if session has not been created yet for raw capture insert ([a7429fe](https://github.com/Greenstand/treetracker-field-data/commit/a7429fed0f2391ce7a705953ae5dfa282fc4c494))
+
 ## [1.8.7](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.6...v1.8.7) (2022-03-01)
 
 
