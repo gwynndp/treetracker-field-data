@@ -1,6 +1,6 @@
 {
   "name": "treetracker",
-  "version": "1.8.3",
+  "version": "1.8.4",
   "private": true,
   "engines": {
     "node": ">=16.0.0 <17",
@@ -9,7 +9,7 @@
   "main": "server/server.js",
   "scripts": {
     "lint": "npm run eslint",
-    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "lint:fix": "npm run eslint:fix && npm run prettier-fix",
     "eslint": "eslint --report-unused-disable-directives .",
     "eslint:fix": "npm run eslint -- --fix",
     "test": "npm run test-unit && npm run test-integration && npm run test-repository",
@@ -24,7 +24,7 @@
     "db-migrate-ci": "cd database; db-migrate up",
     "encrypt": "nodecipher encrypt .env env.secret",
     "decrypt": "nodecipher decrypt env.secret .env",
-    "pre-commit": "npm run test && npm run eslint"
+    "pre-commit": "npm run lint && npm run test"
   },
   "keywords": [
     "ecology"
