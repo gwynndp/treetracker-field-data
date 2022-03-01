@@ -1,3 +1,10 @@
+## [1.8.9](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.8...v1.8.9) (2022-03-01)
+
+
+### Bug Fixes
+
+* add file to kustomization base ([195c115](https://github.com/Greenstand/treetracker-field-data/commit/195c11577e460242b3196d1bcd7658219f7c938f))
+
 ## [1.8.8](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.7...v1.8.8) (2022-03-01)
 
 
