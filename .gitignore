@@ -45,8 +45,8 @@ jspm_packages/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
-.env.test
+.env*
+
 
 # database json files
 database.json

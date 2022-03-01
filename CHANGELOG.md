@@ -1,3 +1,38 @@
+## [1.8.7](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.6...v1.8.7) (2022-03-01)
+
+
+### Bug Fixes
+
+* add sealed secrets ([a477c78](https://github.com/Greenstand/treetracker-field-data/commit/a477c7823fc9bd2223e1232d695ca8d7df9aaa9a))
+
+## [1.8.6](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.5...v1.8.6) (2022-03-01)
+
+
+### Bug Fixes
+
+* update migration test env ([19681cb](https://github.com/Greenstand/treetracker-field-data/commit/19681cb0e42110435b264a8e92bbf4b3f4668a50))
+
+## [1.8.5](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.4...v1.8.5) (2022-03-01)
+
+
+### Bug Fixes
+
+* linting ([a58aebd](https://github.com/Greenstand/treetracker-field-data/commit/a58aebd8a0e38a084d6e57ce46058b0dad90ebc6))
+
+## [1.8.4](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.3...v1.8.4) (2022-03-01)
+
+
+### Bug Fixes
+
+* update migration dev env ([d8aa152](https://github.com/Greenstand/treetracker-field-data/commit/d8aa1521bc8013d4a686caf4274a1edf752faf90))
+
+## [1.8.3](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.2...v1.8.3) (2022-03-01)
+
+
+### Bug Fixes
+
+* updated files ([6007e44](https://github.com/Greenstand/treetracker-field-data/commit/6007e441900fcfe593484f91bd49a3295fc3c8a0))
+
 ## [1.8.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.1...v1.8.2) (2022-02-27)
 
 
