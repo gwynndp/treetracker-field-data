@@ -1,3 +1,10 @@
+## [1.8.5](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.4...v1.8.5) (2022-03-01)
+
+
+### Bug Fixes
+
+* linting ([a58aebd](https://github.com/Greenstand/treetracker-field-data/commit/a58aebd8a0e38a084d6e57ce46058b0dad90ebc6))
+
 ## [1.8.4](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.3...v1.8.4) (2022-03-01)
 
 
