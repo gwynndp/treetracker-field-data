@@ -1,3 +1,10 @@
+## [1.8.14](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.13...v1.8.14) (2022-03-01)
+
+
+### Bug Fixes
+
+* allow empty values for devie_configuration serial field ([72a2989](https://github.com/Greenstand/treetracker-field-data/commit/72a2989b9bcfd367db7c665d23c239921237b451))
+
 ## [1.8.13](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.12...v1.8.13) (2022-03-01)
 
 
