@@ -18,6 +18,7 @@ const EventRepository = require('../infra/database/EventRepository');
 const SessionRepository = require('../infra/database/SessionRepository');
 const LegacyTreeRepository = require('../infra/database/LegacyTreeRepository');
 const LegacyTreeAttributeRepository = require('../infra/database/LegacyTreeAttributeRepository');
+const HttpError = require('./HttpError');
 
 const rawCaptureSchema = Joi.object({
   id: Joi.string().required().guid().required(),
@@ -25,18 +26,19 @@ const rawCaptureSchema = Joi.object({
   lat: Joi.number().required().min(-90).max(90),
   lon: Joi.number().required().min(-180).max(180),
   image_url: Joi.string().uri().required(),
+  gps_accuracy: Joi.number().integer().allow(null),
   abs_step_count: Joi.number().integer().allow(null),
   delta_step_count: Joi.number().integer().allow(null),
   rotation_matrix: Joi.array().items(Joi.number().integer()).allow(null),
   note: Joi.string().allow(null, ''),
   extra_attributes: Joi.any().allow(null), // skip validation, field not currently processed
   // Joi.array()
- //   .items(
- //     Joi.object({
- //       key: Joi.string().required(),
- //       value: Joi.string().required().allow(''),
- //     }),
- //   )
+  //   .items(
+  //     Joi.object({
+  //       key: Joi.string().required(),
+  //       value: Joi.string().required().allow(''),
+  //     }),
+  //   )
   //  .allow(null),
   captured_at: Joi.date().iso().required(),
 }).unknown(false);
@@ -93,12 +95,16 @@ const rawCapturePost = async (req, res, next) => {
       res.status(200).json(rawCapture);
     } else {
       let sessionObject = {};
-      if (req.body.session_id) {
-        const sessionArray = await sessionRepo.getSession({
-          'session.id': req.body.session_id,
-        });
-        [sessionObject] = sessionArray;
+      const sessionArray = await sessionRepo.getSession({
+        'session.id': req.body.session_id,
+      });
+      if (!sessionArray.length) {
+        throw new HttpError(
+          409,
+          `A session resource with id, ${req.body.session_id} has yet to be created, kindly retry later`,
+        );
       }
+      [sessionObject] = sessionArray;
       await migrationSession.beginTransaction();
       const legacyTreeObject = await LegacyTree({
         ...req.body,
