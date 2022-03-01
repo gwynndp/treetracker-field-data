@@ -4,3 +4,8 @@ resources:
 - treetracker-field-data-service.yaml
 - rabbitmq-connection-sealed-secret.yaml
 - database-connection-sealed-secret.yaml
+- namespace.yaml
+- cluster-role.yaml
+- cluster-role-binding.yaml
+- database-migration-job.yaml
+- greenstand-docker-pull-sealed-secret.yaml
