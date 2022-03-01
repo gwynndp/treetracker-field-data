@@ -14,7 +14,7 @@ const deviceConfigurationPostSchema = Joi.object({
   brand: Joi.string().required(),
   model: Joi.string().required(),
   device: Joi.string().required(),
-  serial: Joi.string().required(),
+  serial: Joi.string().allow('', null),
   hardware: Joi.string().required(),
   manufacturer: Joi.string().required(),
   app_build: Joi.string().required(),
