@@ -22,7 +22,7 @@ const walletRegistrationPostSchema = Joi.object({
   lat: Joi.number().required().min(-90).max(90).required(),
   lon: Joi.number().required().min(-180).max(180).required(),
   registered_at: Joi.string().isoDate(),
-  v1_legacy_organization: Joi.string().allow(null),
+  v1_legacy_organization: Joi.string().allow(null, ''),
 }).unknown(false);
 
 const walletRegistrationIdParamSchema = Joi.object({
