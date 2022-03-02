@@ -1,3 +1,10 @@
+## [1.8.15](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.14...v1.8.15) (2022-03-02)
+
+
+### Bug Fixes
+
+* allow empty string for v1 org ([1d6f5be](https://github.com/Greenstand/treetracker-field-data/commit/1d6f5bee3393ca9633133c64db4e287de39923eb))
+
 ## [1.8.14](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.13...v1.8.14) (2022-03-01)
 
 
