@@ -12,7 +12,7 @@ const sessionPostSchema = Joi.object({
   target_wallet: Joi.string(),
   check_in_photo_url: Joi.string().uri(),
   track_url: Joi.string().uri(),
-  organization: Joi.string(),
+  organization: Joi.string().allow(null, ''),
 }).unknown(false);
 
 const sessionIdParamSchema = Joi.object({
