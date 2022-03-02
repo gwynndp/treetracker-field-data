@@ -1,3 +1,10 @@
+## [1.8.16](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.15...v1.8.16) (2022-03-02)
+
+
+### Bug Fixes
+
+* allow session organization accept empty values ([ccc8f7d](https://github.com/Greenstand/treetracker-field-data/commit/ccc8f7d1226ec9ea698e6a9df18a2f37450852cd))
+
 ## [1.8.15](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.14...v1.8.15) (2022-03-02)
 
 
