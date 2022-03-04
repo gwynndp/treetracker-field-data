@@ -1,0 +1,1 @@
+ALTER TABLE raw_capture ALTER rotation_matrix TYPE float[];

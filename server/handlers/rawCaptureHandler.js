@@ -29,7 +29,7 @@ const rawCaptureSchema = Joi.object({
   gps_accuracy: Joi.number().integer().allow(null),
   abs_step_count: Joi.number().integer().allow(null),
   delta_step_count: Joi.number().integer().allow(null),
-  rotation_matrix: Joi.array().items(Joi.number().integer()).allow(null),
+  rotation_matrix: Joi.array().items(Joi.number()).allow(null),
   note: Joi.string().allow(null, ''),
   extra_attributes: Joi.any().allow(null), // skip validation, field not currently processed
   // Joi.array()
