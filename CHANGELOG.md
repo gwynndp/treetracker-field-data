@@ -1,3 +1,10 @@
+## [1.8.19](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.18...v1.8.19) (2022-03-06)
+
+
+### Bug Fixes
+
+* add correct affinity for databasem migration pod ([eb01b61](https://github.com/Greenstand/treetracker-field-data/commit/eb01b618ec82f40fd413577fe7aa2fe3fde94023))
+
 ## [1.8.18](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.17...v1.8.18) (2022-03-06)
 
 
