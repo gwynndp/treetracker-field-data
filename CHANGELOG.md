@@ -1,3 +1,10 @@
+## [1.8.20](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.19...v1.8.20) (2022-03-06)
+
+
+### Bug Fixes
+
+* update secrets for test env ([3bc3867](https://github.com/Greenstand/treetracker-field-data/commit/3bc3867861a5a27e4d491daa8e12534dd49e4c97))
+
 ## [1.8.19](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.18...v1.8.19) (2022-03-06)
 
 
