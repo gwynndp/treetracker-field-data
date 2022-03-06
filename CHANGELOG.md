@@ -1,3 +1,10 @@
+## [1.8.21](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.20...v1.8.21) (2022-03-06)
+
+
+### Bug Fixes
+
+* set up sealed secrets for production ([c081a03](https://github.com/Greenstand/treetracker-field-data/commit/c081a03752957a217ff48dfb20a3dbd03278df08))
+
 ## [1.8.20](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.19...v1.8.20) (2022-03-06)
 
 
