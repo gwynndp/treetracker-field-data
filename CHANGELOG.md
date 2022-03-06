@@ -1,3 +1,10 @@
+## [1.8.18](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.17...v1.8.18) (2022-03-06)
+
+
+### Bug Fixes
+
+* change rotation_matrix datatype to float[] ([c18a3bd](https://github.com/Greenstand/treetracker-field-data/commit/c18a3bd22fb5142b3028fdb8aa434244ec5c4070))
+
 ## [1.8.17](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.16...v1.8.17) (2022-03-02)
 
 
