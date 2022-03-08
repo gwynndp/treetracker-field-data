@@ -1,3 +1,13 @@
+## [1.8.23](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.22...v1.8.23) (2022-03-08)
+
+
+### Bug Fixes
+
+* correct typo ([70f79d6](https://github.com/Greenstand/treetracker-field-data/commit/70f79d69864e4e7f4075546fcd01a94e85bc005d))
+* handle existing legacy db trees but new captures ([c99d80f](https://github.com/Greenstand/treetracker-field-data/commit/c99d80ffc14451603d3e6972953a58ba4e38b603))
+* minor bug ([34f3ce3](https://github.com/Greenstand/treetracker-field-data/commit/34f3ce30347cb46c49f6601b0761f8740ad27f6d))
+* rotation matrix unsafe number ([04713e6](https://github.com/Greenstand/treetracker-field-data/commit/04713e6b56a8296980bb56489463d74b5a3364a6))
+
 ## [1.8.22](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.21...v1.8.22) (2022-03-08)
 
 
