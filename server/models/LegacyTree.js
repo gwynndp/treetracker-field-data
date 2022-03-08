@@ -52,6 +52,12 @@ const createTreesInMainDB = (
 ) => async (tree, attributes) => {
   const legacyTreeRepository = new Repository(legacyTreeRepoImpl);
   const legacyAttributesRepository = new Repository(legacyTreeAttrRepoImpl);
+  const existingTree = await legacyTreeRepository.getByFilter({
+    uuid: tree.uuid,
+  });
+
+  if (existingTree.length > 0)
+    return { entity: existingTree[0], raisedEvents: [] };
   const result = await legacyTreeRepository.add(tree);
   const tree_attributes = attributes.map((attribute) => ({
     tree_id: result.id,
