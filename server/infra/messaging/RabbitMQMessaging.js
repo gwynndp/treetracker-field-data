@@ -1,6 +1,6 @@
 const Broker = require('rascal').BrokerAsPromised;
 const log = require('loglevel');
-const {config} = require('./config');
+const { config } = require('./config');
 
 // log.warn("config for MQ:", config);
 

@@ -10,20 +10,27 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-            - matchExpressions:
-              - key: doks.digitalocean.com/node-pool
-                operator: In
-                values:
-                - microservices-node-pool
+              - matchExpressions:
+                  - key: doks.digitalocean.com/node-pool
+                    operator: In
+                    values:
+                      - microservices-node-pool
       containers:
-      - name: migration
-        image: greenstand/treetracker-field-data:VERSION
-        env:
-          - name: DATABASE_URL
-            valueFrom:
-              secretKeyRef:
-                name: database-migration-connection
-                key: db
-        command: ["node"]
-        args: ["node_modules/db-migrate/bin/db-migrate", "up", "--migrations-dir", "database/migrations/", "-v"]
+        - name: migration
+          image: greenstand/treetracker-field-data:VERSION
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: database-migration-connection
+                  key: db
+          command: ['node']
+          args:
+            [
+              'node_modules/db-migrate/bin/db-migrate',
+              'up',
+              '--migrations-dir',
+              'database/migrations/',
+              '-v',
+            ]
       restartPolicy: Never

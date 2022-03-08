@@ -471,10 +471,7 @@
                           "type": "string"
                         }
                       },
-                      "required": [
-                        "key",
-                        "value"
-                      ]
+                      "required": ["key", "value"]
                     }
                   },
                   "captured_at": {
@@ -900,10 +897,7 @@
                 "properties": {
                   "status": {
                     "type": "string",
-                    "enum": [
-                      "raised",
-                      "received"
-                    ]
+                    "enum": ["raised", "received"]
                   }
                 }
               }
@@ -951,9 +945,7 @@
           },
           "extra_attributes": {
             "type": "object",
-            "required": [
-              "entries"
-            ],
+            "required": ["entries"],
             "properties": {
               "entries": {
                 "type": "array",
@@ -970,10 +962,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "key",
-                    "value"
-                  ]
+                  "required": ["key", "value"]
                 }
               }
             }
