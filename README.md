@@ -1,7 +1,6 @@
 # Field data service
-
+ 
 A service that owns the raw tree tracking data uploaded from devices collected via treetracker app. 
-
 
 ## Development Environment Quick Start
 
