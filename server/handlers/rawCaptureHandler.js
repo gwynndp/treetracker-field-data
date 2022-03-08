@@ -58,7 +58,7 @@ const rawCaptureGet = async (req, res, next) => {
 
 const rawCapturePost = async (req, res, next) => {
   log.warn('raw capture post...');
-  delete req.body.extra_attribures; // remove extra_attributes until implemented on mobile side
+  delete req.body.extra_attributes; // remove extra_attributes until implemented on mobile side
   await rawCaptureSchema.validateAsync(req.body, { abortEarly: false });
   const session = new Session(false);
   const migrationSession = new Session(true);
