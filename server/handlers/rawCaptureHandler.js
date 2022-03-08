@@ -60,9 +60,9 @@ const rawCapturePost = async (req, res, next) => {
   log.warn('raw capture post...');
   delete req.body.extra_attributes; // remove extra_attributes until implemented on mobile side
   const body = req.body;
-  if(body.rotation_matrix != null){
-    for( let i=0; i<body.rotation_matrix.length(); i++){
-      if(body.rotation_matrix[i] < .001){
+  if (body.rotation_matrix != null) {
+    for (let i = 0; i < body.rotation_matrix.length; i++) {
+      if (body.rotation_matrix[i] < 0.001) {
         body.rotation_matrix[i] = 0;
       }
     }
