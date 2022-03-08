@@ -58,8 +58,16 @@ const rawCaptureGet = async (req, res, next) => {
 
 const rawCapturePost = async (req, res, next) => {
   log.warn('raw capture post...');
-  delete req.body.extra_attribures; // remove extra_attributes until implemented on mobile side
-  await rawCaptureSchema.validateAsync(req.body, { abortEarly: false });
+  delete req.body.extra_attributes; // remove extra_attributes until implemented on mobile side
+  const body = req.body;
+  if (body.rotation_matrix != null) {
+    for (let i = 0; i < body.rotation_matrix.length; i++) {
+      if (body.rotation_matrix[i] < 0.001) {
+        body.rotation_matrix[i] = 0;
+      }
+    }
+  }
+  await rawCaptureSchema.validateAsync(body, { abortEarly: false });
   const session = new Session(false);
   const migrationSession = new Session(true);
   const captureRepo = new RawCaptureRepository(session);
@@ -82,7 +90,7 @@ const rawCapturePost = async (req, res, next) => {
 
   try {
     const existingCapture = await captureRepo.getByFilter({
-      'raw_capture.id': req.body.id,
+      'raw_capture.id': body.id,
     });
     const [rawCapture] = existingCapture;
     if (rawCapture) {
@@ -96,28 +104,28 @@ const rawCapturePost = async (req, res, next) => {
     } else {
       let sessionObject = {};
       const sessionArray = await sessionRepo.getSession({
-        'session.id': req.body.session_id,
+        'session.id': body.session_id,
       });
       if (!sessionArray.length) {
         throw new HttpError(
           409,
-          `A session resource with id, ${req.body.session_id} has yet to be created, kindly retry later`,
+          `A session resource with id, ${body.session_id} has yet to be created, kindly retry later`,
         );
       }
       [sessionObject] = sessionArray;
       await migrationSession.beginTransaction();
       const legacyTreeObject = await LegacyTree({
-        ...req.body,
+        ...body,
         ...sessionObject,
         session: migrationSession,
       });
       const { entity: tree } = await legacyDataMigration(
         { ...legacyTreeObject },
-        req.body.attributes || [],
+        body.attributes || [],
       );
       const rawCapture = rawCaptureFromRequest({
         reference_id: tree.id,
-        ...req.body,
+        ...body,
       });
       await session.beginTransaction();
 

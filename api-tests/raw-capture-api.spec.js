@@ -48,6 +48,11 @@ const capture = {
   id: 'f385f789-d08a-4c19-b8d8-c78370089bb3',
 };
 
+const captureWithExistingTree = {
+  ...requestObject.request_object,
+  id: '55a17810-5937-4427-b9dd-dc6461e584e2',
+};
+
 const domainEventObject = {
   id: 'e876107a-2a7c-442b-9e57-880d596e1025',
   payload: {
@@ -91,6 +96,11 @@ describe('Raw Captures', () => {
       created_at: new Date(),
       updated_at: new Date(),
     });
+    await knex('public.trees').insert({
+      uuid: captureWithExistingTree.id,
+      time_created: new Date(),
+      time_updated: new Date(),
+    });
   });
 
   after(async () => {
@@ -133,6 +143,19 @@ describe('Raw Captures', () => {
       });
   });
 
+  it(`Should handle new captures with existing tree in the legacy database`, function (done) {
+    request(server)
+      .post(`/raw-captures`)
+      .send(captureWithExistingTree)
+      .set('Accept', 'application/json')
+      .expect(201)
+      .end(function (err, res) {
+        expect(res.body.id).to.eql(captureWithExistingTree.id);
+        if (err) return done(err);
+        return done();
+      });
+  });
+
   it('should resend capture created event if it wasnt successful last time and capture already exists', async () => {
     const res = await request(server)
       .post(`/raw-captures`)
@@ -164,6 +187,6 @@ describe('Raw Captures', () => {
     const numOfEmittedEvents = await knex('domain_event')
       .count()
       .where({ status: 'sent' });
-    expect(+numOfEmittedEvents[0].count).to.eql(2);
+    expect(+numOfEmittedEvents[0].count).to.eql(3);
   });
 });
