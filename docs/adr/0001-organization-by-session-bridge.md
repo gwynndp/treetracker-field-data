@@ -1,4 +1,4 @@
-# Track organizations using the session based organiztion field in android v2.0
+# Track organizations using the session based organization field in android v2.0
 
 * Status: accepted
 * Deciders: Zaven, Seb
