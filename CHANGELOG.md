@@ -1,3 +1,11 @@
+## [1.8.24](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.23...v1.8.24) (2022-03-17)
+
+
+### Bug Fixes
+
+* allow pseudoemails ([b121965](https://github.com/Greenstand/treetracker-field-data/commit/b121965db81a769b9bc0c5ce5cf6ff571144991e))
+* linting ([f0ea12b](https://github.com/Greenstand/treetracker-field-data/commit/f0ea12b61eaed84cedfecdac6b564bc4b60a7751))
+
 ## [1.8.23](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.22...v1.8.23) (2022-03-08)
 
 
