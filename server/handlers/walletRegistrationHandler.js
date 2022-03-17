@@ -18,7 +18,7 @@ const walletRegistrationPostSchema = Joi.object({
   first_name: Joi.string().required(),
   last_name: Joi.string().required(),
   phone: Joi.string().allow(null),
-  email: Joi.string().email().allow(null),
+  email: Joi.string().pattern(/.*@.*/).allow(null),
   lat: Joi.number().required().min(-90).max(90).required(),
   lon: Joi.number().required().min(-180).max(180).required(),
   registered_at: Joi.string().isoDate(),

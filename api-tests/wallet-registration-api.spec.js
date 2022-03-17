@@ -37,6 +37,21 @@ describe('Wallet Registration', () => {
       });
   });
 
+  it(`Wallet Registration should be successfully added w/ quasi-email`, function (done) {
+    const modifiedWalletRegistration = { ...walletRegistrationObject };
+    modifiedWalletRegistration.email = 'mobile@test';
+    request(server)
+      .post(`/wallet-registration`)
+      .send(walletRegistrationObject)
+      .set('Accept', 'application/json')
+      .expect(201)
+      .end(function (err, res) {
+        if (err) return done(err);
+        expect(res.body.id).to.eql(walletRegistrationObject.id);
+        return done();
+      });
+  });
+
   it(`Should handle duplicates`, function (done) {
     request(server)
       .post(`/wallet-registration`)
