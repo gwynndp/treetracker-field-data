@@ -1,3 +1,10 @@
+## [1.8.25](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.24...v1.8.25) (2022-03-24)
+
+
+### Bug Fixes
+
+* add organization id to session column, following https://github.com/Greenstand/treetracker-field-data/blob/main/docs/adr/0001-organization-by-session-bridge.md ([df400fa](https://github.com/Greenstand/treetracker-field-data/commit/df400fa727d35daaaf7867a854382ada23e199ed))
+
 ## [1.8.24](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.23...v1.8.24) (2022-03-17)
 
 
