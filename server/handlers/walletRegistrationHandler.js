@@ -1,14 +1,10 @@
 const Joi = require('joi');
-const log = require('loglevel');
-
-const Session = require('../infra/database/Session');
-
-const WalletRegistrationRepository = require('../infra/database/WalletRegistrationRepository');
+const HttpError = require('../utils/HttpError');
+const WalletRegistrationService = require('../services/WalletRegistrationService');
 const {
-  getWalletRegistration,
-  WalletRegistration,
-} = require('../models/WalletRegistration');
-const HttpError = require('./HttpError');
+  getFilterAndLimitOptions,
+  generatePrevAndNext,
+} = require('../utils/helper');
 
 const walletRegistrationPostSchema = Joi.object({
   id: Joi.string().uuid().required(),
@@ -29,7 +25,12 @@ const walletRegistrationIdParamSchema = Joi.object({
   wallet_registration_id: Joi.string().uuid().required(),
 }).unknown(false);
 
-const walletRegistrationPost = async function (req, res, next) {
+const walletRegistrationGetQuerySchema = Joi.object({
+  offset: Joi.number().integer().greater(-1),
+  limit: Joi.number().integer().greater(0),
+});
+
+const walletRegistrationPost = async function (req, res) {
   await walletRegistrationPostSchema.validateAsync(req.body, {
     abortEarly: false,
   });
@@ -38,48 +39,46 @@ const walletRegistrationPost = async function (req, res, next) {
     throw new HttpError(422, 'Either phone or email is required');
   }
 
-  const session = new Session();
-  const walletRegistrationRepo = new WalletRegistrationRepository(session);
+  const walletRegistrationService = new WalletRegistrationService();
 
-  try {
-    const newWalletRegistration = {
-      ...req.body,
-    };
-    const { id } = newWalletRegistration;
-    const existingWalletRegistration = await walletRegistrationRepo.getByFilter(
-      { id },
-    );
+  const {
+    walletRegistration,
+    status,
+  } = await walletRegistrationService.createWalletRegistration(req.body);
 
-    const [walletRegistration] = existingWalletRegistration;
-
-    if (!walletRegistration) {
-      await session.beginTransaction();
-      const createdWalletRegistration = await walletRegistrationRepo.create(
-        newWalletRegistration,
-      );
-      await session.commitTransaction();
-      return res.status(201).json(createdWalletRegistration);
-    }
-    res.status(200).json(walletRegistration);
-  } catch (e) {
-    log.warn(e);
-    if (session.isTransactionInProgress()) {
-      await session.rollbackTransaction();
-    }
-    next(e);
-  }
+  res.status(status).json(walletRegistration);
 };
 
 const walletRegistrationGet = async function (req, res) {
-  const session = new Session();
-  const walletRegistrationRepo = new WalletRegistrationRepository(session);
+  await walletRegistrationGetQuerySchema.validateAsync(req.query, {
+    abortEarly: false,
+  });
 
-  const executeGetWalletRegistration = getWalletRegistration(
-    walletRegistrationRepo,
+  const { filter, limitOptions } = getFilterAndLimitOptions(req.query);
+
+  const walletRegistrationService = new WalletRegistrationService();
+  const walletRegistrations = await walletRegistrationService.getWalletRegistrations(
+    filter,
+    limitOptions,
   );
-  const walletRegistrations = await executeGetWalletRegistration();
+  const count = await walletRegistrationService.getWalletRegistrationsCount(
+    filter,
+  );
 
-  res.send(walletRegistrations);
+  const url = 'wallet-registration';
+
+  const links = generatePrevAndNext({
+    url,
+    count,
+    limitOptions,
+    queryObject: { ...filter, ...limitOptions },
+  });
+
+  res.send({
+    wallet_registrations: walletRegistrations,
+    links,
+    query: { count, ...limitOptions, ...filter },
+  });
 };
 
 const walletRegistrationSingleGet = async function (req, res) {
@@ -87,16 +86,19 @@ const walletRegistrationSingleGet = async function (req, res) {
     abortEarly: false,
   });
 
-  const session = new Session();
-  const walletRegistrationRepo = new WalletRegistrationRepository(session);
+  const walletRegistrationService = new WalletRegistrationService();
+  const walletRegistration = await walletRegistrationService.getWalletRegistrationById(
+    req.params.wallet_registration_id,
+  );
 
-  const walletRegistrations = await walletRegistrationRepo.getByFilter({
-    id: req.params.wallet_registration_id,
-  });
+  if (!walletRegistration?.id) {
+    throw new HttpError(
+      404,
+      `wallet registration with ${req.params.wallet_registration_id} not found`,
+    );
+  }
 
-  const [walletRegistration = {}] = walletRegistrations;
-
-  res.send(WalletRegistration(walletRegistration));
+  res.send(walletRegistration);
 };
 
 module.exports = {

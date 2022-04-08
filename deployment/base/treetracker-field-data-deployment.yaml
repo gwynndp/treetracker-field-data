@@ -36,7 +36,7 @@ spec:
                   key: db
             - name: DATABASE_SCHEMA
               value: field_data
-            - name: DATABASE_URL_MAINDB
+            - name: DATABASE_URL_LEGACYDB
               valueFrom:
                 secretKeyRef:
                   name: database-connection

@@ -1,3 +1,3 @@
 exports.connectionString = process.env.DATABASE_URL;
-exports.connectionStringMainDB = process.env.DATABASE_URL_MAINDB;
+exports.connectionStringLegacyDB = process.env.DATABASE_URL_LEGACYDB;
 exports.sentryDSN = '';

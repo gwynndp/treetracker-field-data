@@ -1,9 +1,15 @@
 const Joi = require('joi');
-const log = require('loglevel');
+const SessionService = require('../services/SessionService');
+const HttpError = require('../utils/HttpError');
+const {
+  getFilterAndLimitOptions,
+  generatePrevAndNext,
+} = require('../utils/helper');
 
-const Session = require('../infra/database/Session');
-const SessionRepository = require('../infra/database/SessionRepository');
-const { getSession, SessionModel } = require('../models/SessionModel');
+const sessionGetQuerySchema = Joi.object({
+  offset: Joi.number().integer().greater(-1),
+  limit: Joi.number().integer().greater(0),
+});
 
 const sessionPostSchema = Joi.object({
   id: Joi.string().uuid().required(),
@@ -19,47 +25,38 @@ const sessionIdParamSchema = Joi.object({
   session_id: Joi.string().uuid().required(),
 }).unknown(false);
 
-const sessionPost = async function (req, res, next) {
+const sessionPost = async function (req, res) {
   await sessionPostSchema.validateAsync(req.body, {
     abortEarly: false,
   });
 
-  const session = new Session();
-  const sessionRepo = new SessionRepository(session);
+  const sessionService = new SessionService();
+  const { session, status } = await sessionService.createSession(req.body);
 
-  try {
-    const newSession = {
-      ...req.body,
-      created_at: new Date().toISOString(),
-    };
-    const { id } = newSession;
-    const existingSession = await sessionRepo.getByFilter({ id });
-    const [dbSession] = existingSession;
-
-    if (!dbSession) {
-      await session.beginTransaction();
-      const createdSession = await sessionRepo.create(newSession);
-      await session.commitTransaction();
-      return res.status(201).json(createdSession);
-    }
-    res.status(200).json(dbSession);
-  } catch (e) {
-    log.warn(e);
-    if (session.isTransactionInProgress()) {
-      await session.rollbackTransaction();
-    }
-    next(e);
-  }
+  res.status(status).send(session);
 };
 
 const sessionGet = async function (req, res) {
-  const session = new Session();
-  const sessionRepo = new SessionRepository(session);
+  await sessionGetQuerySchema.validateAsync(req.query, {
+    abortEarly: false,
+  });
 
-  const executeGetSession = getSession(sessionRepo);
-  const sessions = await executeGetSession();
+  const { filter, limitOptions } = getFilterAndLimitOptions(req.query);
 
-  res.send(sessions);
+  const sessionService = new SessionService();
+  const sessions = await sessionService.getSessions(filter, limitOptions);
+  const count = await sessionService.getSessionsCount(filter);
+
+  const url = 'session';
+
+  const links = generatePrevAndNext({
+    url,
+    count,
+    limitOptions,
+    queryObject: { ...filter, ...limitOptions },
+  });
+
+  res.send({ sessions, links, query: { count, ...limitOptions, ...filter } });
 };
 
 const sessionSingleGet = async function (req, res) {
@@ -67,16 +64,15 @@ const sessionSingleGet = async function (req, res) {
     abortEarly: false,
   });
 
-  const session = new Session();
-  const sessionRepo = new SessionRepository(session);
+  const sessionService = new SessionService();
 
-  const dbSessions = await sessionRepo.getByFilter({
-    id: req.params.session_id,
-  });
+  const session = await sessionService.getSessionById(req.params.session_id);
 
-  const [dbSession = {}] = dbSessions;
+  if (!session?.id) {
+    throw new HttpError(404, `session with ${req.params.session_id} not found`);
+  }
 
-  res.send(SessionModel(dbSession));
+  res.send(session);
 };
 
 module.exports = {

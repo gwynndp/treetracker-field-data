@@ -15,7 +15,7 @@ const knexConfig = {
 const knex = require('knex')(knexConfig);
 
 (async () => {
-  console.log('query');
+  log.log('query');
   const j = 0;
   while (j < 500) {
     const rows = await knex
@@ -27,7 +27,7 @@ const knex = require('knex')(knexConfig);
       .whereNotNull('planter_identifier')
       .limit(1000);
 
-    console.log('got');
+    log.log('got');
     let i = 0;
     await rows.forEach(async (row) => {
       const { id, device_identifier, planter_identifier } = row;
@@ -45,4 +45,4 @@ const knex = require('knex')(knexConfig);
       log.info(i);
     });
   }
-})().catch((e) => console.error(e.stack));
+})().catch((e) => log.error(e.stack));

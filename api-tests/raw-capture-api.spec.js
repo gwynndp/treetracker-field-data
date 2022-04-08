@@ -4,7 +4,7 @@ const server = require('../server/app');
 const { expect } = require('chai');
 const sinon = require('sinon');
 const Broker = require('rascal').BrokerAsPromised;
-const { knex, knexMainDB } = require('../server/infra/database/knex');
+const { knex, knexLegacyDB } = require('../server/infra/database/knex');
 const { sessionObject } = require('./session-api.spec');
 const { walletRegistrationObject } = require('./wallet-registration-api.spec');
 const {
@@ -69,6 +69,14 @@ describe('Raw Captures', () => {
     brokerStub = sinon.stub(Broker, 'create').resolves({
       publish: () => {
         return {
+          on: function (state, callback) {
+            if (state === 'success') callback();
+            return this;
+          },
+        };
+      },
+      subscribe: () => {
+        return {
           on: (state, callback) => {
             if (state === 'success') callback();
           },
@@ -76,7 +84,7 @@ describe('Raw Captures', () => {
       },
     });
 
-    await knexMainDB('public.planter').insert({
+    await knexLegacyDB('public.planter').insert({
       email: walletRegistrationObject.wallet,
       first_name: 'first_name',
       last_name: 'last_name',
@@ -106,9 +114,9 @@ describe('Raw Captures', () => {
   after(async () => {
     brokerStub.restore();
 
-    await knexMainDB('tree_attributes').del();
-    await knexMainDB('trees').del();
-    await knexMainDB('planter').del();
+    await knexLegacyDB('tree_attributes').del();
+    await knexLegacyDB('trees').del();
+    await knexLegacyDB('planter').del();
     await knex('domain_event').del();
     await knex('raw_capture').del();
     await knex('session').del();
@@ -117,7 +125,7 @@ describe('Raw Captures', () => {
   });
 
   const request_object = new RequestObject();
-  it.only(`Raw capture should be successfully added`, function (done) {
+  it(`Raw capture should be successfully added`, function (done) {
     request(server)
       .post(`/raw-captures`)
       .send(request_object.request_object)
@@ -169,7 +177,7 @@ describe('Raw Captures', () => {
     const res = await request(server).get(`/raw-captures`).expect(200);
 
     expect(
-      res.body.some(
+      res.body.raw_captures.some(
         (raw_capture) => raw_capture.id === request_object.request_object.id,
       ),
     ).to.equal(true);

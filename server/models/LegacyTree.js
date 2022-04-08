@@ -6,65 +6,71 @@
  * is really capture_metadata and has to be owned by a future capture service context and the current
  * trees table in treetracker db is really a tree capture table and do not represent a unique tree..
  */
-const HttpError = require('../handlers/HttpError');
-const { Repository } = require('./Repository');
-const LegacyPlanterRepository = require('../infra/database/LegacyPlanterRepository');
+const HttpError = require('../utils/HttpError');
+const LegacyPlanterRepository = require('../repositories/Legacy/PlanterRepository');
+const LegacyTreeRepository = require('../repositories/Legacy/TreeRepository');
+const LegacyTreeAttributeRepository = require('../repositories/Legacy/TreeAttributeRepository');
 
-const LegacyTree = async ({
-  id,
-  image_url,
-  lat,
-  lon,
-  device_identifier = null,
-  wallet = null,
-  user_photo_url = null,
-  note = '',
-  captured_at,
-  session,
-}) => {
-  const legacyPlanterRepo = new LegacyPlanterRepository(session);
-  const planter = await legacyPlanterRepo.findUser(wallet);
+class LegacyTree {
+  constructor(session) {
+    this._session = session;
+  }
 
-  if (!planter)
-    throw new HttpError(
-      422,
-      'Legacy planter has not been created for the legacy tree',
-    );
-
-  return Object.freeze({
-    uuid: id,
+  async legacyTree({
+    id,
     image_url,
     lat,
     lon,
-    planter_id: planter.id,
-    planter_identifier: wallet,
-    planter_photo_url: user_photo_url,
-    device_identifier,
-    note,
-    time_created: captured_at,
-    time_updated: captured_at,
-  });
-};
+    device_identifier = null,
+    wallet = null,
+    user_photo_url = null,
+    note = '',
+    captured_at,
+  }) {
+    const legacyPlanterRepo = new LegacyPlanterRepository(this._session);
+    const planter = await legacyPlanterRepo.findUser(wallet);
 
-const createTreesInMainDB = (
-  legacyTreeRepoImpl,
-  legacyTreeAttrRepoImpl,
-) => async (tree, attributes) => {
-  const legacyTreeRepository = new Repository(legacyTreeRepoImpl);
-  const legacyAttributesRepository = new Repository(legacyTreeAttrRepoImpl);
-  const existingTree = await legacyTreeRepository.getByFilter({
-    uuid: tree.uuid,
-  });
+    if (!planter)
+      throw new HttpError(
+        422,
+        'Legacy planter has not been created for the legacy tree',
+      );
 
-  if (existingTree.length > 0)
-    return { entity: existingTree[0], raisedEvents: [] };
-  const result = await legacyTreeRepository.add(tree);
-  const tree_attributes = attributes.map((attribute) => ({
-    tree_id: result.id,
-    ...attribute,
-  }));
-  await legacyAttributesRepository.add(tree_attributes);
-  return { entity: result, raisedEvents: [] };
-};
+    return Object.freeze({
+      uuid: id,
+      image_url,
+      lat,
+      lon,
+      planter_id: planter.id,
+      planter_identifier: wallet,
+      planter_photo_url: user_photo_url,
+      device_identifier,
+      note,
+      time_created: captured_at,
+      time_updated: captured_at,
+    });
+  }
 
-module.exports = { createTreesInMainDB, LegacyTree };
+  async createTreesInLegacyDB(tree, attributes) {
+    const legacyTreeRepository = new LegacyTreeRepository(this._session);
+    const legacyAttributesRepository = new LegacyTreeAttributeRepository(
+      this._session,
+    );
+    const existingTree = await legacyTreeRepository.getByFilter({
+      uuid: tree.uuid,
+    });
+
+    if (existingTree.length > 0) return existingTree[0];
+    const result = await legacyTreeRepository.create(tree);
+    const tree_attributes = attributes.map((attribute) => ({
+      tree_id: result.id,
+      ...attribute,
+    }));
+    if (tree_attributes.length) {
+      await legacyAttributesRepository.create(tree_attributes);
+    }
+    return result;
+  }
+}
+
+module.exports = LegacyTree;

@@ -39,15 +39,16 @@ describe('Wallet Registration', () => {
 
   it(`Wallet Registration should be successfully added w/ quasi-email`, function (done) {
     const modifiedWalletRegistration = { ...walletRegistrationObject };
+    modifiedWalletRegistration.id = '4a6ad9e7-8ee3-49f5-a3a3-242bb2f6673a';
     modifiedWalletRegistration.email = 'mobile@test';
     request(server)
       .post(`/wallet-registration`)
-      .send(walletRegistrationObject)
+      .send(modifiedWalletRegistration)
       .set('Accept', 'application/json')
       .expect(201)
       .end(function (err, res) {
         if (err) return done(err);
-        expect(res.body.id).to.eql(walletRegistrationObject.id);
+        expect(res.body.id).to.eql(modifiedWalletRegistration.id);
         return done();
       });
   });
@@ -71,7 +72,7 @@ describe('Wallet Registration', () => {
       .expect(200);
 
     expect(
-      response.body.some(
+      response.body.wallet_registrations.some(
         (walletRegistration) =>
           walletRegistration.id === walletRegistrationObject.id,
       ),

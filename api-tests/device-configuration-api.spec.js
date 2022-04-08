@@ -57,7 +57,7 @@ describe('Device Configuration', () => {
       .expect(200);
 
     expect(
-      response.body.some(
+      response.body.device_configurations.some(
         (walletRegistration) =>
           walletRegistration.id === deviceConfigurationObject.id,
       ),

@@ -1,4 +1,4 @@
-const BaseRepository = require('./BaseRepository');
+const BaseRepository = require('../BaseRepository');
 
 class LegacyPlanterRepository extends BaseRepository {
   constructor(session) {
@@ -8,7 +8,7 @@ class LegacyPlanterRepository extends BaseRepository {
   }
 
   async findUser(planter_identifier) {
-    return await this._session
+    return this._session
       .getDB()
       .select()
       .table(this._tableName)

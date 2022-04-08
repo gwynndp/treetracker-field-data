@@ -1,12 +1,10 @@
 const Joi = require('joi');
-const log = require('loglevel');
-
-const Session = require('../infra/database/Session');
-const DeviceConfigurationRepository = require('../infra/database/DeviceConfigurationRepository');
 const {
-  getDeviceConfiguration,
-  DeviceConfiguration,
-} = require('../models/DeviceConfiguration');
+  getFilterAndLimitOptions,
+  generatePrevAndNext,
+} = require('../utils/helper');
+const DeviceConfigurationService = require('../services/DeviceConfigurationService');
+const HttpError = require('../utils/HttpError');
 
 const deviceConfigurationPostSchema = Joi.object({
   id: Joi.string().uuid().required(),
@@ -28,54 +26,56 @@ const deviceConfigurationIdParamSchema = Joi.object({
   device_configuration_id: Joi.string().uuid().required(),
 }).unknown(false);
 
-const deviceConfigurationPost = async function (req, res, next) {
+const deviceConfigurationGetQuerySchema = Joi.object({
+  offset: Joi.number().integer().greater(-1),
+  limit: Joi.number().integer().greater(0),
+});
+
+const deviceConfigurationPost = async function (req, res) {
   await deviceConfigurationPostSchema.validateAsync(req.body, {
     abortEarly: false,
   });
 
-  const session = new Session();
-  const deviceConfigurationRepo = new DeviceConfigurationRepository(session);
+  const deviceConfigurationService = new DeviceConfigurationService();
 
-  try {
-    const newDeviceConfiguration = {
-      ...req.body,
-      created_at: new Date().toISOString(),
-    };
-    const { id } = newDeviceConfiguration;
-    const existingDeviceConfiguration = await deviceConfigurationRepo.getByFilter(
-      { id },
-    );
+  const {
+    deviceConfiguration,
+    status,
+  } = await deviceConfigurationService.createDeviceConfiguration(req.body);
 
-    const [deviceConfiguration] = existingDeviceConfiguration;
-
-    if (!deviceConfiguration) {
-      await session.beginTransaction();
-      const createdDeviceConfiguration = await deviceConfigurationRepo.create(
-        newDeviceConfiguration,
-      );
-      await session.commitTransaction();
-      return res.status(201).json(createdDeviceConfiguration);
-    }
-    res.status(200).json(deviceConfiguration);
-  } catch (e) {
-    log.warn(e);
-    if (session.isTransactionInProgress()) {
-      await session.rollbackTransaction();
-    }
-    next(e);
-  }
+  res.status(status).json(deviceConfiguration);
 };
 
 const deviceConfigurationGet = async function (req, res) {
-  const session = new Session();
-  const deviceConfigurationRepo = new DeviceConfigurationRepository(session);
+  await deviceConfigurationGetQuerySchema.validateAsync(req.query, {
+    abortEarly: false,
+  });
 
-  const executeGetDeviceConfigurations = getDeviceConfiguration(
-    deviceConfigurationRepo,
+  const { filter, limitOptions } = getFilterAndLimitOptions(req.query);
+  const deviceConfigurationService = new DeviceConfigurationService();
+
+  const deviceConfigurations = await deviceConfigurationService.getDeviceConfigurations(
+    filter,
+    limitOptions,
   );
-  const deviceConfigurations = await executeGetDeviceConfigurations();
+  const count = await deviceConfigurationService.getDeviceConfigurationsCount(
+    filter,
+  );
 
-  res.send(deviceConfigurations);
+  const url = 'device-configuration';
+
+  const links = generatePrevAndNext({
+    url,
+    count,
+    limitOptions,
+    queryObject: { ...filter, ...limitOptions },
+  });
+
+  res.send({
+    device_configurations: deviceConfigurations,
+    links,
+    query: { count, ...limitOptions, ...filter },
+  });
 };
 
 const deviceConfigurationSingleGet = async function (req, res) {
@@ -83,16 +83,19 @@ const deviceConfigurationSingleGet = async function (req, res) {
     abortEarly: false,
   });
 
-  const session = new Session();
-  const deviceConfigurationRepo = new DeviceConfigurationRepository(session);
+  const deviceConfigurationService = new DeviceConfigurationService();
+  const deviceConfiguration = await deviceConfigurationService.getDeviceConfigurationById(
+    req.params.device_configuration_id,
+  );
 
-  const deviceConfigurations = await deviceConfigurationRepo.getByFilter({
-    id: req.params.device_configuration_id,
-  });
+  if (!deviceConfiguration?.id) {
+    throw new HttpError(
+      404,
+      `device configuration with ${req.params.device_configuration_id} not found`,
+    );
+  }
 
-  const [deviceConfiguration = {}] = deviceConfigurations;
-
-  res.send(DeviceConfiguration(deviceConfiguration));
+  res.send(deviceConfiguration);
 };
 
 module.exports = {

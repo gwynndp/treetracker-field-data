@@ -22,7 +22,7 @@ const {
   sessionGet,
   sessionSingleGet,
 } = require('./handlers/sessionHandler.js');
-const { handlerWrapper } = require('./handlers/utils');
+const { handlerWrapper } = require('./utils/utils');
 
 router
   .route('/wallet-registration')

@@ -1,6 +1,5 @@
 const expect = require('expect-runtime');
-const Session = require('./Session');
-const HttpError = require('../../handlers/HttpError');
+const HttpError = require('../utils/HttpError');
 
 class BaseRepository {
   constructor(tableName, session) {
@@ -34,7 +33,7 @@ class BaseRepository {
       if (object.and) {
         expect(Object.keys(object)).lengthOf(1);
         expect(object.and).a(expect.any(Array));
-        for (const one of object.and) {
+        object.and.forEach((one) => {
           if (one.or) {
             result = result.andWhere((subBuilder) =>
               whereBuilder(one, subBuilder),
@@ -46,11 +45,11 @@ class BaseRepository {
               Object.values(one)[0],
             );
           }
-        }
+        });
       } else if (object.or) {
         expect(Object.keys(object)).lengthOf(1);
         expect(object.or).a(expect.any(Array));
-        for (const one of object.or) {
+        object.or.forEach((one) => {
           if (one.and) {
             result = result.orWhere((subBuilder) =>
               whereBuilder(one, subBuilder),
@@ -59,7 +58,7 @@ class BaseRepository {
             expect(Object.keys(one)).lengthOf(1);
             result = result.orWhere(Object.keys(one)[0], Object.values(one)[0]);
           }
-        }
+        });
       } else {
         result.where(object);
       }
@@ -72,6 +71,9 @@ class BaseRepository {
       .where((builder) => whereBuilder(filter, builder));
     if (options && options.limit) {
       promise = promise.limit(options && options.limit);
+    }
+    if (options && options.offset) {
+      promise = promise.offset(options && options.offset);
     }
     const result = await promise;
     expect(result).a(expect.any(Array));
@@ -93,7 +95,6 @@ class BaseRepository {
   }
 
   async update(object) {
-    console.log(JSON.stringify(object));
     const result = await this._session
       .getDB()(this._tableName)
       .update(object)
@@ -101,7 +102,7 @@ class BaseRepository {
       .returning('*');
     expect(result).match([
       {
-        id: expect.anything(),
+        id: expect.any(Number),
       },
     ]);
     return result[0];

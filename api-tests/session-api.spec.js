@@ -63,7 +63,7 @@ describe('Session', () => {
     const response = await request(server).get(`/session`).expect(200);
 
     expect(
-      response.body.some((session) => session.id === sessionObject.id),
+      response.body.sessions.some((session) => session.id === sessionObject.id),
     ).to.equal(true);
 
     const singleGetResponse = await request(server)
