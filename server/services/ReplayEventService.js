@@ -14,7 +14,7 @@ class ReplayEventService {
   }
 
   async replayEvents(status) {
-    const domainEvents = this._domainEvent.getDomainEvents(
+    const domainEvents = await this._domainEvent.getDomainEvents(
       { status },
       { limit: 1000 },
     );
@@ -37,7 +37,7 @@ class ReplayEventService {
             if (typeof eventHandler !== 'undefined' && eventHandler !== null) {
               eventHandlerService.applyEventHandler(eventHandler, domainEvent);
             } else {
-              log.log(
+              log.warn(
                 `Event handler not found for the payload type ${domainEvent.payload.type}`,
               );
             }

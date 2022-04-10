@@ -24,7 +24,10 @@ class EventHandlerService {
     const queueService = new QueueService();
     await queueService.init();
     queueService.subscribeToAdminVerificationEvent((message) =>
-      this.processMessage(DictEventHandlers.VerifyCaptureProcessed, message),
+      this.processMessage(DictEventHandlers.VerifyCaptureProcessed, {
+        ...message,
+        type: 'VerifyCaptureProcessed',
+      }),
     );
   }
 

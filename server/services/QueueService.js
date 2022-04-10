@@ -26,7 +26,10 @@ class QueueService {
   }
 
   subscribeToAdminVerificationEvent(eventHandler) {
-    this._rabbitmq.subscribe('admin-verification', eventHandler);
+    this._rabbitmq.subscribe(
+      SubscriptionNames.ADMIN_VERIFICATION,
+      eventHandler,
+    );
   }
 }
 

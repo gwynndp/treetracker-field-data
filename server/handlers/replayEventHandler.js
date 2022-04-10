@@ -2,7 +2,7 @@ const Joi = require('joi');
 const ReplayEventService = require('../services/ReplayEventService');
 
 const replayEventAPISchema = Joi.object({
-  status: Joi.string().valid('raised', 'received'),
+  status: Joi.string().valid('raised', 'received').required(),
 });
 
 const replayEventPost = async (req, res) => {
