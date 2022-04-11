@@ -17,6 +17,7 @@ class SessionModel {
     grower_account_id,
     wallet,
     user_photo_url,
+    bulk_pack_file_name,
     created_at,
   }) {
     return Object.freeze({
@@ -31,6 +32,7 @@ class SessionModel {
       grower_account_id,
       wallet,
       user_photo_url,
+      bulk_pack_file_name,
       created_at,
     });
   }

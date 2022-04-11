@@ -7,9 +7,10 @@ const Broker = require('rascal').BrokerAsPromised;
 const { knex, knexLegacyDB } = require('../server/infra/database/knex');
 const {
   insertTestCapture,
+  clearDB,
   capture,
   captureRequestObject,
-  clearDB,
+  captureWithExistingTree,
 } = require('./insert-test-capture');
 
 describe('Raw Captures', () => {

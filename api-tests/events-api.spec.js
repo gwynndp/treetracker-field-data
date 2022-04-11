@@ -21,7 +21,7 @@ const domainEventObject1 = {
   updated_at: '2021-05-04 11:24:43',
 };
 
-describe.only('Replay Events API', () => {
+describe('Replay Events API', () => {
   beforeEach(async () => {
     await insertTestCapture(knex, knexLegacyDB);
     await knex('domain_event').insert(domainEventObject1);

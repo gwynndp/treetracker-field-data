@@ -20,6 +20,7 @@ const deviceConfigurationPostSchema = Joi.object({
   os_version: Joi.string().required(),
   sdk_version: Joi.string().required(),
   logged_at: Joi.string().isoDate().required(),
+  bulk_pack_file_name: Joi.string(),
 }).unknown(false);
 
 const deviceConfigurationIdParamSchema = Joi.object({
@@ -29,6 +30,7 @@ const deviceConfigurationIdParamSchema = Joi.object({
 const deviceConfigurationGetQuerySchema = Joi.object({
   offset: Joi.number().integer().greater(-1),
   limit: Joi.number().integer().greater(0),
+  bulk_pack_file_name: Joi.string(),
 });
 
 const deviceConfigurationPost = async function (req, res) {

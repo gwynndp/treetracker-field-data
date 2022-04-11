@@ -9,6 +9,7 @@ const {
 const sessionGetQuerySchema = Joi.object({
   offset: Joi.number().integer().greater(-1),
   limit: Joi.number().integer().greater(0),
+  bulk_pack_file_name: Joi.string(),
 });
 
 const sessionPostSchema = Joi.object({
@@ -19,6 +20,7 @@ const sessionPostSchema = Joi.object({
   check_in_photo_url: Joi.string().uri(),
   track_url: Joi.string().uri(),
   organization: Joi.string().allow(null, ''),
+  bulk_pack_file_name: Joi.string(),
 }).unknown(false);
 
 const sessionIdParamSchema = Joi.object({

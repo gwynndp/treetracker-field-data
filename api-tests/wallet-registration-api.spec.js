@@ -16,6 +16,7 @@ const walletRegistrationObject = {
   lat: 12,
   lon: 12,
   registered_at: new Date().toISOString(),
+  bulk_pack_file_name: 'bulk_pack_file_name',
   v1_legacy_organization: 'legacy',
 };
 

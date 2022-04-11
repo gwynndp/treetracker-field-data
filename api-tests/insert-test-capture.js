@@ -21,6 +21,7 @@ const captureRequestObject = {
       value: "extra's value",
     },
   ],
+  bulk_pack_file_name: 'bulk_pack_file_name',
   captured_at: new Date().toISOString(),
 };
 
@@ -83,4 +84,10 @@ const clearDB = async (knex, knexLegacyDB) => {
   await knex('wallet_registration').del();
 };
 
-module.exports = { captureRequestObject, capture, insertTestCapture, clearDB };
+module.exports = {
+  captureRequestObject,
+  capture,
+  insertTestCapture,
+  clearDB,
+  captureWithExistingTree,
+};

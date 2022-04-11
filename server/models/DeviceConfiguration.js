@@ -20,6 +20,7 @@ class DeviceConfiguration {
     app_version,
     os_version,
     sdk_version,
+    bulk_pack_file_name,
     logged_at,
     created_at,
   }) {
@@ -36,6 +37,7 @@ class DeviceConfiguration {
       app_version,
       os_version,
       sdk_version,
+      bulk_pack_file_name,
       logged_at,
       created_at,
     });

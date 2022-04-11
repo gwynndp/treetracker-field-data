@@ -20,6 +20,7 @@ class WalletRegistration {
     lat,
     lon,
     registered_at,
+    bulk_pack_file_name,
     v1_legacy_organization,
   }) {
     return Object.freeze({
@@ -34,6 +35,7 @@ class WalletRegistration {
       lat,
       lon,
       registered_at,
+      bulk_pack_file_name,
       v1_legacy_organization,
     });
   }

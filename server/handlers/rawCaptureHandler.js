@@ -11,6 +11,7 @@ const rawCaptureGetQuerySchema = Joi.object({
   offset: Joi.number().integer().greater(-1),
   limit: Joi.number().integer().greater(0),
   status: Joi.string().allow('unprocessed', 'approved', 'rejected'),
+  bulk_pack_file_name: Joi.string(),
 }).unknown(false);
 
 const rawCaptureSchema = Joi.object({
@@ -34,6 +35,7 @@ const rawCaptureSchema = Joi.object({
   //   )
   //  .allow(null),
   captured_at: Joi.date().iso().required(),
+  bulk_pack_file_name: Joi.string(),
 }).unknown(false);
 
 const rawCaptureIdParamSchema = Joi.object({
