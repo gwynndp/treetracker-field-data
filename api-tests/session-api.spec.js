@@ -15,6 +15,7 @@ const sessionObject = {
   target_wallet: 'target_wallet',
   check_in_photo_url: 'https://picsum.photos/200',
   track_url: 'https://picsum.photos/200',
+  bulk_pack_file_name: 'bulk_pack_file_name',
   organization: 'organization',
 };
 

@@ -16,6 +16,7 @@ const walletRegistrationObject = {
   lat: 12,
   lon: 12,
   registered_at: new Date().toISOString(),
+  bulk_pack_file_name: 'bulk_pack_file_name',
   v1_legacy_organization: 'legacy',
 };
 
@@ -40,14 +41,15 @@ describe('Wallet Registration', () => {
   it(`Wallet Registration should be successfully added w/ quasi-email`, function (done) {
     const modifiedWalletRegistration = { ...walletRegistrationObject };
     modifiedWalletRegistration.email = 'mobile@test';
+    modifiedWalletRegistration.id = '57761c8f-e077-4869-b964-a7bcb42f6aed';
     request(server)
       .post(`/wallet-registration`)
-      .send(walletRegistrationObject)
+      .send(modifiedWalletRegistration)
       .set('Accept', 'application/json')
       .expect(201)
       .end(function (err, res) {
         if (err) return done(err);
-        expect(res.body.id).to.eql(walletRegistrationObject.id);
+        expect(res.body.id).to.eql(modifiedWalletRegistration.id);
         return done();
       });
   });

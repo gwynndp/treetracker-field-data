@@ -29,6 +29,7 @@ class RequestObject {
           value: "extra's value",
         },
       ],
+      bulk_pack_file_name: 'bulk_pack_file_name',
       captured_at: new Date().toISOString(),
     };
 
@@ -117,7 +118,7 @@ describe('Raw Captures', () => {
   });
 
   const request_object = new RequestObject();
-  it.only(`Raw capture should be successfully added`, function (done) {
+  it(`Raw capture should be successfully added`, function (done) {
     request(server)
       .post(`/raw-captures`)
       .send(request_object.request_object)

@@ -6,6 +6,7 @@ const SessionModel = ({
   check_in_photo_url,
   track_url,
   organization,
+  bulk_pack_file_name,
   created_at,
 }) =>
   Object.freeze({
@@ -16,11 +17,12 @@ const SessionModel = ({
     check_in_photo_url,
     track_url,
     organization,
+    bulk_pack_file_name,
     created_at,
   });
 
 const getSession = (sessionRepository) => async (filterCriteria) => {
-  const sessions = await sessionRepository.getByFilter({});
+  const sessions = await sessionRepository.getByFilter(filterCriteria);
   return sessions.map((row) => SessionModel(row));
 };
 

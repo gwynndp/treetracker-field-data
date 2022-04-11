@@ -11,6 +11,7 @@ const DeviceConfiguration = ({
   app_version,
   os_version,
   sdk_version,
+  bulk_pack_file_name,
   logged_at,
   created_at,
 }) =>
@@ -27,6 +28,7 @@ const DeviceConfiguration = ({
     app_version,
     os_version,
     sdk_version,
+    bulk_pack_file_name,
     logged_at,
     created_at,
   });
@@ -35,7 +37,7 @@ const getDeviceConfiguration = (deviceConfigurationRepository) => async (
   filterCriteria,
 ) => {
   const deviceConfigurations = await deviceConfigurationRepository.getByFilter(
-    {},
+    filterCriteria,
   );
   return deviceConfigurations.map((row) => DeviceConfiguration(row));
 };

@@ -23,6 +23,7 @@ const walletRegistrationPostSchema = Joi.object({
   lon: Joi.number().required().min(-180).max(180).required(),
   registered_at: Joi.string().isoDate(),
   v1_legacy_organization: Joi.string().allow(null, ''),
+  bulk_pack_file_name: Joi.string(),
 }).unknown(false);
 
 const walletRegistrationIdParamSchema = Joi.object({
@@ -77,7 +78,7 @@ const walletRegistrationGet = async function (req, res) {
   const executeGetWalletRegistration = getWalletRegistration(
     walletRegistrationRepo,
   );
-  const walletRegistrations = await executeGetWalletRegistration();
+  const walletRegistrations = await executeGetWalletRegistration(req.query);
 
   res.send(walletRegistrations);
 };

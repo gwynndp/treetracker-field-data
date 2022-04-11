@@ -41,6 +41,7 @@ const rawCaptureSchema = Joi.object({
   //   )
   //  .allow(null),
   captured_at: Joi.date().iso().required(),
+  bulk_pack_file_name: Joi.string(),
 }).unknown(false);
 
 const rawCaptureIdParamSchema = Joi.object({

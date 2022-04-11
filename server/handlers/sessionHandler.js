@@ -13,6 +13,7 @@ const sessionPostSchema = Joi.object({
   check_in_photo_url: Joi.string().uri(),
   track_url: Joi.string().uri(),
   organization: Joi.string().allow(null, ''),
+  bulk_pack_file_name: Joi.string(),
 }).unknown(false);
 
 const sessionIdParamSchema = Joi.object({
@@ -57,7 +58,7 @@ const sessionGet = async function (req, res) {
   const sessionRepo = new SessionRepository(session);
 
   const executeGetSession = getSession(sessionRepo);
-  const sessions = await executeGetSession();
+  const sessions = await executeGetSession(req.query);
 
   res.send(sessions);
 };

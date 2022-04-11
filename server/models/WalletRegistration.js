@@ -10,6 +10,7 @@ const WalletRegistration = ({
   lat,
   lon,
   registered_at,
+  bulk_pack_file_name,
   v1_legacy_organization,
 }) =>
   Object.freeze({
@@ -24,6 +25,7 @@ const WalletRegistration = ({
     lat,
     lon,
     registered_at,
+    bulk_pack_file_name,
     v1_legacy_organization,
   });
 
@@ -31,7 +33,7 @@ const getWalletRegistration = (walletRegistrationRepository) => async (
   filterCriteria,
 ) => {
   const walletRegistrations = await walletRegistrationRepository.getByFilter(
-    {},
+    filterCriteria,
   );
   return walletRegistrations.map((row) => WalletRegistration(row));
 };
