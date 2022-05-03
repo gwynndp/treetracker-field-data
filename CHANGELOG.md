@@ -1,3 +1,13 @@
+## [1.8.26](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.25...v1.8.26) (2022-05-03)
+
+
+### Bug Fixes
+
+* add bulk pack file name ([eb892db](https://github.com/Greenstand/treetracker-field-data/commit/eb892db7f7f4e6b17ded93b968fa2b7c0f4a3c28))
+* add events test ([05a6fac](https://github.com/Greenstand/treetracker-field-data/commit/05a6fac42c95576d8cd0166f18ae3dc23507b7af))
+* merge conflict ([85257c0](https://github.com/Greenstand/treetracker-field-data/commit/85257c0dfa6bd92ca4d4e37a422c6f2b04ea27f9))
+* refactoring ([42a05b1](https://github.com/Greenstand/treetracker-field-data/commit/42a05b181addb0d75bd0e349ceb8ab2aade1dd9b))
+
 ## [1.8.25](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.24...v1.8.25) (2022-03-24)
 
 
