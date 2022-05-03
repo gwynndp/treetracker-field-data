@@ -1,10 +1,10 @@
 const BaseRepository = require('./BaseRepository');
 const { expect } = require('chai');
-const { knex } = require('./knex');
 const mockKnex = require('mock-knex');
-const tracker = mockKnex.getTracker();
 const jestExpect = require('expect');
-const Session = require('./Session');
+const { knex } = require('../infra/database/knex');
+const tracker = mockKnex.getTracker();
+const Session = require('../infra/database/Sessions/Session');
 
 describe('BaseRepository', () => {
   let baseRepository;

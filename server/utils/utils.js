@@ -29,7 +29,7 @@ exports.handlerWrapper = (fn) =>
     });
   };
 
-exports.errorHandler = (err, req, res, next) => {
+exports.errorHandler = (err, req, res, _next) => {
   log.debug('catch error:', err);
   if (err instanceof HttpError) {
     res.status(err.code).send({
@@ -42,6 +42,7 @@ exports.errorHandler = (err, req, res, next) => {
       message: err.details.map((m) => m.message).join(';'),
     });
   } else {
+    log.debug(err);
     res.status(500).send({
       code: 500,
       message: `Unknown error (${err.message})`,

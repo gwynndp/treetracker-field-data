@@ -1,7 +1,7 @@
-const { knexMainDB } = require('../server/infra/database/knex');
+const { knexLegacyDB } = require('../server/infra/database/knex');
 
 before(async () => {
-  await knexMainDB.raw(
+  await knexLegacyDB.raw(
     `CREATE TABLE IF NOT EXISTS trees
       (
           id serial,

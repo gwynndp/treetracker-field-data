@@ -15,6 +15,7 @@ const sessionObject = {
   target_wallet: 'target_wallet',
   check_in_photo_url: 'https://picsum.photos/200',
   track_url: 'https://picsum.photos/200',
+  bulk_pack_file_name: 'bulk_pack_file_name',
   organization: 'organization',
 };
 
@@ -63,7 +64,7 @@ describe('Session', () => {
     const response = await request(server).get(`/session`).expect(200);
 
     expect(
-      response.body.some((session) => session.id === sessionObject.id),
+      response.body.sessions.some((session) => session.id === sessionObject.id),
     ).to.equal(true);
 
     const singleGetResponse = await request(server)

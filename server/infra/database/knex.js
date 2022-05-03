@@ -1,12 +1,13 @@
 const expect = require('expect-runtime');
 const knex = require('knex');
-const knexMainDB = require('knex');
+const knexLegacyDB = require('knex');
+const log = require('loglevel');
 const connection = require('../../../config/config').connectionString;
-const connectionMainDB = require('../../../config/config')
-  .connectionStringMainDB;
+const connectionLegacyDB = require('../../../config/config')
+  .connectionStringLegacyDB;
 
 expect(connection).to.match(/^postgresql:\//);
-const log = require('loglevel');
+expect(connectionLegacyDB).to.match(/^postgresql:\//);
 
 const connectionObject = (connectionString) => {
   // We need to parse the connection string into a connection object
@@ -37,10 +38,10 @@ const knexConfig = {
   pool: { min: 0, max: 10 },
 };
 
-const knexConfigMainDB = {
+const knexConfigLegacyDB = {
   client: 'pg',
   debug: process.env.NODE_LOG_LEVEL === 'debug',
-  connection: connectionObject(connectionMainDB),
+  connection: connectionObject(connectionLegacyDB),
   pool: { min: 0, max: 10 },
 };
 
@@ -53,5 +54,5 @@ log.debug(knexConfig.searchPath);
 
 module.exports = {
   knex: knex(knexConfig),
-  knexMainDB: knexMainDB(knexConfigMainDB),
+  knexLegacyDB: knexLegacyDB(knexConfigLegacyDB),
 };

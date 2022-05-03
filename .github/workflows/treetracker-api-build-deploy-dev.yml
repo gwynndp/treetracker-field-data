@@ -12,23 +12,60 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    if: |
-      !contains(github.event.head_commit.message, 'skip-ci')
+    container: node:10.18-jessie
+
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgis/postgis
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      rabbitmq:
+        image: rabbitmq
+        env:
+          RABBITMQ_DEFAULT_USER: rabbitmq
+          RABBITMQ_DEFAULT_PASS: rabbitmq
+
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 16.x
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
+      - name: Install dependencies
+        run: npm install
+        working-directory: ${{ env.project-directory }}
+
       - name: npm clean install
         run: npm ci
         working-directory: ${{ env.project-directory }}
-  #      - name: run ESLint
-  #        run: npm run lint
-  #        working-directory: ${{ env.project-directory }}
-  #      - name: run api tests
-  #        run: npm run test
-  #        working-directory: ${{ env.project-directory }}
+
+      - name: run ESLint
+        run: npm run lint
+        working-directory: ${{ env.project-directory }}
+
+      - name: run db-migrate
+        run: npm run db-migrate-ci
+        working-directory: ${{ env.project-directory }}
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@postgres/postgres
+
+      - name: run api-tests
+        run: npm run test
+        working-directory: ${{ env.project-directory }}
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@postgres/postgres
+          DATABASE_URL_LEGACYDB: postgresql://postgres:postgres@postgres/postgres
+          RABBIT_MQ_URL: amqp://rabbitmq:rabbitmq@rabbitmq
 
   release:
     name: Release
@@ -37,7 +74,7 @@ jobs:
     if: |
       !contains(github.event.head_commit.message, 'skip-ci') &&
       github.event_name == 'push' &&
-      github.repository == "Greenstand/${{ github.event.repository.name }}"
+      github.repository_owner == 'Greenstand'
     steps:
       - uses: actions/checkout@v2
 
@@ -96,7 +133,7 @@ jobs:
     if: |
       !contains(github.event.head_commit.message, 'skip-ci') &&
       github.event_name == 'push' &&
-      github.repository == "Greenstand/${{ github.event.repository.name }}"
+      github.repository_owner == 'Greenstand'
     steps:
       - uses: actions/checkout@v2
       - name: Install kustomize

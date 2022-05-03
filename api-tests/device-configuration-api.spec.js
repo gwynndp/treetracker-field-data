@@ -17,6 +17,7 @@ const deviceConfigurationObject = {
   app_version: 'app_version',
   os_version: 'os_version',
   sdk_version: 'sdk_version',
+  bulk_pack_file_name: 'bulk_pack_file_name',
   logged_at: new Date().toISOString(),
 };
 
@@ -57,7 +58,7 @@ describe('Device Configuration', () => {
       .expect(200);
 
     expect(
-      response.body.some(
+      response.body.device_configurations.some(
         (walletRegistration) =>
           walletRegistration.id === deviceConfigurationObject.id,
       ),

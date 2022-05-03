@@ -1,24 +1,18 @@
 const log = require('loglevel');
-
 const Joi = require('joi');
-const { createTreesInMainDB, LegacyTree } = require('../models/LegacyTree');
+const HttpError = require('../utils/HttpError');
+const RawCaptureService = require('../services/RawCaptureService');
 const {
-  createRawCapture,
-  rawCaptureFromRequest,
-  getRawCaptures,
-  RawCapture,
-} = require('../models/RawCapture');
-const { dispatch } = require('../models/domain-event');
+  getFilterAndLimitOptions,
+  generatePrevAndNext,
+} = require('../utils/helper');
 
-const Session = require('../infra/database/Session');
-const { publishMessage } = require('../infra/messaging/RabbitMQMessaging');
-
-const RawCaptureRepository = require('../infra/database/RawCaptureRepository');
-const EventRepository = require('../infra/database/EventRepository');
-const SessionRepository = require('../infra/database/SessionRepository');
-const LegacyTreeRepository = require('../infra/database/LegacyTreeRepository');
-const LegacyTreeAttributeRepository = require('../infra/database/LegacyTreeAttributeRepository');
-const HttpError = require('./HttpError');
+const rawCaptureGetQuerySchema = Joi.object({
+  offset: Joi.number().integer().greater(-1),
+  limit: Joi.number().integer().greater(0),
+  status: Joi.string().allow('unprocessed', 'approved', 'rejected'),
+  bulk_pack_file_name: Joi.string(),
+}).unknown(false);
 
 const rawCaptureSchema = Joi.object({
   id: Joi.string().required().guid().required(),
@@ -41,135 +35,80 @@ const rawCaptureSchema = Joi.object({
   //   )
   //  .allow(null),
   captured_at: Joi.date().iso().required(),
+  bulk_pack_file_name: Joi.string(),
 }).unknown(false);
 
 const rawCaptureIdParamSchema = Joi.object({
   raw_capture_id: Joi.string().uuid().required(),
 }).unknown(false);
 
-const rawCaptureGet = async (req, res, next) => {
-  const session = new Session(false);
-  const captureRepo = new RawCaptureRepository(session);
-  const executeGetRawCaptures = getRawCaptures(captureRepo);
-  const result = await executeGetRawCaptures(req.query);
-  res.send(result);
-  res.end();
+const rawCaptureGet = async (req, res) => {
+  await rawCaptureGetQuerySchema.validateAsync(req.query, {
+    abortEarly: false,
+  });
+
+  const { filter, limitOptions } = getFilterAndLimitOptions(req.query);
+  const rawCaptureService = new RawCaptureService();
+
+  const rawCaptures = await rawCaptureService.getRawCaptures(
+    filter,
+    limitOptions,
+  );
+  const count = await rawCaptureService.getRawCapturesCount(filter);
+
+  const url = 'raw-captures';
+
+  const links = generatePrevAndNext({
+    url,
+    count,
+    limitOptions,
+    queryObject: { ...filter, ...limitOptions },
+  });
+
+  res.send({
+    raw_captures: rawCaptures,
+    links,
+    query: { count, ...limitOptions, ...filter },
+  });
 };
 
-const rawCapturePost = async (req, res, next) => {
+const rawCapturePost = async (req, res) => {
   log.warn('raw capture post...');
   delete req.body.extra_attributes; // remove extra_attributes until implemented on mobile side
   const { body } = req;
   if (body.rotation_matrix != null) {
-    for (let i = 0; i < body.rotation_matrix.length; i++) {
+    for (let i = 0; i < body.rotation_matrix.length; i += 1) {
       if (body.rotation_matrix[i] < 0.001) {
         body.rotation_matrix[i] = 0;
       }
     }
   }
   await rawCaptureSchema.validateAsync(body, { abortEarly: false });
-  const session = new Session(false);
-  const migrationSession = new Session(true);
-  const captureRepo = new RawCaptureRepository(session);
-  const eventRepository = new EventRepository(session);
-  const sessionRepo = new SessionRepository(session);
-  const legacyTreeRepository = new LegacyTreeRepository(migrationSession);
-  const legacyTreeAttributeRepository = new LegacyTreeAttributeRepository(
-    migrationSession,
-  );
 
-  const executeCreateRawCapture = createRawCapture(
-    captureRepo,
-    eventRepository,
-  );
-  const eventDispatch = dispatch(eventRepository, publishMessage);
-  const legacyDataMigration = createTreesInMainDB(
-    legacyTreeRepository,
-    legacyTreeAttributeRepository,
-  );
+  const rawCaptureService = new RawCaptureService();
+  const { status, capture } = await rawCaptureService.createRawCapture(body);
 
-  try {
-    const existingCapture = await captureRepo.getByFilter({
-      'raw_capture.id': body.id,
-    });
-    const [rawCapture] = existingCapture;
-    if (rawCapture) {
-      const domainEvent = await eventRepository.getDomainEventByPayloadId(
-        rawCapture.id,
-      );
-      if (domainEvent.status !== 'sent') {
-        eventDispatch(domainEvent);
-      }
-      res.status(200).json(rawCapture);
-    } else {
-      let sessionObject = {};
-      const sessionArray = await sessionRepo.getSession({
-        'session.id': body.session_id,
-      });
-      if (!sessionArray.length) {
-        throw new HttpError(
-          409,
-          `A session resource with id, ${body.session_id} has yet to be created, kindly retry later`,
-        );
-      }
-      [sessionObject] = sessionArray;
-      await migrationSession.beginTransaction();
-      const legacyTreeObject = await LegacyTree({
-        ...body,
-        ...sessionObject,
-        session: migrationSession,
-      });
-      const { entity: tree } = await legacyDataMigration(
-        { ...legacyTreeObject },
-        body.attributes || [],
-      );
-      const rawCapture = rawCaptureFromRequest({
-        reference_id: tree.id,
-        ...body,
-      });
-      await session.beginTransaction();
-
-      const { entity, raisedEvents } = await executeCreateRawCapture(
-        rawCapture,
-      );
-      await session.commitTransaction();
-      await migrationSession.commitTransaction();
-      raisedEvents.forEach((domainEvent) => eventDispatch(domainEvent));
-      log.warn('succeeded.');
-      return res.status(201).json(entity);
-    }
-  } catch (e) {
-    log.warn('catch error in transaction');
-    console.log(e);
-    if (session.isTransactionInProgress()) {
-      await session.rollbackTransaction();
-    }
-    if (migrationSession.isTransactionInProgress()) {
-      await migrationSession.rollbackTransaction();
-    }
-    next(e);
-  }
+  res.status(status).send(capture);
 };
 
 const rawCaptureSingleGet = async function (req, res) {
-  try {
-    await rawCaptureIdParamSchema.validateAsync(req.params, {
-      abortEarly: false,
-    });
+  await rawCaptureIdParamSchema.validateAsync(req.params, {
+    abortEarly: false,
+  });
 
-    const session = new Session();
-    const rawCaptureRepo = new RawCaptureRepository(session);
+  const rawCaptureService = new RawCaptureService();
+  const rawCapture = await rawCaptureService.getRawCaptureById(
+    req.params.raw_capture_id,
+  );
 
-    const rawCaptures = await rawCaptureRepo.getByFilter({
-      'raw_capture.id': req.params.raw_capture_id,
-    });
-
-    const [rawCapture = {}] = rawCaptures;
-
-    res.send(RawCapture(rawCapture));
-  } catch (e) {
-    console.log(e);
+  if (!rawCapture?.id) {
+    throw new HttpError(
+      404,
+      `raw capture with ${req.params.raw_capture_id} not found`,
+    );
   }
+
+  res.send(rawCapture);
 };
 
 module.exports = {

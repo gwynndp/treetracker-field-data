@@ -7,11 +7,19 @@ class SessionRepository extends BaseRepository {
     this._session = session;
   }
 
-  async getSession(filterCriteria) {
-    return await this._session
+  async getSessions(filterCriteria, limitOptions) {
+    return this._session
       .getDB()(this._tableName)
       .where(filterCriteria)
       .select(
+        'session.id',
+        'session.device_configuration_id',
+        'session.originating_wallet_registration_id',
+        'session.target_wallet',
+        'session.check_in_photo_url',
+        'session.track_url',
+        'session.organization',
+        'session.created_at',
         'device_configuration.device_identifier',
         'wallet_registration.grower_account_id',
         'wallet_registration.wallet',
@@ -28,7 +36,9 @@ class SessionRepository extends BaseRepository {
         'session.device_configuration_id',
         '=',
         'device_configuration.id',
-      );
+      )
+      .limit(limitOptions.limit)
+      .offset(limitOptions.offset);
   }
 }
 
