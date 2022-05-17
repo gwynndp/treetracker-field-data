@@ -1,4 +1,3 @@
-const expect = require('expect-runtime');
 const knex = require('knex');
 const knexLegacyDB = require('knex');
 const log = require('loglevel');
@@ -6,8 +5,14 @@ const connection = require('../../../config/config').connectionString;
 const connectionLegacyDB = require('../../../config/config')
   .connectionStringLegacyDB;
 
-expect(connection).to.match(/^postgresql:\//);
-expect(connectionLegacyDB).to.match(/^postgresql:\//);
+const postgresPattern = /^postgresql:\//;
+
+if (
+  !postgresPattern.test(connection) ||
+  !postgresPattern.test(connectionLegacyDB)
+) {
+  throw new Error('invalid databases connection url received');
+}
 
 const connectionObject = (connectionString) => {
   // We need to parse the connection string into a connection object
