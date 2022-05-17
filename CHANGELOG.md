@@ -1,3 +1,10 @@
+## [1.8.27](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.26...v1.8.27) (2022-05-17)
+
+
+### Bug Fixes
+
+* update db url check ([56264aa](https://github.com/Greenstand/treetracker-field-data/commit/56264aa9a4dc5cd93aca01bcd43128a42a07aacf))
+
 ## [1.8.26](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.25...v1.8.26) (2022-05-03)
 
 
