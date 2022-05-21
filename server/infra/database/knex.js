@@ -11,7 +11,7 @@ if (
   !postgresPattern.test(connection) ||
   !postgresPattern.test(connectionLegacyDB)
 ) {
-  throw new Error('invalid databases connection url received');
+  throw new Error('invalid database connection url received');
 }
 
 const connectionObject = (connectionString) => {
