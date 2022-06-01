@@ -10,7 +10,7 @@ const captureRequestObject = {
   image_url: 'https://www.htpplkjl.com',
   lat: 37.421998333333335,
   lon: 122.08400000000002,
-  gps_accuracy: 12,
+  gps_accuracy: 12.123,
   abs_step_count: 1,
   delta_step_count: 2,
   rotation_matrix: [1, 2, 3],
