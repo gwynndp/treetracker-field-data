@@ -20,7 +20,7 @@ const rawCaptureSchema = Joi.object({
   lat: Joi.number().required().min(-90).max(90),
   lon: Joi.number().required().min(-180).max(180),
   image_url: Joi.string().uri().required(),
-  gps_accuracy: Joi.number().integer().allow(null),
+  gps_accuracy: Joi.number().allow(null),
   abs_step_count: Joi.number().integer().allow(null),
   delta_step_count: Joi.number().integer().allow(null),
   rotation_matrix: Joi.array().items(Joi.number()).allow(null),

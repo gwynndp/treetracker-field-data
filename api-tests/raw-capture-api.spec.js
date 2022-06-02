@@ -36,7 +36,7 @@ describe('Raw Captures', () => {
     await clearDB(knex, knexLegacyDB);
   });
 
-  it(`Raw capture should be successfully added`, function (done) {
+  it.only(`Raw capture should be successfully added`, function (done) {
     request(server)
       .post(`/raw-captures`)
       .send(captureRequestObject)

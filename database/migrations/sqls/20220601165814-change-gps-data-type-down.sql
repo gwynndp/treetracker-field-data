@@ -1,0 +1,1 @@
+ALTER TABLE raw_capture ALTER COLUMN gps_accuracy TYPE smallint;
