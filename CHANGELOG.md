@@ -1,3 +1,12 @@
+## [1.8.28](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.27...v1.8.28) (2022-06-02)
+
+
+### Bug Fixes
+
+* add migration update for gps_accuracy ([05a4f5b](https://github.com/Greenstand/treetracker-field-data/commit/05a4f5bef0968e4b41a037697cb6bcf379badf7b))
+* change error logging type ([457b53a](https://github.com/Greenstand/treetracker-field-data/commit/457b53a3c6643b5b07a197f3e1242ac5943dabb1))
+* gps_accuracy allow decimal values ([fc40961](https://github.com/Greenstand/treetracker-field-data/commit/fc40961fa32e31a320ba1856181574f0ad382bf2))
+
 ## [1.8.27](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.26...v1.8.27) (2022-05-17)
 
 
