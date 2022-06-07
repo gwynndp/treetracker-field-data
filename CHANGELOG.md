@@ -1,3 +1,12 @@
+## [1.8.30](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.29...v1.8.30) (2022-06-07)
+
+
+### Bug Fixes
+
+* package lock ([24827a0](https://github.com/Greenstand/treetracker-field-data/commit/24827a0dcf583e665efb2c4e2f4a6412190a1db8))
+* resolve linter errors ([0045a87](https://github.com/Greenstand/treetracker-field-data/commit/0045a874c6b8348555de59e43e12ce458717e2c5))
+* resolve package dependency issues ([36489ce](https://github.com/Greenstand/treetracker-field-data/commit/36489ce5f8c9404a734fcd4ad474d4fbc5300cb0))
+
 ## [1.8.29](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.28...v1.8.29) (2022-06-07)
 
 
