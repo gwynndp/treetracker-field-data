@@ -1,3 +1,13 @@
+## [1.8.29](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.28...v1.8.29) (2022-06-07)
+
+
+### Bug Fixes
+
+* fix legacy tree creation ([6d73eed](https://github.com/Greenstand/treetracker-field-data/commit/6d73eed408c7bc8df572eb1fcf02f82015fb39a0))
+* legacy tree uuid picking session id instead of capture id ([a7d6c04](https://github.com/Greenstand/treetracker-field-data/commit/a7d6c048547f7e5a6d62de8dfdc682ced80c525f))
+* remove session id from legacy tree ([db5e07f](https://github.com/Greenstand/treetracker-field-data/commit/db5e07fea32fe60e79549ba18e9ca2e2036955bf))
+* session id ([261c804](https://github.com/Greenstand/treetracker-field-data/commit/261c804882bd40257db4dcc8091095cfd437895c))
+
 ## [1.8.28](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.27...v1.8.28) (2022-06-02)
 
 
