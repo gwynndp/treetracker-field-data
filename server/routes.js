@@ -5,23 +5,23 @@ const {
   rawCapturePost,
   rawCaptureGet,
   rawCaptureSingleGet,
-} = require('./handlers/rawCaptureHandler.js');
+} = require('./handlers/rawCaptureHandler');
 const {
   walletRegistrationPost,
   walletRegistrationGet,
   walletRegistrationSingleGet,
-} = require('./handlers/walletRegistrationHandler.js');
+} = require('./handlers/walletRegistrationHandler');
 const {
   deviceConfigurationPost,
   deviceConfigurationGet,
   deviceConfigurationSingleGet,
-} = require('./handlers/deviceConfigurationHandler.js');
+} = require('./handlers/deviceConfigurationHandler');
 const replayEventPost = require('./handlers/replayEventHandler');
 const {
   sessionPost,
   sessionGet,
   sessionSingleGet,
-} = require('./handlers/sessionHandler.js');
+} = require('./handlers/sessionHandler');
 const { handlerWrapper } = require('./utils/utils');
 
 router
