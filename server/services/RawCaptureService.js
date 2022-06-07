@@ -42,9 +42,10 @@ class RawCaptureService {
 
       await legacySession.beginTransaction();
 
+      // capture's id overwrites the session's id
       const legacyTreeObject = await legacyTreeModel.legacyTree({
-        ...rawCaptureObject,
         ...sessionObject,
+        ...rawCaptureObject,
       });
 
       const legacyTree = await legacyTreeModel.createTreesInLegacyDB(

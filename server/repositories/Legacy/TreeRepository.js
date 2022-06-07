@@ -7,7 +7,7 @@ class LegacyTreeRepository extends BaseRepository {
     this._session = session;
   }
 
-  async add(tree) {
+  async create(tree) {
     // Since the query uses postgres function ST_PointFromText, knex raw function is used
     const geometry = `POINT( ${tree.lon} ${tree.lat})`;
     const result = await this._session.getDB().raw(
