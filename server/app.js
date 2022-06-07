@@ -3,10 +3,10 @@ const Sentry = require('@sentry/node');
 const bodyParser = require('body-parser');
 const HttpError = require('./utils/HttpError');
 const { errorHandler, handlerWrapper } = require('./utils/utils');
-const router = require('./routes.js');
+const router = require('./routes');
 
 const app = express();
-const config = require('../config/config.js');
+const config = require('../config/config');
 const { EventHandlerService } = require('./services/EventHandlerService');
 
 Sentry.init({ dsn: config.sentry_dsn });
