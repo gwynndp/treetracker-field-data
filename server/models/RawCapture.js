@@ -29,6 +29,7 @@ class RawCapture {
     created_at,
     updated_at,
     captured_at,
+    organization_id,
   }) {
     return Object.freeze({
       id,
@@ -52,6 +53,7 @@ class RawCapture {
       created_at,
       updated_at,
       captured_at,
+      organization_id,
     });
   }
 

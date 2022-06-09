@@ -33,6 +33,7 @@ class RawCaptureRepository extends BaseRepository {
         'raw_capture.created_at',
         'raw_capture.updated_at',
         'raw_capture.captured_at',
+        'session.organization_id',
       )
       .leftJoin('session', 'raw_capture.session_id', '=', 'session.id')
       .leftJoin(
@@ -54,7 +55,7 @@ class RawCaptureRepository extends BaseRepository {
     }
 
     if (options && options.offset) {
-      promise.limit(options.offset);
+      promise.offset(options.offset);
     }
 
     return promise;

@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+const log = require('loglevel');
 const Sentry = require('@sentry/node');
 const bodyParser = require('body-parser');
 const HttpError = require('./utils/HttpError');
@@ -10,6 +12,11 @@ const config = require('../config/config');
 const { EventHandlerService } = require('./services/EventHandlerService');
 
 Sentry.init({ dsn: config.sentry_dsn });
+
+if (process.env.NODE_ENV === 'development') {
+  log.info('disable cors');
+  app.use(cors());
+}
 
 /*
  * Check request
