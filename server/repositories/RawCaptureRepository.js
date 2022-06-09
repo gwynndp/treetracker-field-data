@@ -54,7 +54,7 @@ class RawCaptureRepository extends BaseRepository {
     }
 
     if (options && options.offset) {
-      promise.limit(options.offset);
+      promise.offset(options.offset);
     }
 
     return promise;
