@@ -1,8 +1,21 @@
 const Joi = require('joi');
 
 const sessionGetQuerySchema = Joi.object({
+  id: Joi.string().uuid(),
+  start_time: Joi.string().regex(/^\d{2}:\d{2}$/),
+  device_configuration_id: Joi.string().uuid(),
+  originating_wallet_registration_id: Joi.string().uuid(),
+  target_wallet: Joi.string().uuid(),
+  created_at: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  grower_account_id: Joi.string().uuid(),
+  organization_id: Joi.array(),
+  device_identifier: Joi.string(),
+  wallet: Joi.string(),
   offset: Joi.number().integer().greater(-1),
   limit: Joi.number().integer().greater(0),
+  whereNulls: Joi.array(),
+  whereNotNulls: Joi.array(),
+  whereIns: Joi.array(),
   bulk_pack_file_name: Joi.string(),
 });
 

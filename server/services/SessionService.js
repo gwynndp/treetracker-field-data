@@ -5,14 +5,29 @@ class SessionService {
   constructor() {
     this._session = new Session();
     this._sessionModel = new SessionModel(this._session);
+    this._wrKeys = ['grower_account_id', 'wallet', 'user_photo_url'];
+  }
+
+  formatKeys(filter) {
+    return Object.entries(filter).reduce((obj, [key, val]) => {
+      const copy = { ...obj };
+      if (this._wrKeys.includes(key)) {
+        copy[`wallet_registration.${key}`] = val;
+      } else {
+        copy[`session.${key}`] = val;
+      }
+      return copy;
+    }, {});
   }
 
   async getSessions(filter, limitOptions) {
-    return this._sessionModel.getSessions(filter, limitOptions);
+    const formatedFilter = this.formatKeys(filter);
+    return this._sessionModel.getSessions(formatedFilter, limitOptions);
   }
 
   async getSessionsCount(filter) {
-    return this._sessionModel.getSessionsCount(filter);
+    const formatedFilter = this.formatKeys(filter);
+    return this._sessionModel.getSessionsCount(formatedFilter);
   }
 
   async getSessionById(sessionId) {

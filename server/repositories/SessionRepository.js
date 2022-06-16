@@ -1,3 +1,4 @@
+const expect = require('expect-runtime');
 const BaseRepository = require('./BaseRepository');
 
 class SessionRepository extends BaseRepository {
@@ -42,6 +43,33 @@ class SessionRepository extends BaseRepository {
       )
       .limit(limitOptions.limit)
       .offset(limitOptions.offset);
+  }
+
+  async countByFilter(filter) {
+    const result = await this._session
+      .getDB()
+      .count()
+      .table(this._tableName)
+      .leftJoin(
+        'wallet_registration',
+        'session.originating_wallet_registration_id',
+        '=',
+        'wallet_registration.id',
+      )
+      .leftJoin(
+        'device_configuration',
+        'session.device_configuration_id',
+        '=',
+        'device_configuration.id',
+      )
+      .where(filter);
+
+    expect(result).match([
+      {
+        count: expect.any(String),
+      },
+    ]);
+    return parseInt(result[0].count);
   }
 }
 
