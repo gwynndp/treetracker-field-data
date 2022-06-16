@@ -8,10 +8,12 @@ const {
 } = require('../utils/helper');
 
 const rawCaptureGetQuerySchema = Joi.object({
-  offset: Joi.number().integer().greater(-1),
-  limit: Joi.number().integer().greater(0),
+  limit: Joi.number().integer().min(1).max(1000),
+  offset: Joi.number().integer().min(0),
   status: Joi.string().allow('unprocessed', 'approved', 'rejected'),
   bulk_pack_file_name: Joi.string(),
+  id: Joi.string().uuid(),
+  reference_id: Joi.string(),
 }).unknown(false);
 
 const rawCaptureSchema = Joi.object({
@@ -36,6 +38,11 @@ const rawCaptureSchema = Joi.object({
   //  .allow(null),
   captured_at: Joi.date().iso().required(),
   bulk_pack_file_name: Joi.string(),
+}).unknown(false);
+
+const rawCaptureUpdateSchema = Joi.object({
+  status: Joi.string().allow('unprocessed', 'approved', 'rejected'),
+  rejection_reason: Joi.string().allow(null),
 }).unknown(false);
 
 const rawCaptureIdParamSchema = Joi.object({
@@ -91,6 +98,25 @@ const rawCapturePost = async (req, res) => {
   res.status(status).send(capture);
 };
 
+const rawCaptureSingleUpdate = async (req, res) => {
+  log.warn('raw capture update...', req.params.raw_capture_id);
+
+  await rawCaptureIdParamSchema.validateAsync(req.params, {
+    abortEarly: false,
+  });
+
+  const rawCaptureService = new RawCaptureService();
+  await rawCaptureUpdateSchema.validateAsync(req.body, {
+    abortEarly: false,
+  });
+  const { status, capture } = await rawCaptureService.updateRawCapture({
+    id: req.params.raw_capture_id,
+    ...req.body,
+  });
+
+  res.status(status).send(capture);
+};
+
 const rawCaptureSingleGet = async function (req, res) {
   await rawCaptureIdParamSchema.validateAsync(req.params, {
     abortEarly: false,
@@ -115,4 +141,5 @@ module.exports = {
   rawCaptureGet,
   rawCapturePost,
   rawCaptureSingleGet,
+  rawCaptureSingleUpdate,
 };

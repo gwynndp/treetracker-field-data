@@ -144,6 +144,15 @@ class RawCapture {
     return { capture: rawCapture, domainEvent, status: 201 };
   }
 
+  async updateRawCapture(rawCaptureObject) {
+    const rawCapture = await this._rawCaptureRepository.update({
+      ...rawCaptureObject,
+      updated_at: new Date().toISOString(),
+    });
+
+    return { capture: rawCapture, status: 200 };
+  }
+
   async applyVerification(verifyCaptureProcessed) {
     if (verifyCaptureProcessed.approved) {
       await this._rawCaptureRepository.update({

@@ -8,9 +8,11 @@ class RawCaptureRepository extends BaseRepository {
   }
 
   async getByFilter(filterCriteria, options) {
+    const { id, ...rest } = filterCriteria;
     const promise = this._session
       .getDB()(this._tableName)
-      .where(filterCriteria)
+      .where({ ...rest })
+      .andWhere('raw_capture.id', id)
       .select(
         'raw_capture.id',
         'raw_capture.reference_id',
