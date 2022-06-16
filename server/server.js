@@ -7,7 +7,7 @@ const app = require('./app');
 
 const port = process.env.NODE_PORT || 3006;
 const { knex, knexLegacyDB } = require('./infra/database/knex');
-const RabbitMQ = require('./infra/RabbitMQ/RabbitMQ');
+// const RabbitMQ = require('./infra/RabbitMQ/RabbitMQ');
 
 const server = app.listen(port, () => {
   log.info(`listening on port:${port}`);
@@ -15,10 +15,10 @@ const server = app.listen(port, () => {
 });
 
 process.once('SIGINT', async function () {
-  const rabbitmq = new RabbitMQ();
-  await rabbitmq.init();
+  // const rabbitmq = new RabbitMQ();
+  // await rabbitmq.init();
   log.log('Terminate request received...');
-  rabbitmq.teardownBroker();
+  // rabbitmq.teardownBroker();
   knex.destroy();
   knexLegacyDB.destroy();
   server.close();

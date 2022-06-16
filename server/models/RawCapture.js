@@ -20,6 +20,7 @@ class RawCapture {
     gps_accuracy,
     note,
     device_identifier,
+    device_configuration_id,
     grower_account_id,
     wallet,
     user_photo_url,
@@ -44,6 +45,7 @@ class RawCapture {
       gps_accuracy,
       note,
       device_identifier,
+      device_configuration_id,
       grower_account_id,
       wallet,
       user_photo_url,
@@ -142,6 +144,15 @@ class RawCapture {
 
     const domainEvent = await domainEventModel.raiseEvent(rawCaptureCreated);
     return { capture: rawCapture, domainEvent, status: 201 };
+  }
+
+  async updateRawCapture(rawCaptureObject) {
+    const rawCapture = await this._rawCaptureRepository.update({
+      ...rawCaptureObject,
+      updated_at: new Date().toISOString(),
+    });
+
+    return { capture: rawCapture, status: 200 };
   }
 
   async applyVerification(verifyCaptureProcessed) {

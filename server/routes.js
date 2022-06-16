@@ -5,6 +5,7 @@ const {
   rawCapturePost,
   rawCaptureGet,
   rawCaptureSingleGet,
+  rawCaptureSingleUpdate,
 } = require('./handlers/rawCaptureHandler');
 const {
   walletRegistrationPost,
@@ -52,7 +53,8 @@ router
   .get(handlerWrapper(rawCaptureGet));
 router
   .route('/raw-captures/:raw_capture_id')
-  .get(handlerWrapper(rawCaptureSingleGet));
+  .get(handlerWrapper(rawCaptureSingleGet))
+  .patch(handlerWrapper(rawCaptureSingleUpdate));
 
 router.post('/replay-events', handlerWrapper(replayEventPost));
 

@@ -8,10 +8,26 @@ const {
 } = require('../utils/helper');
 
 const rawCaptureGetQuerySchema = Joi.object({
-  offset: Joi.number().integer().greater(-1),
-  limit: Joi.number().integer().greater(0),
+  // offset: Joi.number().integer().greater(-1),
+  // limit: Joi.number().integer().greater(0),
+  limit: Joi.number().integer().min(1).max(1000),
+  offset: Joi.number().integer().min(0),
   status: Joi.string().allow('unprocessed', 'approved', 'rejected'),
   bulk_pack_file_name: Joi.string(),
+  grower_account_id: Joi.string().uuid(),
+  organization_id: Joi.string(),
+  startDate: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  endDate: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  id: Joi.string().uuid(),
+  reference_id: Joi.string(),
+  tree_id: Joi.string().uuid(),
+  species_id: Joi.string().uuid(),
+  tag: Joi.string(),
+  device_identifier: Joi.string(),
+  wallet: Joi.string(),
+  tokenized: Joi.string(),
+  sort: Joi.object(),
+  token_id: Joi.string().uuid(),
 }).unknown(false);
 
 const rawCaptureSchema = Joi.object({
@@ -36,6 +52,31 @@ const rawCaptureSchema = Joi.object({
   //  .allow(null),
   captured_at: Joi.date().iso().required(),
   bulk_pack_file_name: Joi.string(),
+}).unknown(false);
+
+const rawCaptureUpdateSchema = Joi.object({
+  id: Joi.string().required().guid().required(),
+  limit: Joi.number().integer().min(1).max(1000),
+  offset: Joi.number().integer().min(0),
+  status: Joi.string().allow('unprocessed', 'approved', 'rejected'),
+  bulk_pack_file_name: Joi.string(),
+  grower_account_id: Joi.string().uuid(),
+  organization_id: Joi.string(),
+  startDate: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  endDate: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  reference_id: Joi.string(),
+  tree_id: Joi.string().uuid(),
+  species_id: Joi.string().uuid(),
+  tag: Joi.string(),
+  device_identifier: Joi.string(),
+  wallet: Joi.string(),
+  tokenized: Joi.string(),
+  sort: Joi.object(),
+  token_id: Joi.string().uuid(),
+  age: Joi.number().integer().allow(null),
+  morphology: Joi.string().allow(null),
+  tags: Joi.array().items(Joi.string()).allow(null),
+  rejection_reason: Joi.string().allow(null),
 }).unknown(false);
 
 const rawCaptureIdParamSchema = Joi.object({
@@ -91,6 +132,37 @@ const rawCapturePost = async (req, res) => {
   res.status(status).send(capture);
 };
 
+const rawCaptureSingleUpdate = async (req, res) => {
+  log.warn('raw capture update...', req.params.raw_capture_id);
+
+  await rawCaptureIdParamSchema.validateAsync(req.params, {
+    abortEarly: false,
+  });
+
+  const rawCaptureService = new RawCaptureService();
+  const rawCapture = await rawCaptureService.getRawCaptureById(req.body.id);
+
+  if (!rawCapture?.id) {
+    throw new HttpError(
+      404,
+      `raw capture with ${req.params.raw_capture_id} not found`,
+    );
+  }
+  // const updatedRawCapture = {
+  //   // ...rawCapture,
+  //   ...req.body,
+  // };
+
+  await rawCaptureUpdateSchema.validateAsync(req.body, {
+    abortEarly: false,
+  });
+  const { status, capture } = await rawCaptureService.updateRawCapture(
+    req.body,
+  );
+
+  res.status(status).send(capture);
+};
+
 const rawCaptureSingleGet = async function (req, res) {
   await rawCaptureIdParamSchema.validateAsync(req.params, {
     abortEarly: false,
@@ -115,4 +187,5 @@ module.exports = {
   rawCaptureGet,
   rawCapturePost,
   rawCaptureSingleGet,
+  rawCaptureSingleUpdate,
 };

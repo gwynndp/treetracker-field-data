@@ -84,6 +84,14 @@ class RawCaptureService {
       throw e;
     }
   }
+
+  async updateRawCapture(rawCaptureObject) {
+    const { capture, status } = await this._rawCapture.updateRawCapture(
+      rawCaptureObject,
+    );
+
+    return { capture, status };
+  }
 }
 
 module.exports = RawCaptureService;
