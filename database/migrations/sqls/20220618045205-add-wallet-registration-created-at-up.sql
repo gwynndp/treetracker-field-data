@@ -1,0 +1,1 @@
+ALTER TABLE wallet_registration ADD created_at timestamptz DEFAULT now();

@@ -1,0 +1,1 @@
+ALTER TABLE wallet_registration DROP COLUMN created_at;
