@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.9.0...v1.9.1) (2022-06-18)
+
+
+### Bug Fixes
+
+* add created_at column on wallet registration ([d613e0a](https://github.com/Greenstand/treetracker-field-data/commit/d613e0aee3f50e6b8d257974093607c3cbdff0dc))
+
 # [1.9.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.8.30...v1.9.0) (2022-06-09)
 
 
