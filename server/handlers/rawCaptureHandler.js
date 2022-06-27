@@ -8,12 +8,8 @@ const {
 } = require('../utils/helper');
 
 const rawCaptureGetQuerySchema = Joi.object({
-  limit: Joi.number().integer().min(1).max(1000),
-  offset: Joi.number().integer().min(0),
   status: Joi.string().allow('unprocessed', 'approved', 'rejected'),
   bulk_pack_file_name: Joi.string(),
-  id: Joi.string().uuid(),
-  reference_id: Joi.string(),
 }).unknown(false);
 
 const rawCaptureSchema = Joi.object({
