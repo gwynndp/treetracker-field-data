@@ -33,7 +33,7 @@ describe('Raw Captures', () => {
   after(async () => {
     brokerStub.restore();
 
-    await clearDB(knex, knexLegacyDB);
+    // await clearDB(knex, knexLegacyDB);
   });
 
   it(`Raw capture should be successfully added`, function (done) {

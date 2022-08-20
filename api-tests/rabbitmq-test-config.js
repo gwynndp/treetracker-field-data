@@ -10,10 +10,10 @@ module.exports = {
             timeout: 1000,
           },
         },
-        queues: [SubscriptionNames.ADMIN_VERIFICATION],
+        queues: [SubscriptionNames.CAPTURE_CREATED],
         publications: {
-          [SubscriptionNames.ADMIN_VERIFICATION]: {
-            queue: SubscriptionNames.ADMIN_VERIFICATION,
+          [SubscriptionNames.CAPTURE_CREATED]: {
+            queue: SubscriptionNames.CAPTURE_CREATED,
           },
         },
       },

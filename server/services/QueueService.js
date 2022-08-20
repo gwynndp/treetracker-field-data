@@ -25,11 +25,8 @@ class QueueService {
     );
   }
 
-  subscribeToAdminVerificationEvent(eventHandler) {
-    this._rabbitmq.subscribe(
-      SubscriptionNames.ADMIN_VERIFICATION,
-      eventHandler,
-    );
+  subscribeToCaptureCreationEvent(eventHandler) {
+    this._rabbitmq.subscribe(SubscriptionNames.CAPTURE_CREATED, eventHandler);
   }
 }
 

@@ -97,10 +97,10 @@ describe('Replay Events API', () => {
     expect(+noOfApprovedCaptures[0].count).to.eql(1);
   });
 
-  it(`Should handle ${SubscriptionNames.ADMIN_VERIFICATION} event`, async () => {
+  it(`Should handle ${SubscriptionNames.CAPTURE_CREATED} event`, async () => {
     const broker = await Broker.create(config);
     const publication = await broker.publish(
-      SubscriptionNames.ADMIN_VERIFICATION,
+      SubscriptionNames.CAPTURE_CREATED,
       {
         id: capture.id,
         approved: false,

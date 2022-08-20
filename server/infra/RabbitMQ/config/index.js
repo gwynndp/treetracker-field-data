@@ -1,6 +1,6 @@
 const SubscriptionNames = {
   RAW_CAPTURE_CREATED: 'raw-capture-created',
-  ADMIN_VERIFICATION: 'admin-verification',
+  CAPTURE_CREATED: 'capture-created',
 };
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
           },
         },
         queues: [
-          SubscriptionNames.ADMIN_VERIFICATION,
+          SubscriptionNames.CAPTURE_CREATED,
           SubscriptionNames.RAW_CAPTURE_CREATED,
         ],
         publications: {
@@ -23,8 +23,8 @@ module.exports = {
           },
         },
         subscriptions: {
-          [SubscriptionNames.ADMIN_VERIFICATION]: {
-            queue: SubscriptionNames.ADMIN_VERIFICATION,
+          [SubscriptionNames.CAPTURE_CREATED]: {
+            queue: SubscriptionNames.CAPTURE_CREATED,
             contentType: 'application/json',
           },
         },

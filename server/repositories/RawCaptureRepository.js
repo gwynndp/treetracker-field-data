@@ -109,6 +109,19 @@ class RawCaptureRepository extends BaseRepository {
 
     return result[0];
   }
+
+  async updateRawCaptureStatus({
+    referenceId,
+    status,
+    rejectionReason = null,
+  }) {
+    const result = await this._session
+      .getDB()(this._tableName)
+      .update({ status, rejection_reason: rejectionReason })
+      .where('reference_id', referenceId)
+      .returning('*');
+    return result[0];
+  }
 }
 
 module.exports = RawCaptureRepository;
