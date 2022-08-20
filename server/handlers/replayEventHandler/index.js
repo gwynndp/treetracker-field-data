@@ -1,11 +1,8 @@
 const ReplayEventService = require('../../services/ReplayEventService');
-const { replayEventAPISchema } = require('./schemas');
 
 const replayEventPost = async (req, res) => {
-  await replayEventAPISchema.validateAsync(req.body, { abortEarly: false });
-
   const replayEventService = new ReplayEventService();
-  replayEventService.replayEvents(req.body.status);
+  replayEventService.replayEvents();
 
   res
     .status(200)

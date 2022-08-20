@@ -13,9 +13,9 @@ class ReplayEventService {
     this._domainEvent = new DomainEvent(this._session);
   }
 
-  async replayEvents(status) {
+  async replayEvents() {
     const domainEvents = await this._domainEvent.getDomainEvents(
-      { status },
+      {},
       { limit: 1000 },
     );
 

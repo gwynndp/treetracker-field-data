@@ -45,8 +45,7 @@ describe('Replay Events API', () => {
 
     const res = await request(server)
       .post(`/replay-events`)
-      .send({ status: 'raised' })
-      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
       .expect(200);
 
     expect(res.body.request).to.eql('accepted');
@@ -78,8 +77,7 @@ describe('Replay Events API', () => {
 
     const res = await request(server)
       .post(`/replay-events`)
-      .send({ status: 'received' })
-      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
       .expect(200);
 
     expect(res.body.request).to.eql('accepted');
