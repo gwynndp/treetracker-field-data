@@ -1,9 +1,5 @@
-const Joi = require('joi');
-const ReplayEventService = require('../services/ReplayEventService');
-
-const replayEventAPISchema = Joi.object({
-  status: Joi.string().valid('raised', 'received').required(),
-});
+const ReplayEventService = require('../../services/ReplayEventService');
+const { replayEventAPISchema } = require('./schemas');
 
 const replayEventPost = async (req, res) => {
   await replayEventAPISchema.validateAsync(req.body, { abortEarly: false });
@@ -16,4 +12,4 @@ const replayEventPost = async (req, res) => {
     .json({ request: 'accepted', status: 'replay in progress...' });
 };
 
-module.exports = replayEventPost;
+module.exports = { replayEventPost };
