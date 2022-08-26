@@ -1,3 +1,12 @@
+## [1.9.3](https://github.com/Greenstand/treetracker-field-data/compare/v1.9.2...v1.9.3) (2022-08-26)
+
+
+### Bug Fixes
+
+* rabbitmq ([2539a1d](https://github.com/Greenstand/treetracker-field-data/commit/2539a1d7db279cfc195ac1e3631c6c326c4c86b0))
+* replay event endpoint ([6fca754](https://github.com/Greenstand/treetracker-field-data/commit/6fca7542799bb2d699aadc9bc0ce7ed8ab62eedd))
+* tests ([bc99435](https://github.com/Greenstand/treetracker-field-data/commit/bc994359416e2d11e6f77821066d66606340c006))
+
 ## [1.9.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.9.1...v1.9.2) (2022-07-10)
 
 
