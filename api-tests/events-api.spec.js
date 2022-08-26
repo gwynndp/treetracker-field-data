@@ -45,8 +45,7 @@ describe('Replay Events API', () => {
 
     const res = await request(server)
       .post(`/replay-events`)
-      .send({ status: 'raised' })
-      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
       .expect(200);
 
     expect(res.body.request).to.eql('accepted');
@@ -69,17 +68,16 @@ describe('Replay Events API', () => {
       ...domainEventObject1,
       id: 'dbd4367d-0d61-45b2-8c80-c62808f66af9',
       payload: {
-        id: capture.id,
+        reference_id: 23,
         approved: true,
-        type: 'VerifyCaptureProcessed',
+        type: 'CaptureCreated',
       },
       status: 'received',
     });
 
     const res = await request(server)
       .post(`/replay-events`)
-      .send({ status: 'received' })
-      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
       .expect(200);
 
     expect(res.body.request).to.eql('accepted');
@@ -99,12 +97,12 @@ describe('Replay Events API', () => {
     expect(+noOfApprovedCaptures[0].count).to.eql(1);
   });
 
-  it(`Should handle ${SubscriptionNames.ADMIN_VERIFICATION} event`, async () => {
+  it(`Should handle ${SubscriptionNames.CAPTURE_CREATED} event`, async () => {
     const broker = await Broker.create(config);
     const publication = await broker.publish(
-      SubscriptionNames.ADMIN_VERIFICATION,
+      SubscriptionNames.CAPTURE_CREATED,
       {
-        id: capture.id,
+        reference_id: 23,
         approved: false,
       },
     );

@@ -28,6 +28,10 @@ class DomainEvent {
     return this._eventRepository.getDomainEventByPayloadId(payloadId);
   }
 
+  async getDomainEventByReferenceId(referenceId) {
+    return this._eventRepository.getDomainEventByReferenceId(referenceId);
+  }
+
   async raiseEvent(domainEvent) {
     return this._eventRepository.create({
       ...this.constructor.DomainEvent(domainEvent),

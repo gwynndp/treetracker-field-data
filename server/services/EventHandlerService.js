@@ -9,7 +9,7 @@ const RawCapture = require('../models/RawCapture');
 const QueueService = require('./QueueService');
 
 const DictEventHandlers = Object.freeze({
-  VerifyCaptureProcessed: async (payload, session) => {
+  CaptureCreated: async (payload, session) => {
     const rawCapture = new RawCapture(session);
     await rawCapture.applyVerification(payload);
   },
@@ -23,10 +23,10 @@ class EventHandlerService {
   async registerEventHandlers() {
     const queueService = new QueueService();
     await queueService.init();
-    queueService.subscribeToAdminVerificationEvent((message) =>
-      this.processMessage(DictEventHandlers.VerifyCaptureProcessed, {
+    queueService.subscribeToCaptureCreationEvent((message) =>
+      this.processMessage(DictEventHandlers.CaptureCreated, {
         ...message,
-        type: 'VerifyCaptureProcessed',
+        type: 'CaptureCreated',
       }),
     );
   }

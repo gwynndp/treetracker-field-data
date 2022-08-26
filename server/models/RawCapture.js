@@ -59,6 +59,7 @@ class RawCapture {
 
   static RawCaptureCreated({
     id,
+    reference_id,
     lat,
     lon,
     field_user_id,
@@ -70,6 +71,7 @@ class RawCapture {
     return Object.freeze({
       id,
       type: 'RawCaptureCreated',
+      reference_id,
       lat,
       lon,
       field_user_id,
@@ -146,13 +148,13 @@ class RawCapture {
 
   async applyVerification(verifyCaptureProcessed) {
     if (verifyCaptureProcessed.approved) {
-      await this._rawCaptureRepository.update({
-        id: verifyCaptureProcessed.id,
+      await this._rawCaptureRepository.updateRawCaptureStatus({
+        referenceId: verifyCaptureProcessed.reference_id,
         status: 'approved',
       });
     } else {
-      await this._rawCaptureRepository.update({
-        id: verifyCaptureProcessed.id,
+      await this._rawCaptureRepository.updateRawCaptureStatus({
+        referenceId: verifyCaptureProcessed.reference_id,
         status: 'rejected',
         rejection_reason: verifyCaptureProcessed.rejection_reason,
       });
