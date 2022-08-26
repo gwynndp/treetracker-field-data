@@ -68,9 +68,9 @@ describe('Replay Events API', () => {
       ...domainEventObject1,
       id: 'dbd4367d-0d61-45b2-8c80-c62808f66af9',
       payload: {
-        id: capture.id,
+        reference_id: 23,
         approved: true,
-        type: 'VerifyCaptureProcessed',
+        type: 'CaptureCreated',
       },
       status: 'received',
     });
@@ -102,7 +102,7 @@ describe('Replay Events API', () => {
     const publication = await broker.publish(
       SubscriptionNames.CAPTURE_CREATED,
       {
-        id: capture.id,
+        reference_id: 23,
         approved: false,
       },
     );
