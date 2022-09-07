@@ -146,19 +146,11 @@ class RawCapture {
     return { capture: rawCapture, domainEvent, status: 201 };
   }
 
-  async applyVerification(verifyCaptureProcessed) {
-    if (verifyCaptureProcessed.approved) {
-      await this._rawCaptureRepository.updateRawCaptureStatus({
-        referenceId: verifyCaptureProcessed.reference_id,
-        status: 'approved',
-      });
-    } else {
-      await this._rawCaptureRepository.updateRawCaptureStatus({
-        referenceId: verifyCaptureProcessed.reference_id,
-        status: 'rejected',
-        rejection_reason: verifyCaptureProcessed.rejection_reason,
-      });
-    }
+  async applyVerification(capture) {
+    await this._rawCaptureRepository.update({
+      id: capture.id,
+      status: 'approved',
+    });
   }
 }
 
