@@ -58,10 +58,17 @@ const insertTestCapture = async (knex, knexLegacyDB) => {
   await knex('wallet_registration').insert(walletRegistrationObject);
   await knex('session').insert({ ...sessionObject, created_at: new Date() });
   await knex('domain_event').insert(domainEventObject);
+  const tree = await knexLegacyDB('trees')
+    .insert({
+      uuid: capture.id,
+      time_created: new Date(),
+      time_updated: new Date(),
+    })
+    .returning(['id']);
   await knex('raw_capture').insert({
     ...capture,
     extra_attributes: { entries: capture.extra_attributes },
-    reference_id: 23,
+    reference_id: tree[0].id,
     status: 'unprocessed',
     created_at: new Date(),
     updated_at: new Date(),

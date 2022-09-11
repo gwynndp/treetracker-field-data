@@ -14,6 +14,7 @@ const LegacyTreeAttributeRepository = require('../repositories/Legacy/TreeAttrib
 class LegacyTree {
   constructor(session) {
     this._session = session;
+    this._legacyTreeRepository = new LegacyTreeRepository(this._session);
   }
 
   async legacyTree({
@@ -52,16 +53,15 @@ class LegacyTree {
   }
 
   async createTreesInLegacyDB(tree, attributes) {
-    const legacyTreeRepository = new LegacyTreeRepository(this._session);
     const legacyAttributesRepository = new LegacyTreeAttributeRepository(
       this._session,
     );
-    const existingTree = await legacyTreeRepository.getByFilter({
+    const existingTree = await this._legacyTreeRepository.getByFilter({
       uuid: tree.uuid,
     });
 
     if (existingTree.length > 0) return existingTree[0];
-    const result = await legacyTreeRepository.create(tree);
+    const result = await this._legacyTreeRepository.create(tree);
     const tree_attributes = attributes.map((attribute) => ({
       tree_id: result.id,
       ...attribute,
@@ -69,6 +69,17 @@ class LegacyTree {
     if (tree_attributes.length) {
       await legacyAttributesRepository.create(tree_attributes);
     }
+    return result;
+  }
+
+  async rejectTreesInLegacyDB({ legacyTreeId, rejectionReason }) {
+    const result = await this._legacyTreeRepository.update({
+      id: legacyTreeId,
+      rejection_reason: rejectionReason,
+      active: false,
+      approved: false,
+    });
+
     return result;
   }
 }

@@ -13,7 +13,7 @@ const {
   captureWithExistingTree,
 } = require('./insert-test-capture');
 
-describe('Raw Captures', () => {
+describe.only('Raw Captures', () => {
   let brokerStub;
   before(async () => {
     brokerStub = sinon.stub(Broker, 'create').resolves({
@@ -107,5 +107,24 @@ describe('Raw Captures', () => {
       .count()
       .where({ status: 'sent' });
     expect(+numOfEmittedEvents[0].count).to.eql(3);
+  });
+
+  it('should reject a raw capture', async () => {
+    const rejection_reason = 'invalid photograph';
+    const res = await request(server)
+      .patch(`/raw-captures/${captureRequestObject.id}/reject`)
+      .send({ rejection_reason });
+
+    expect(res.body.status).to.eql('rejected');
+    expect(res.body.rejection_reason).to.eql(rejection_reason);
+
+    const legacyTree = await knex('public.trees')
+      .select()
+      .where({ id: res.body.reference_id })
+      .first();
+
+    expect(legacyTree.rejection_reason).to.eql(rejection_reason);
+    expect(legacyTree.approved).to.eql(false);
+    expect(legacyTree.active).to.eql(false);
   });
 });

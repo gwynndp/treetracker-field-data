@@ -10,23 +10,38 @@
   },
   "paths": {
     "/raw-captures/raw_capture_id": {
-      "get": {
-        "summary": "Your GET endpoint",
-        "tags": [],
+      "patch": {
+        "summary": "",
+        "operationId": "patch-raw-captures-raw_capture_id",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {}
+                  "$ref": "#/components/schemas/Raw-Capture"
                 }
               }
             }
           }
         },
-        "operationId": "get-raw-captures-raw_capture_id"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rejection_reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "rejection_reason"
+                ]
+              }
+            }
+          }
+        }
       }
     },
     "/raw-captures": {
@@ -471,7 +486,10 @@
                           "type": "string"
                         }
                       },
-                      "required": ["key", "value"]
+                      "required": [
+                        "key",
+                        "value"
+                      ]
                     }
                   },
                   "captured_at": {
@@ -897,13 +915,24 @@
                 "properties": {
                   "status": {
                     "type": "string",
-                    "enum": ["raised", "received"]
+                    "enum": [
+                      "raised",
+                      "received"
+                    ]
                   }
                 }
               }
             }
           }
         }
+      }
+    },
+    "/raw-captures/raw_capture_id/reject": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-raw-captures-raw_capture_id-reject"
       }
     }
   },
@@ -945,7 +974,9 @@
           },
           "extra_attributes": {
             "type": "object",
-            "required": ["entries"],
+            "required": [
+              "entries"
+            ],
             "properties": {
               "entries": {
                 "type": "array",
@@ -962,7 +993,10 @@
                       "type": "string"
                     }
                   },
-                  "required": ["key", "value"]
+                  "required": [
+                    "key",
+                    "value"
+                  ]
                 }
               }
             }
