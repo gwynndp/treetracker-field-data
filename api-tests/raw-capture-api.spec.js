@@ -13,7 +13,7 @@ const {
   captureWithExistingTree,
 } = require('./insert-test-capture');
 
-describe.only('Raw Captures', () => {
+describe('Raw Captures', () => {
   let brokerStub;
   before(async () => {
     brokerStub = sinon.stub(Broker, 'create').resolves({
