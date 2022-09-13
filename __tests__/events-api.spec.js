@@ -46,6 +46,7 @@ describe('Replay Events API', () => {
     const res = await request(server)
       .post(`/replay-events`)
       .set('Content-Type', 'application/json')
+      .send({ status: 'raised' })
       .expect(200);
 
     expect(res.body.request).to.eql('accepted');
@@ -63,13 +64,13 @@ describe('Replay Events API', () => {
     brokerStub.restore();
   });
 
+  //put this after below??
   it('Handle previously received events', async () => {
     await knex('domain_event').insert({
       ...domainEventObject1,
       id: 'dbd4367d-0d61-45b2-8c80-c62808f66af9',
       payload: {
-        reference_id: 23,
-        approved: true,
+        id: capture.id,
         type: 'CaptureCreated',
       },
       status: 'received',
@@ -78,6 +79,7 @@ describe('Replay Events API', () => {
     const res = await request(server)
       .post(`/replay-events`)
       .set('Content-Type', 'application/json')
+      .send({ status: 'received' })
       .expect(200);
 
     expect(res.body.request).to.eql('accepted');
@@ -98,13 +100,13 @@ describe('Replay Events API', () => {
   });
 
   it(`Should handle ${SubscriptionNames.CAPTURE_CREATED} event`, async () => {
+    await knex('raw_capture')
+      .update({ status: 'unprocessed' })
+      .where('id', capture.id);
     const broker = await Broker.create(config);
     const publication = await broker.publish(
       SubscriptionNames.CAPTURE_CREATED,
-      {
-        reference_id: 23,
-        approved: false,
-      },
+      { id: capture.id },
     );
 
     publication
@@ -117,10 +119,10 @@ describe('Replay Events API', () => {
     // wait for the message to be processed
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const noOfRejectedCaptures = await knex('raw_capture')
+    const noOfApprovedCaptures = await knex('raw_capture')
       .count()
-      .where({ id: capture.id, status: 'rejected' });
-    expect(+noOfRejectedCaptures[0].count).to.eql(1);
+      .where({ id: capture.id, status: 'approved' });
+    expect(+noOfApprovedCaptures[0].count).to.eql(1);
 
     const numOfRaisedEvents = await knex('domain_event')
       .count()

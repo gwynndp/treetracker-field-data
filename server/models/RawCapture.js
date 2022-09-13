@@ -25,6 +25,7 @@ class RawCapture {
     user_photo_url,
     extra_attributes,
     status,
+    rejection_reason,
     bulk_pack_file_name,
     created_at,
     updated_at,
@@ -49,6 +50,7 @@ class RawCapture {
       user_photo_url,
       extra_attributes,
       status,
+      rejection_reason,
       bulk_pack_file_name,
       created_at,
       updated_at,
@@ -146,19 +148,22 @@ class RawCapture {
     return { capture: rawCapture, domainEvent, status: 201 };
   }
 
-  async applyVerification(verifyCaptureProcessed) {
-    if (verifyCaptureProcessed.approved) {
-      await this._rawCaptureRepository.updateRawCaptureStatus({
-        referenceId: verifyCaptureProcessed.reference_id,
-        status: 'approved',
-      });
-    } else {
-      await this._rawCaptureRepository.updateRawCaptureStatus({
-        referenceId: verifyCaptureProcessed.reference_id,
-        status: 'rejected',
-        rejection_reason: verifyCaptureProcessed.rejection_reason,
-      });
-    }
+  async applyVerification(capture) {
+    await this._rawCaptureRepository.update({
+      id: capture.id,
+      status: 'approved',
+    });
+  }
+
+  async rejectRawCapture({ rawCaptureId, rejectionReason }) {
+    const updatedRawCapture = await this._rawCaptureRepository.update({
+      id: rawCaptureId,
+      rejection_reason: rejectionReason,
+      status: 'rejected',
+    });
+
+    const rawCapture = await this.getRawCaptureById(updatedRawCapture.id);
+    return rawCapture;
   }
 }
 

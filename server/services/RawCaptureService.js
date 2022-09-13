@@ -55,14 +55,11 @@ class RawCaptureService {
 
       await this._session.beginTransaction();
 
-      const {
-        capture,
-        status,
-        domainEvent,
-      } = await this._rawCapture.createRawCapture({
-        ...rawCaptureObject,
-        reference_id: legacyTree.id,
-      });
+      const { capture, status, domainEvent } =
+        await this._rawCapture.createRawCapture({
+          ...rawCaptureObject,
+          reference_id: legacyTree.id,
+        });
 
       await this._session.commitTransaction();
       await legacySession.commitTransaction();
@@ -74,6 +71,42 @@ class RawCaptureService {
       }
 
       return { capture, status };
+    } catch (e) {
+      if (this._session.isTransactionInProgress()) {
+        await this._session.rollbackTransaction();
+      }
+      if (legacySession.isTransactionInProgress()) {
+        await legacySession.rollbackTransaction();
+      }
+      throw e;
+    }
+  }
+
+  async rejectRawCapture({ rawCaptureId, rejectionReason }) {
+    const legacySession = new LegacySession();
+    const legacyTreeModel = new LegacyTree(legacySession);
+
+    // get the legacy id of the tree in the legacy DB
+    const rawCapture = await this.getRawCaptureById(rawCaptureId);
+    const legacyTreeId = rawCapture.reference_id;
+    try {
+      await legacySession.beginTransaction();
+      await this._session.beginTransaction();
+
+      await legacyTreeModel.rejectTreesInLegacyDB({
+        legacyTreeId,
+        rejectionReason,
+      });
+
+      const updatedRawCapture = await this._rawCapture.rejectRawCapture({
+        rawCaptureId,
+        rejectionReason,
+      });
+
+      await this._session.commitTransaction();
+      await legacySession.commitTransaction();
+
+      return updatedRawCapture;
     } catch (e) {
       if (this._session.isTransactionInProgress()) {
         await this._session.rollbackTransaction();

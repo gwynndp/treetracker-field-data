@@ -35,8 +35,13 @@ const rawCaptureIdParamSchema = Joi.object({
   raw_capture_id: Joi.string().uuid().required(),
 }).unknown(false);
 
+const rawCaptureRejectionSchema = Joi.object({
+  rejection_reason: Joi.string().required(),
+});
+
 module.exports = {
   rawCaptureIdParamSchema,
   rawCaptureSchema,
   rawCaptureGetQuerySchema,
+  rawCaptureRejectionSchema,
 };

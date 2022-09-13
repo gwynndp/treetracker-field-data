@@ -27,6 +27,7 @@ before(async () => {
           planter_identifier character varying COLLATE pg_catalog."default",
           device_id integer,
           sequence integer,
+          rejection_reason varchar,
           note character varying COLLATE pg_catalog."default",
           verified boolean NOT NULL DEFAULT false,
           uuid character varying COLLATE pg_catalog."default",

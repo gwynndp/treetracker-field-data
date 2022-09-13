@@ -9,6 +9,7 @@ const {
   rawCaptureIdParamSchema,
   rawCaptureSchema,
   rawCaptureGetQuerySchema,
+  rawCaptureRejectionSchema,
 } = require('./schemas');
 
 const rawCaptureGet = async (req, res) => {
@@ -60,6 +61,24 @@ const rawCapturePost = async (req, res) => {
   res.status(status).send(capture);
 };
 
+const rawCaptureRejectPatch = async (req, res) => {
+  await rawCaptureRejectionSchema.validateAsync(req.body, {
+    abortEarly: false,
+  });
+
+  await rawCaptureIdParamSchema.validateAsync(req.params, {
+    abortEarly: false,
+  });
+
+  const rawCaptureService = new RawCaptureService();
+  const rawCapture = await rawCaptureService.rejectRawCapture({
+    rejectionReason: req.body.rejection_reason,
+    rawCaptureId: req.params.raw_capture_id,
+  });
+
+  res.send(rawCapture);
+};
+
 const rawCaptureSingleGet = async function (req, res) {
   await rawCaptureIdParamSchema.validateAsync(req.params, {
     abortEarly: false,
@@ -84,4 +103,5 @@ module.exports = {
   rawCaptureGet,
   rawCapturePost,
   rawCaptureSingleGet,
+  rawCaptureRejectPatch,
 };
