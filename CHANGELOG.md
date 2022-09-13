@@ -1,3 +1,15 @@
+# [1.10.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.9.3...v1.10.0) (2022-09-13)
+
+
+### Bug Fixes
+
+* apply verification by id ([c4d623f](https://github.com/Greenstand/treetracker-field-data/commit/c4d623fea2be5819b549fad458bdb3fe0785880c))
+
+
+### Features
+
+* add raw capture reject endpoint ([9026808](https://github.com/Greenstand/treetracker-field-data/commit/9026808ef13ff044e13ff4f92f30c3708b93b9f1))
+
 ## [1.9.3](https://github.com/Greenstand/treetracker-field-data/compare/v1.9.2...v1.9.3) (2022-08-26)
 
 
