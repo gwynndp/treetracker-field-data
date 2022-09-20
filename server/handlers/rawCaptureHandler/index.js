@@ -70,10 +70,18 @@ const rawCaptureRejectPatch = async (req, res) => {
     abortEarly: false,
   });
 
+  const legacyAPIAuthorizationHeader = req.headers.authorization;
+
+  if (!legacyAPIAuthorizationHeader) {
+    throw new HttpError(422, 'legacy authorization header needed');
+  }
+
   const rawCaptureService = new RawCaptureService();
   const rawCapture = await rawCaptureService.rejectRawCapture({
     rejectionReason: req.body.rejection_reason,
+    organizationId: req.body.organization_id,
     rawCaptureId: req.params.raw_capture_id,
+    legacyAPIAuthorizationHeader,
   });
 
   res.send(rawCapture);
