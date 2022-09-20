@@ -1,3 +1,10 @@
+## [1.10.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.1...v1.10.2) (2022-09-20)
+
+
+### Bug Fixes
+
+* legacy api url/ readme ([44da4d1](https://github.com/Greenstand/treetracker-field-data/commit/44da4d143abb55202418482cb7696caeb0c47e30))
+
 ## [1.10.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.0...v1.10.1) (2022-09-20)
 
 
