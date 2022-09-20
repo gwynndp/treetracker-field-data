@@ -4,6 +4,7 @@ const RawCapture = require('../models/RawCapture');
 const LegacyTree = require('../models/LegacyTree');
 const SessionModel = require('../models/SessionModel');
 const QueueService = require('./QueueService');
+const LegacyAPIService = require('./LegacyAPIService');
 const HttpError = require('../utils/HttpError');
 
 class RawCaptureService {
@@ -82,19 +83,24 @@ class RawCaptureService {
     }
   }
 
-  async rejectRawCapture({ rawCaptureId, rejectionReason }) {
-    const legacySession = new LegacySession();
-    const legacyTreeModel = new LegacyTree(legacySession);
-
-    // get the legacy id of the tree in the legacy DB
-    const rawCapture = await this.getRawCaptureById(rawCaptureId);
-    const legacyTreeId = rawCapture.reference_id;
+  async rejectRawCapture({
+    rejectionReason,
+    organizationId,
+    rawCaptureId,
+    legacyAPIAuthorizationHeader,
+  }) {
     try {
-      await legacySession.beginTransaction();
       await this._session.beginTransaction();
 
-      await legacyTreeModel.rejectTreesInLegacyDB({
-        legacyTreeId,
+      // get the legacy id of the tree in the legacy DB
+      const rawCapture = await this.getRawCaptureById(rawCaptureId);
+      const legacyTreeId = rawCapture.reference_id;
+
+      // update the legacy API
+      await LegacyAPIService.rejectLegacyTree({
+        id: +legacyTreeId,
+        organizationId,
+        legacyAPIAuthorizationHeader,
         rejectionReason,
       });
 
@@ -104,15 +110,11 @@ class RawCaptureService {
       });
 
       await this._session.commitTransaction();
-      await legacySession.commitTransaction();
 
       return updatedRawCapture;
     } catch (e) {
       if (this._session.isTransactionInProgress()) {
         await this._session.rollbackTransaction();
-      }
-      if (legacySession.isTransactionInProgress()) {
-        await legacySession.rollbackTransaction();
       }
       throw e;
     }

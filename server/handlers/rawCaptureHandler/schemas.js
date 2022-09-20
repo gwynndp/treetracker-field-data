@@ -37,6 +37,7 @@ const rawCaptureIdParamSchema = Joi.object({
 
 const rawCaptureRejectionSchema = Joi.object({
   rejection_reason: Joi.string().required(),
+  organization_id: Joi.number().integer(), // to support legacy API call
 });
 
 module.exports = {

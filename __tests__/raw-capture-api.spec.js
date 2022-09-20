@@ -12,6 +12,9 @@ const {
   captureRequestObject,
   captureWithExistingTree,
 } = require('./insert-test-capture');
+const LegacyAPI = require('../server/services/LegacyAPIService');
+
+let reference_id;
 
 describe('Raw Captures', () => {
   let brokerStub;
@@ -43,6 +46,7 @@ describe('Raw Captures', () => {
       .set('Accept', 'application/json')
       .expect(201)
       .end(function (err, res) {
+        reference_id = res.body.reference_id;
         expect(res.body.id).to.eql(captureRequestObject.id);
         if (err) return done(err);
         return done();
@@ -103,6 +107,7 @@ describe('Raw Captures', () => {
   });
 
   it('should confirm number of sent capture-created events', async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     const numOfEmittedEvents = await knex('domain_event')
       .count()
       .where({ status: 'sent' });
@@ -110,21 +115,30 @@ describe('Raw Captures', () => {
   });
 
   it('should reject a raw capture', async () => {
+    let legacyAPIRejectTreeStub;
+
+    legacyAPIRejectTreeStub = sinon
+      .stub(LegacyAPI, 'rejectLegacyTree')
+      .resolves();
+
     const rejection_reason = 'invalid photograph';
     const res = await request(server)
       .patch(`/raw-captures/${captureRequestObject.id}/reject`)
-      .send({ rejection_reason });
+      .send({ rejection_reason, organization_id: 12 })
+      .set('Authorization', 'jwt_token');
+
+    expect(
+      legacyAPIRejectTreeStub.calledOnceWithExactly({
+        id: +reference_id,
+        legacyAPIAuthorizationHeader: 'jwt_token',
+        organizationId: 12,
+        rejectionReason: rejection_reason,
+      }),
+    ).eql(true);
 
     expect(res.body.status).to.eql('rejected');
     expect(res.body.rejection_reason).to.eql(rejection_reason);
 
-    const legacyTree = await knex('public.trees')
-      .select()
-      .where({ id: res.body.reference_id })
-      .first();
-
-    expect(legacyTree.rejection_reason).to.eql(rejection_reason);
-    expect(legacyTree.approved).to.eql(false);
-    expect(legacyTree.active).to.eql(false);
+    legacyAPIRejectTreeStub.restore();
   });
 });

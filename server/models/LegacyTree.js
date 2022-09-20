@@ -71,17 +71,6 @@ class LegacyTree {
     }
     return result;
   }
-
-  async rejectTreesInLegacyDB({ legacyTreeId, rejectionReason }) {
-    const result = await this._legacyTreeRepository.update({
-      id: legacyTreeId,
-      rejection_reason: rejectionReason,
-      active: false,
-      approved: false,
-    });
-
-    return result;
-  }
 }
 
 module.exports = LegacyTree;
