@@ -2,7 +2,7 @@ const axios = require('axios').default;
 
 const TREETRACKER_LEGACY_API_URL =
   `${process.env.TREETRACKER_LEGACY_API_URL}` ||
-  'http://treetracker-admin-api.admin-api/';
+  'http://treetracker-admin-api.admin-api/api';
 
 const organizationRoute = (id) => (id ? `organization/${id}/` : ``);
 
@@ -13,7 +13,7 @@ const rejectLegacyTree = async ({
   legacyAPIAuthorizationHeader,
 }) => {
   await axios.patch(
-    `${TREETRACKER_LEGACY_API_URL}/api/${organizationRoute(
+    `${TREETRACKER_LEGACY_API_URL}/${organizationRoute(
       organizationId,
     )}trees/${id}`,
     { id, approved: false, active: false, rejectionReason },
