@@ -17,19 +17,19 @@ cd treetracker-field-data
 npm install
 ```
 
-2. In the command line run the following to decrypt and create `.env` file that contains connection credentials to the database and message queues this project relies on.
+2. Default development environment setup
 
 ```
-npm run decrypt
+1. Ask engineering leads for a doctl dev token
+2. Install doctl command line tool
+3. MacOS: brew install doctl
+4. ./scripts/setup-dev-database-passwords.sh
 ```
-
-The command will prompt for a password, please reach out in slack `engineering` or `microservices-working-group` channels for the credential.
-On successfully running the command, the file env.secret is decrypted and creates a `.env` file.
 
 3. Now run the app
 
 ```
-node .
+npm run server
 ```
 
 The above will start the app listening at port 3006.
