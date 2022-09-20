@@ -107,7 +107,7 @@ describe('Raw Captures', () => {
   });
 
   it('should confirm number of sent capture-created events', async () => {
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     const numOfEmittedEvents = await knex('domain_event')
       .count()
       .where({ status: 'sent' });
