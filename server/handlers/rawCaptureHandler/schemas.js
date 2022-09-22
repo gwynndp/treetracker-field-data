@@ -3,7 +3,7 @@ const Joi = require('joi');
 const rawCaptureGetQuerySchema = Joi.object({
   offset: Joi.number().integer().greater(-1),
   limit: Joi.number().integer().greater(0),
-  status: Joi.string().allow('unprocessed', 'approved', 'rejected'),
+  status: Joi.string().valid('unprocessed', 'approved', 'rejected'),
   bulk_pack_file_name: Joi.string(),
 }).unknown(false);
 

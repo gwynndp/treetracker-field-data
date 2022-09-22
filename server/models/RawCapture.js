@@ -160,6 +160,7 @@ class RawCapture {
       id: rawCaptureId,
       rejection_reason: rejectionReason,
       status: 'rejected',
+      updated_at: new Date().toISOString(),
     });
 
     const rawCapture = await this.getRawCaptureById(updatedRawCapture.id);
