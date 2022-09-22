@@ -1,3 +1,10 @@
+## [1.10.5](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.4...v1.10.5) (2022-09-22)
+
+
+### Bug Fixes
+
+* add updated_at ([aaea4b6](https://github.com/Greenstand/treetracker-field-data/commit/aaea4b6b0389e7971816a37f899cf0fe440680fe))
+
 ## [1.10.4](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.3...v1.10.4) (2022-09-22)
 
 
