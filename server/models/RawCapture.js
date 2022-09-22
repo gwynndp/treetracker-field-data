@@ -152,6 +152,7 @@ class RawCapture {
     await this._rawCaptureRepository.update({
       id: capture.id,
       status: 'approved',
+      updated_at: new Date().toISOString(),
     });
   }
 
