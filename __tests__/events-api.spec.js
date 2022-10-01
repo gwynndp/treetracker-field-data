@@ -12,6 +12,7 @@ const {
 } = require('./insert-test-capture');
 const { SubscriptionNames } = require('../server/infra/RabbitMQ/config');
 const { config } = require('./rabbitmq-test-config');
+const { DomainEventTypes } = require('../server/utils/enums');
 
 const domainEventObject1 = {
   id: 'a63d448b-750e-4961-9bf8-4fc1599c195c',
@@ -64,14 +65,13 @@ describe('Replay Events API', () => {
     brokerStub.restore();
   });
 
-  //put this after below??
   it('Handle previously received events', async () => {
     await knex('domain_event').insert({
       ...domainEventObject1,
       id: 'dbd4367d-0d61-45b2-8c80-c62808f66af9',
       payload: {
         id: capture.id,
-        type: 'CaptureCreated',
+        type: DomainEventTypes.CaptureCreated,
       },
       status: 'received',
     });

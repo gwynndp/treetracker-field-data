@@ -13,10 +13,26 @@ class QueueService {
     await this._rabbitmq.init();
   }
 
+  async tearDown() {
+    await this._rabbitmq.teardownBroker();
+  }
+
   publishRawCaptureCreatedMessage(domainEvent) {
     this._rabbitmq.publishMessage(
       SubscriptionNames.RAW_CAPTURE_CREATED,
-      domainEvent,
+      domainEvent.payload,
+      () =>
+        this._domainEventModel.update({
+          ...domainEvent,
+          status: 'sent',
+        }),
+    );
+  }
+
+  publishRawCaptureRejectedMessage(domainEvent) {
+    this._rabbitmq.publishMessage(
+      SubscriptionNames.RAW_CAPTURE_REJECTED,
+      domainEvent.payload,
       () =>
         this._domainEventModel.update({
           ...domainEvent,

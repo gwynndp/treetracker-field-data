@@ -6,6 +6,7 @@ const log = require('loglevel');
 const Session = require('../infra/database/Sessions/Session');
 const DomainEvent = require('../models/DomainEvent');
 const RawCapture = require('../models/RawCapture');
+const { DomainEventTypes } = require('../utils/enums');
 const QueueService = require('./QueueService');
 
 const DictEventHandlers = Object.freeze({
@@ -26,7 +27,7 @@ class EventHandlerService {
     queueService.subscribeToCaptureCreationEvent((message) =>
       this.processMessage(DictEventHandlers.CaptureCreated, {
         ...message,
-        type: 'CaptureCreated',
+        type: DomainEventTypes.CaptureCreated,
       }),
     );
   }

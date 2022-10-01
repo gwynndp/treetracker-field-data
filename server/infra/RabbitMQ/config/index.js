@@ -1,5 +1,6 @@
 const SubscriptionNames = {
   RAW_CAPTURE_CREATED: 'raw-capture-created',
+  RAW_CAPTURE_REJECTED: 'raw-capture-rejected',
   CAPTURE_CREATED: 'capture-created',
 };
 
@@ -16,10 +17,14 @@ module.exports = {
         queues: [
           SubscriptionNames.CAPTURE_CREATED,
           SubscriptionNames.RAW_CAPTURE_CREATED,
+          SubscriptionNames.RAW_CAPTURE_REJECTED,
         ],
         publications: {
           [SubscriptionNames.RAW_CAPTURE_CREATED]: {
             queue: SubscriptionNames.RAW_CAPTURE_CREATED,
+          },
+          [SubscriptionNames.RAW_CAPTURE_REJECTED]: {
+            queue: SubscriptionNames.RAW_CAPTURE_REJECTED,
           },
         },
         subscriptions: {
