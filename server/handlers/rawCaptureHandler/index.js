@@ -1,4 +1,3 @@
-const log = require('loglevel');
 const HttpError = require('../../utils/HttpError');
 const RawCaptureService = require('../../services/RawCaptureService');
 const {
@@ -43,7 +42,6 @@ const rawCaptureGet = async (req, res) => {
 };
 
 const rawCapturePost = async (req, res) => {
-  log.warn('raw capture post...');
   delete req.body.extra_attributes; // remove extra_attributes until implemented on mobile side
   const { body } = req;
   if (body.rotation_matrix != null) {

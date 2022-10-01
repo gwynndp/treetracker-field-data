@@ -16,7 +16,7 @@ const { DomainEventTypes } = require('../server/utils/enums');
 
 const domainEventObject1 = {
   id: 'a63d448b-750e-4961-9bf8-4fc1599c195c',
-  payload: {},
+  payload: { type: DomainEventTypes.RawCaptureRejected },
   status: 'raised',
   created_at: '2021-05-04 11:24:43',
   updated_at: '2021-05-04 11:24:43',
@@ -32,7 +32,17 @@ describe('Replay Events API', () => {
     await clearDB(knex, knexLegacyDB);
   });
 
-  it(`Send previously raised events`, async () => {
+  it(`Should process previously unprocessed events`, async () => {
+    await knex('domain_event').insert({
+      ...domainEventObject1,
+      id: 'dbd4367d-0d61-45b2-8c80-c62808f66af9',
+      payload: {
+        id: capture.id,
+        type: DomainEventTypes.CaptureCreated,
+      },
+      status: 'received',
+    });
+
     let brokerStub = sinon.stub(Broker, 'create').resolves({
       publish: () => {
         return {
@@ -47,7 +57,7 @@ describe('Replay Events API', () => {
     const res = await request(server)
       .post(`/replay-events`)
       .set('Content-Type', 'application/json')
-      .send({ status: 'raised' })
+      .send()
       .expect(200);
 
     expect(res.body.request).to.eql('accepted');
@@ -62,41 +72,18 @@ describe('Replay Events API', () => {
 
     // domain_event in the insertTestCapture is also sent
     expect(+numOfSentEvents[0].count).to.eql(2);
-    brokerStub.restore();
-  });
 
-  it('Handle previously received events', async () => {
-    await knex('domain_event').insert({
-      ...domainEventObject1,
-      id: 'dbd4367d-0d61-45b2-8c80-c62808f66af9',
-      payload: {
-        id: capture.id,
-        type: DomainEventTypes.CaptureCreated,
-      },
-      status: 'received',
-    });
-
-    const res = await request(server)
-      .post(`/replay-events`)
-      .set('Content-Type', 'application/json')
-      .send({ status: 'received' })
-      .expect(200);
-
-    expect(res.body.request).to.eql('accepted');
-    expect(res.body.status).to.eql('replay in progress...');
-
-    // the event replay process is not awaited
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    const numOfRaisedEvents = await knex('domain_event')
+    const numOfHandledEvents = await knex('domain_event')
       .count()
       .where({ status: 'handled' });
-    expect(+numOfRaisedEvents[0].count).to.eql(1);
+    expect(+numOfHandledEvents[0].count).to.eql(1);
 
     const noOfApprovedCaptures = await knex('raw_capture')
       .count()
       .where({ id: capture.id, status: 'approved' });
     expect(+noOfApprovedCaptures[0].count).to.eql(1);
+
+    brokerStub.restore();
   });
 
   it(`Should handle ${SubscriptionNames.CAPTURE_CREATED} event`, async () => {

@@ -4,6 +4,7 @@ const server = require('../server/app');
 const { expect } = require('chai');
 const sinon = require('sinon');
 const Broker = require('rascal').BrokerAsPromised;
+const { v4: uuid } = require('uuid');
 const { knex, knexLegacyDB } = require('../server/infra/database/knex');
 const {
   insertTestCapture,
@@ -11,13 +12,21 @@ const {
   capture,
   captureRequestObject,
   captureWithExistingTree,
+  domainEventObject,
 } = require('./insert-test-capture');
 const LegacyAPI = require('../server/services/LegacyAPIService');
+const { DomainEventTypes } = require('../server/utils/enums');
 
 let reference_id;
 
-describe('Raw Captures', () => {
+const captureWithoutDomainEvent = {
+  ...captureRequestObject,
+  id: uuid(),
+};
+
+describe.only('Raw Captures', () => {
   let brokerStub;
+
   before(async () => {
     brokerStub = sinon.stub(Broker, 'create').resolves({
       publish: () => {
@@ -31,6 +40,14 @@ describe('Raw Captures', () => {
     });
 
     await insertTestCapture(knex, knexLegacyDB);
+    await knex('raw_capture').insert({
+      ...captureWithoutDomainEvent,
+      extra_attributes: { entries: captureWithoutDomainEvent.extra_attributes },
+      reference_id: 64864,
+      status: 'approved',
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
   });
 
   after(async () => {
@@ -61,6 +78,19 @@ describe('Raw Captures', () => {
       .expect(200)
       .end(function (err, res) {
         expect(res.body.id).to.eql(captureRequestObject.id);
+        if (err) return done(err);
+        return done();
+      });
+  });
+
+  it(`Should handle existing raw capture without existing domain event`, function (done) {
+    request(server)
+      .post(`/raw-captures`)
+      .send({ ...captureWithoutDomainEvent })
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end(function (err, res) {
+        expect(res.body.id).to.eql(captureWithoutDomainEvent.id);
         if (err) return done(err);
         return done();
       });
@@ -111,34 +141,76 @@ describe('Raw Captures', () => {
     const numOfEmittedEvents = await knex('domain_event')
       .count()
       .where({ status: 'sent' });
-    expect(+numOfEmittedEvents[0].count).to.eql(3);
+    expect(+numOfEmittedEvents[0].count).to.eql(4);
   });
 
-  it('should reject a raw capture', async () => {
+  describe('should reject a raw capture', async () => {
     let legacyAPIRejectTreeStub;
 
-    legacyAPIRejectTreeStub = sinon
-      .stub(LegacyAPI, 'rejectLegacyTree')
-      .resolves();
+    beforeEach(async () => {
+      legacyAPIRejectTreeStub = sinon
+        .stub(LegacyAPI, 'rejectLegacyTree')
+        .resolves();
 
-    const rejection_reason = 'invalid photograph';
-    const res = await request(server)
-      .patch(`/raw-captures/${captureRequestObject.id}/reject`)
-      .send({ rejection_reason, organization_id: 12 })
-      .set('Authorization', 'jwt_token');
+      await knex('domain_event').del();
+    });
 
-    expect(
-      legacyAPIRejectTreeStub.calledOnceWithExactly({
-        id: +reference_id,
-        legacyAPIAuthorizationHeader: 'jwt_token',
-        organizationId: 12,
-        rejectionReason: rejection_reason,
-      }),
-    ).eql(true);
+    afterEach(() => {
+      legacyAPIRejectTreeStub.restore();
+    });
 
-    expect(res.body.status).to.eql('rejected');
-    expect(res.body.rejection_reason).to.eql(rejection_reason);
+    it('should reject an unprocessed raw capture, should not emit an event', async () => {
+      const rejection_reason = 'invalid photograph';
 
-    legacyAPIRejectTreeStub.restore();
+      const res = await request(server)
+        .patch(`/raw-captures/${captureRequestObject.id}/reject`)
+        .send({ rejection_reason, organization_id: 12 })
+        .set('Authorization', 'jwt_token');
+
+      expect(
+        legacyAPIRejectTreeStub.calledOnceWithExactly({
+          id: +reference_id,
+          legacyAPIAuthorizationHeader: 'jwt_token',
+          organizationId: 12,
+          rejectionReason: rejection_reason,
+        }),
+      ).eql(true);
+
+      expect(res.body.status).to.eql('rejected');
+      expect(res.body.rejection_reason).to.eql(rejection_reason);
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const numOfEmittedEvents = await knex('domain_event')
+        .count()
+        .where({ status: 'sent' });
+      expect(+numOfEmittedEvents[0].count).to.eql(0);
+    });
+
+    it('should reject an approved raw capture, should emit an event', async () => {
+      const rejection_reason = 'not a tree';
+
+      const res = await request(server)
+        .patch(`/raw-captures/${captureWithoutDomainEvent.id}/reject`)
+        .send({ rejection_reason })
+        .set('Authorization', 'jwt_token');
+
+      expect(
+        legacyAPIRejectTreeStub.calledOnceWithExactly({
+          id: 64864,
+          legacyAPIAuthorizationHeader: 'jwt_token',
+          organizationId: undefined,
+          rejectionReason: rejection_reason,
+        }),
+      ).eql(true);
+
+      expect(res.body.status).to.eql('rejected');
+      expect(res.body.rejection_reason).to.eql(rejection_reason);
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const numOfEmittedEvents = await knex('domain_event')
+        .count()
+        .where({ status: 'sent' });
+      expect(+numOfEmittedEvents[0].count).to.eql(1);
+    });
   });
 });
