@@ -24,7 +24,7 @@ const captureWithoutDomainEvent = {
   id: uuid(),
 };
 
-describe.only('Raw Captures', () => {
+describe('Raw Captures', () => {
   let brokerStub;
 
   before(async () => {
