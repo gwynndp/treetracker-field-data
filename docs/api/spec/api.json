@@ -10,9 +10,9 @@
   },
   "paths": {
     "/raw-captures/raw_capture_id": {
-      "patch": {
+      "get": {
         "summary": "",
-        "operationId": "patch-raw-captures-raw_capture_id",
+        "operationId": "get-raw-captures-raw_capture_id",
         "responses": {
           "200": {
             "description": "OK",
@@ -21,23 +21,6 @@
                 "schema": {
                   "$ref": "#/components/schemas/Raw-Capture"
                 }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "rejection_reason": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "rejection_reason"
-                ]
               }
             }
           }
@@ -911,16 +894,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "status": {
-                    "type": "string",
-                    "enum": [
-                      "raised",
-                      "received"
-                    ]
-                  }
-                }
+                "type": "object"
               }
             }
           }
@@ -928,11 +902,41 @@
       }
     },
     "/raw-captures/raw_capture_id/reject": {
-      "get": {
-        "summary": "Your GET endpoint",
-        "tags": [],
-        "responses": {},
-        "operationId": "get-raw-captures-raw_capture_id-reject"
+      "patch": {
+        "summary": "",
+        "operationId": "patch-raw-captures-raw_capture_id-reject",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Raw-Capture"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rejection_reason": {
+                    "type": "string"
+                  },
+                  "organization_id": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "rejection_reason"
+                ]
+              }
+            }
+          }
+        }
       }
     }
   },
