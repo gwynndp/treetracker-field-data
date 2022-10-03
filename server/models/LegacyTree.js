@@ -42,7 +42,7 @@ class LegacyTree {
       image_url,
       lat,
       lon,
-      planter_id: 1,
+      planter_id: planter.id,
       planter_identifier: wallet,
       planter_photo_url: user_photo_url,
       device_identifier,
