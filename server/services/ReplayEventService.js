@@ -1,6 +1,7 @@
 const log = require('loglevel');
 const Session = require('../infra/database/Sessions/Session');
 const DomainEvent = require('../models/DomainEvent');
+const { DomainEventTypes } = require('../utils/enums');
 const {
   EventHandlerService,
   DictEventHandlers,
@@ -14,25 +15,33 @@ class ReplayEventService {
   }
 
   async replayEvents() {
-    const domainEvents = await this._domainEvent.getDomainEvents(
-      {},
-      { limit: 1000 },
-    );
+    const domainEvents = await this._domainEvent.getDomainEvents({
+      or: [{ status: 'raised' }, { status: 'received' }],
+    });
+
+    const eventHandlerService = new EventHandlerService();
+    const queueService = new QueueService(this._session);
+    await queueService.init();
 
     domainEvents.forEach(async (domainEvent) => {
       switch (domainEvent.status) {
         case 'raised':
           try {
-            const queueService = new QueueService(this._session);
-            await queueService.init();
-            queueService.publishRawCaptureCreatedMessage(domainEvent);
+            if (
+              domainEvent.payload.type === DomainEventTypes.RawCaptureCreated
+            ) {
+              queueService.publishRawCaptureCreatedMessage(domainEvent);
+            } else if (
+              domainEvent.payload.type === DomainEventTypes.RawCaptureRejected
+            ) {
+              queueService.publishRawCaptureRejectedMessage(domainEvent);
+            }
           } catch (e) {
             log.error(`Error dispatching event ${domainEvent.id}. Error ${e}`);
           }
           break;
         case 'received':
           {
-            const eventHandlerService = new EventHandlerService();
             const eventHandler = DictEventHandlers[domainEvent.payload.type];
             if (typeof eventHandler !== 'undefined' && eventHandler !== null) {
               eventHandlerService.applyEventHandler(eventHandler, domainEvent);
@@ -50,6 +59,8 @@ class ReplayEventService {
           break;
       }
     });
+
+    queueService.tearDown();
   }
 }
 

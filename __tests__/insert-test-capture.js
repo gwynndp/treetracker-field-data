@@ -3,6 +3,7 @@ const {
   deviceConfigurationObject,
 } = require('./device-configuration-api.spec');
 const { sessionObject } = require('./session-api.spec');
+const { DomainEventTypes } = require('../server/utils/enums');
 
 const captureRequestObject = {
   id: '21ae129d-4233-4705-ac24-f4c96051e5ef',
@@ -39,6 +40,7 @@ const domainEventObject = {
   id: 'e876107a-2a7c-442b-9e57-880d596e1025',
   payload: {
     id: capture.id,
+    type: DomainEventTypes.RawCaptureCreated,
   },
   status: 'raised',
   created_at: '2021-05-04 11:24:43',
@@ -97,4 +99,5 @@ module.exports = {
   insertTestCapture,
   clearDB,
   captureWithExistingTree,
+  domainEventObject,
 };

@@ -1,4 +1,5 @@
 const RawCaptureRepository = require('../repositories/RawCaptureRepository');
+const { DomainEventTypes } = require('../utils/enums');
 const DomainEvent = require('./DomainEvent');
 
 class RawCapture {
@@ -72,7 +73,7 @@ class RawCapture {
   }) {
     return Object.freeze({
       id,
-      type: 'RawCaptureCreated',
+      type: DomainEventTypes.RawCaptureCreated,
       reference_id,
       lat,
       lon,
@@ -114,9 +115,18 @@ class RawCapture {
       rawCaptureObject.id,
     );
     if (existingRawCapture?.id) {
-      const domainEvent = await domainEventModel.getDomainEventByPayloadId(
+      let domainEvent = await domainEventModel.getDomainEventByPayloadIdAndType(
         rawCaptureObject.id,
+        DomainEventTypes.RawCaptureCreated,
       );
+      if (!domainEvent) {
+        const rawCaptureToRaise = this.constructor.RawCaptureCreated({
+          ...existingRawCapture,
+        });
+
+        domainEvent = await domainEventModel.raiseEvent(rawCaptureToRaise);
+        return { capture: existingRawCapture, domainEvent, status: 200 };
+      }
       if (domainEvent.status !== 'sent') {
         return {
           domainEvent,
@@ -157,15 +167,36 @@ class RawCapture {
   }
 
   async rejectRawCapture({ rawCaptureId, rejectionReason }) {
-    const updatedRawCapture = await this._rawCaptureRepository.update({
+    const rawCapture = await this.getRawCaptureById(rawCaptureId);
+    let domainEvent;
+    if (rawCapture.status === 'approved') {
+      const domainEventModel = new DomainEvent(this._session);
+      domainEvent = await domainEventModel.getDomainEventByPayloadIdAndType(
+        rawCaptureId,
+        DomainEventTypes.RawCaptureRejected,
+      );
+      if (!domainEvent) {
+        domainEvent = await domainEventModel.raiseEvent({
+          id: rawCaptureId,
+          type: DomainEventTypes.RawCaptureRejected,
+        });
+      } else if (domainEvent.status === 'sent') {
+        domainEvent = null;
+      }
+    }
+
+    const updates = {
       id: rawCaptureId,
       rejection_reason: rejectionReason,
       status: 'rejected',
       updated_at: new Date().toISOString(),
+    };
+
+    await this._rawCaptureRepository.update({
+      ...updates,
     });
 
-    const rawCapture = await this.getRawCaptureById(updatedRawCapture.id);
-    return rawCapture;
+    return { rawCapture: { ...rawCapture, ...updates }, domainEvent };
   }
 }
 

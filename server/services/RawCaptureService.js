@@ -69,6 +69,7 @@ class RawCaptureService {
         const queueService = new QueueService(this._session);
         await queueService.init();
         queueService.publishRawCaptureCreatedMessage(domainEvent);
+        queueService.tearDown();
       }
 
       return { capture, status };
@@ -104,12 +105,21 @@ class RawCaptureService {
         rejectionReason,
       });
 
-      const updatedRawCapture = await this._rawCapture.rejectRawCapture({
-        rawCaptureId,
-        rejectionReason,
-      });
+      const { rawCapture: updatedRawCapture, domainEvent } =
+        await this._rawCapture.rejectRawCapture({
+          rawCaptureId,
+          rejectionReason,
+        });
 
       await this._session.commitTransaction();
+
+      if (domainEvent) {
+        //   console.log('are we getting here');
+        const queueService = new QueueService(this._session);
+        await queueService.init();
+        queueService.publishRawCaptureRejectedMessage(domainEvent);
+        queueService.tearDown();
+      }
 
       return updatedRawCapture;
     } catch (e) {

@@ -24,8 +24,11 @@ class DomainEvent {
     return domainEvents;
   }
 
-  async getDomainEventByPayloadId(payloadId) {
-    return this._eventRepository.getDomainEventByPayloadId(payloadId);
+  async getDomainEventByPayloadIdAndType(payloadId, type) {
+    return this._eventRepository.getDomainEventByPayloadIdAndType(
+      payloadId,
+      type,
+    );
   }
 
   async raiseEvent(domainEvent) {
