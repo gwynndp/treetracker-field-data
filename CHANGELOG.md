@@ -1,3 +1,11 @@
+## [1.10.6](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.5...v1.10.6) (2022-10-03)
+
+
+### Bug Fixes
+
+* minor fix ([145f210](https://github.com/Greenstand/treetracker-field-data/commit/145f2106859dbd2629dce1eba4baada578d1fc66))
+* update rabbitmq implementation ([26b3410](https://github.com/Greenstand/treetracker-field-data/commit/26b34106a2cffeaa5a58e8d1ce2ed59a77f931b3))
+
 ## [1.10.5](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.4...v1.10.5) (2022-09-22)
 
 
