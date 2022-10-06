@@ -111,10 +111,10 @@ describe('Replay Events API', () => {
       .where({ id: capture.id, status: 'approved' });
     expect(+noOfApprovedCaptures[0].count).to.eql(1);
 
-    const numOfRaisedEvents = await knex('domain_event')
+    const numOfHandledEvents = await knex('domain_event')
       .count()
       .where({ status: 'handled' });
-    expect(+numOfRaisedEvents[0].count).to.eql(1);
+    expect(+numOfHandledEvents[0].count).to.eql(1);
 
     await broker.unsubscribeAll();
     await broker.purge();
