@@ -114,7 +114,6 @@ class RawCaptureService {
       await this._session.commitTransaction();
 
       if (domainEvent) {
-        //   console.log('are we getting here');
         const queueService = new QueueService(this._session);
         await queueService.init();
         queueService.publishRawCaptureRejectedMessage(domainEvent);

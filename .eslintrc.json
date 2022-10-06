@@ -17,7 +17,7 @@
       }
     }
   ],
-  "ignorePatterns": ["database/migrations/*"],
+  "ignorePatterns": ["database/*"],
   "rules": {
     "simple-import-sort/imports": "error",
     "no-underscore-dangle": "off",
