@@ -14,6 +14,8 @@ const sessionPostSchema = Joi.object({
   check_in_photo_url: Joi.string().uri(),
   track_url: Joi.string().uri(),
   organization: Joi.string().allow(null, ''),
+  re_tracking: Joi.boolean(),
+  start_time: Joi.date().iso(),
   bulk_pack_file_name: Joi.string(),
 }).unknown(false);
 
