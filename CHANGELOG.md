@@ -1,3 +1,11 @@
+## [1.10.7](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.6...v1.10.7) (2022-11-05)
+
+
+### Bug Fixes
+
+* add session start_time and re_tracking ([141d295](https://github.com/Greenstand/treetracker-field-data/commit/141d295d0aac70996cb8d38e31322c9b25452d1a))
+* add start-time to result ([1fb6f43](https://github.com/Greenstand/treetracker-field-data/commit/1fb6f43d7798790db064aab3bb1b0fc74a0af0ee))
+
 ## [1.10.6](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.5...v1.10.6) (2022-10-03)
 
 
