@@ -1,0 +1,1 @@
+ALTER TABLE session ADD start_time timestamptz;

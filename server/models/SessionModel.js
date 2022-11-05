@@ -7,6 +7,8 @@ class SessionModel {
 
   static SessionModel({
     id,
+    re_tracking,
+    start_time,
     device_configuration_id,
     originating_wallet_registration_id,
     target_wallet,
@@ -23,6 +25,8 @@ class SessionModel {
   }) {
     return Object.freeze({
       id,
+      re_tracking,
+      start_time,
       device_configuration_id,
       originating_wallet_registration_id,
       target_wallet,

@@ -18,6 +18,8 @@ class SessionRepository extends BaseRepository {
         'session.target_wallet',
         'session.check_in_photo_url',
         'session.track_url',
+        'session.re_tracking',
+        'session.start_time',
         'session.organization',
         'session.organization_id',
         'session.created_at',
