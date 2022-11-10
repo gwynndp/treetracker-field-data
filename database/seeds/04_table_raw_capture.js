@@ -1,6 +1,5 @@
 const { v4: uuid } = require('uuid');
 const Chance = require('chance');
-const duplicatesRawCaptures = require('./data/duplicate_raw_captures');
 const captureMatchRawCaptures = require('./data/capture_match_raw_captures');
 const { walletRegistrationIds } = require('./data/wallet_registration');
 
@@ -105,10 +104,6 @@ const createRawCapture = async (rc, knex) => {
 };
 
 exports.seed = async function (knex) {
-  for (const rc of duplicatesRawCaptures) {
-    await createRawCapture(rc, knex);
-  }
-
   for (const rc of captureMatchRawCaptures) {
     await createRawCapture(rc, knex);
   }
