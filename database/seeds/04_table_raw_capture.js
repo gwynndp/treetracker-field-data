@@ -1,5 +1,4 @@
 const { v4: uuid } = require('uuid');
-const Chance = require('chance');
 const captureMatchRawCaptures = require('./data/capture_match_raw_captures');
 const { walletRegistrationIds } = require('./data/wallet_registration');
 
@@ -106,23 +105,5 @@ const createRawCapture = async (rc, knex) => {
 exports.seed = async function (knex) {
   for (const rc of captureMatchRawCaptures) {
     await createRawCapture(rc, knex);
-  }
-
-  const chance = new Chance();
-  for (let i = 0; i < 1000; i++) {
-    await createRawCapture(
-      {
-        image_url:
-          'https://dummyimage.com/1000/05fa15/000000.jpg&text=This+is+a+tree',
-        lat: chance.latitude(),
-        lon: chance.longitude(),
-        gps_accuracy: chance.integer({ min: 0, max: 9 }),
-        note: chance.string(),
-        captured_at: new Date().toISOString(),
-        time_created: new Date().toISOString(),
-        time_updated: new Date().toISOString(),
-      },
-      knex,
-    );
   }
 };
