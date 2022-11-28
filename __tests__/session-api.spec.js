@@ -17,7 +17,6 @@ const sessionObject = {
   track_url: 'https://picsum.photos/200',
   bulk_pack_file_name: 'bulk_pack_file_name',
   organization: 'organization',
-  re_tracking: true,
   start_time: new Date().toISOString(),
 };
 

@@ -570,9 +570,6 @@
                   "organization": {
                     "type": "string"
                   },
-                  "re_tracking": {
-                    "type": "boolean"
-                  },
                   "start_time": {
                     "type": "string",
                     "format": "date-time"
@@ -1094,9 +1091,6 @@
           "created_at": {
             "type": "string",
             "format": "date-time"
-          },
-          "re_tracking": {
-            "type": "boolean"
           },
           "start_time": {
             "type": "string",
