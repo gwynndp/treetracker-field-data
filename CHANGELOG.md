@@ -1,3 +1,10 @@
+## [1.10.8](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.7...v1.10.8) (2022-11-28)
+
+
+### Bug Fixes
+
+* remove retracking ([0c1a6e9](https://github.com/Greenstand/treetracker-field-data/commit/0c1a6e96e7eb41a7e84a2408dead1c26c35beaf3))
+
 ## [1.10.7](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.6...v1.10.7) (2022-11-05)
 
 
