@@ -1,3 +1,16 @@
+# [1.11.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.8...v1.11.0) (2023-03-02)
+
+
+### Bug Fixes
+
+* add bulk pack version to session ([f2e228b](https://github.com/Greenstand/treetracker-field-data/commit/f2e228bad5436807a55d7ce1db74e5f687063ace))
+* semantic release ([b9b7df9](https://github.com/Greenstand/treetracker-field-data/commit/b9b7df96970905cb45525ab70a56f89072853dca))
+
+
+### Features
+
+* added mapping for cors policy ([fb625e9](https://github.com/Greenstand/treetracker-field-data/commit/fb625e982907a09f26727113291fe2d2d5cf55c3))
+
 ## [1.10.8](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.7...v1.10.8) (2022-11-28)
 
 
