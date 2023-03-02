@@ -1,0 +1,1 @@
+ALTER TABLE session DROP bulk_pack_version;
