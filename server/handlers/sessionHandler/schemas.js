@@ -16,6 +16,7 @@ const sessionPostSchema = Joi.object({
   organization: Joi.string().allow(null, ''),
   start_time: Joi.date().iso(),
   bulk_pack_file_name: Joi.string(),
+  bulk_pack_version: Joi.string().valid('v1', 'v2'),
 }).unknown(false);
 
 const sessionIdParamSchema = Joi.object({

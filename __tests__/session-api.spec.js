@@ -18,6 +18,7 @@ const sessionObject = {
   bulk_pack_file_name: 'bulk_pack_file_name',
   organization: 'organization',
   start_time: new Date().toISOString(),
+  bulk_pack_version: 'v2',
 };
 
 describe('Session', () => {

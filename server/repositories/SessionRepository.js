@@ -19,6 +19,7 @@ class SessionRepository extends BaseRepository {
         'session.check_in_photo_url',
         'session.track_url',
         'session.start_time',
+        'session.bulk_pack_version',
         'session.organization',
         'session.organization_id',
         'session.created_at',
