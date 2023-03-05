@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.0...v1.11.1) (2023-03-05)
+
+
+### Bug Fixes
+
+* cors mapping ([1b7b1ac](https://github.com/Greenstand/treetracker-field-data/commit/1b7b1acebd6d85f4a5d1872dae7f7a9c03833482))
+
 # [1.11.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.10.8...v1.11.0) (2023-03-02)
 
 
