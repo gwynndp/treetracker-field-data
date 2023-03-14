@@ -1,3 +1,10 @@
+## [1.11.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.1...v1.11.2) (2023-03-14)
+
+
+### Bug Fixes
+
+* correct naming of mapping file ([324fe1d](https://github.com/Greenstand/treetracker-field-data/commit/324fe1d7ef057b8a9fd4f469a2ad880568a8f309))
+
 ## [1.11.1](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.0...v1.11.1) (2023-03-05)
 
 
