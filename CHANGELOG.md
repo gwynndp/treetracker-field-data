@@ -1,3 +1,10 @@
+## [1.11.3](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.2...v1.11.3) (2023-03-15)
+
+
+### Bug Fixes
+
+* Add correct extension in kustomization ([cfde87a](https://github.com/Greenstand/treetracker-field-data/commit/cfde87a3dc3c343aad54f6f0205e9513adc3f5c6))
+
 ## [1.11.2](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.1...v1.11.2) (2023-03-14)
 
 
