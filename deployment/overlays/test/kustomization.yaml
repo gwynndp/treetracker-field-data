@@ -2,7 +2,7 @@ patchesStrategicMerge:
 - rabbitmq-connection-sealed-secret.yaml
 - database-connection-sealed-secret.yaml
 - database-migration-connection-sealed-secret.yaml
-- mapping
+- mapping.yaml
 images:
 - name: greenstand/treetracker-field-data
   newTag: v1.11.2
