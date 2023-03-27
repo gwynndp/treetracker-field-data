@@ -1,3 +1,10 @@
+## [1.11.6](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.5...v1.11.6) (2023-03-27)
+
+
+### Bug Fixes
+
+* trigger deployment ([babf97b](https://github.com/Greenstand/treetracker-field-data/commit/babf97bd5f43c710af626a94092096b208ed167c))
+
 ## [1.11.5](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.4...v1.11.5) (2023-03-27)
 
 
