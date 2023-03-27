@@ -1,3 +1,10 @@
+## [1.11.5](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.4...v1.11.5) (2023-03-27)
+
+
+### Bug Fixes
+
+* correct naming ([0c622f7](https://github.com/Greenstand/treetracker-field-data/commit/0c622f7f412b1bb037acfe280e814a6bc7a3a0e6))
+
 ## [1.11.4](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.3...v1.11.4) (2023-03-25)
 
 
