@@ -27,7 +27,7 @@ spec:
         - name: treetracker-field-data
           image: greenstand/treetracker-field-data:latest
           ports:
-            - containerPort: 80
+            - containerPort: 3006
           env:
             - name: DATABASE_URL
               valueFrom:
