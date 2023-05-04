@@ -1,3 +1,10 @@
+## [1.11.8](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.7...v1.11.8) (2023-05-04)
+
+
+### Bug Fixes
+
+* legacy uuid case ([5e76e5d](https://github.com/Greenstand/treetracker-field-data/commit/5e76e5d52f5d9f766c1b8862f097e5ebef139ca8))
+
 ## [1.11.7](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.6...v1.11.7) (2023-04-13)
 
 
