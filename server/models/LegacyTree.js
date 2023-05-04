@@ -38,7 +38,7 @@ class LegacyTree {
       );
 
     return Object.freeze({
-      uuid: id,
+      uuid: id.toLowerCase(),
       image_url,
       lat,
       lon,
