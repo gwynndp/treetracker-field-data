@@ -2,29 +2,24 @@ const {
   deviceConfigurationSwagger,
   deviceConfigurationComponent,
 } = require('./deviceConfigurationHandler/docs');
-// const {
-//   treeSwagger,
-//   treeComponent,
-//   treeTagComponent,
-//   treePotentialMatchesComponent,
-// } = require('./treeHandler/docs');
-// const { tagSwagger, tagComponent } = require('./tagHandler/docs');
-// const {
-//   growerAccountSwagger,
-//   growerAccountComponent,
-// } = require('./growerAccountHandler/docs');
-// const {
-//   growerAccountImageSwagger,
-//   growerAccountImageComponent,
-// } = require('./growerAccountImageHandler/docs');
+const {
+  rawCaptureSwagger,
+  rawCaptureComponent,
+} = require('./rawCaptureHandler/docs');
+const { replayEventPostSwagger } = require('./replayEventHandler/docs');
+const { sessionSwagger, sessionComponent } = require('./sessionHandler/docs');
+const {
+  walletRegistrationSwagger,
+  walletRegistrationComponent,
+} = require('./walletRegistrationHandler/docs');
 const { version } = require('../../package.json');
 
 const paths = {
   ...deviceConfigurationSwagger,
-  // ...tagSwagger,
-  // ...treeSwagger,
-  // ...growerAccountSwagger,
-  // ...growerAccountImageSwagger,
+  ...rawCaptureSwagger,
+  ...replayEventPostSwagger,
+  ...sessionSwagger,
+  ...walletRegistrationSwagger,
 };
 
 const swaggerDefinition = {
@@ -36,13 +31,10 @@ const swaggerDefinition = {
   paths,
   components: {
     schemas: {
-      // Tag: { ...tagComponent },
-      // Tree: { ...treeComponent },
-      // TreeTag: { ...treeTagComponent },
       DeviceConfiguration: { ...deviceConfigurationComponent },
-      // GrowerAccount: { ...growerAccountComponent },
-      // GrowerAccountImage: { ...growerAccountImageComponent },
-      // TreePotentialMatches: { ...treePotentialMatchesComponent },
+      RawCapture: { ...rawCaptureComponent },
+      Session: { ...sessionComponent },
+      WalletRegistration: { ...walletRegistrationComponent },
     },
   },
 };

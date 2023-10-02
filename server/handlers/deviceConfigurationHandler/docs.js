@@ -13,7 +13,7 @@ const singleDeviceConfigurationResponse = {
   content: {
     'application/json': {
       schema: {
-        $ref: '#/components/schemas/DeviceConfiguration',
+        $ref: '#/components/schemas/Device-Configuration',
       },
     },
   },
@@ -44,7 +44,7 @@ const deviceConfigurationSwagger = {
                   tags: {
                     type: 'array',
                     items: {
-                      $ref: '#/components/schemas/DeviceConfiguration',
+                      $ref: '#/components/schemas/Device-Configuration',
                     },
                   },
                 },
@@ -96,24 +96,19 @@ const deviceConfigurationComponent = {
   type: 'object',
   properties: {
     id: { type: 'string', format: 'uuid' },
-    reference_id: { type: 'number' },
-    tree_id: { type: 'string', format: 'uuid' },
-    image_url: { type: 'string' },
-    lat: { type: 'number' },
-    lon: { type: 'number' },
-    created_at: { type: 'string', format: 'date-time' },
-    status: { type: 'string' },
-    captured_at: { type: 'string', format: 'date-time' },
-    planting_organization_id: { type: 'string', format: 'uuid' },
-    tag_array: { type: 'array', items: { type: 'string' } },
-    grower_account_id: { type: 'string', format: 'uuid' },
-    morphology: { type: 'string' },
-    age: { type: 'number' },
-    note: { type: 'string' },
-    attributes: { type: 'object' },
-    species_id: { type: 'string', format: 'uuid' },
-    session_id: { type: 'string', format: 'uuid' },
-    device_configuration_id: { type: 'string', format: 'uuid' },
+    device_identifier: { type: 'string' },
+    brand: { type: 'string' },
+    model: { type: 'string' },
+    device: { type: 'string' },
+    serial: { type: 'string' },
+    hardware: { type: 'string' },
+    manufacturer: { type: 'string' },
+    app_build: { type: 'string' },
+    app_version: { type: 'string' },
+    os_version: { type: 'array' },
+    sdk_version: { type: 'string' },
+    logged_at: { type: 'string' },
+    bulk_pack_file_name: { type: 'string' },
   },
 };
 
