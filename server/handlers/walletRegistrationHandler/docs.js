@@ -13,7 +13,7 @@ const singleRawCaptureResponse = {
   content: {
     'application/json': {
       schema: {
-        $ref: '#/components/schemas/Session',
+        $ref: '#/components/schemas/WalletRegistration',
       },
     },
   },
@@ -41,10 +41,10 @@ const walletRegistrationSwagger = {
               schema: {
                 type: 'object',
                 properties: {
-                  tags: {
+                  wallet_registrations: {
                     type: 'array',
                     items: {
-                      $ref: '#/components/schemas/Session',
+                      $ref: '#/components/schemas/WalletRegistration',
                     },
                   },
                 },

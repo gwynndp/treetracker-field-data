@@ -15,7 +15,7 @@ const singleRawCaptureResponse = {
   content: {
     'application/json': {
       schema: {
-        $ref: '#/components/schemas/Raw-Capture',
+        $ref: '#/components/schemas/RawCapture',
       },
     },
   },
@@ -45,10 +45,10 @@ const rawCaptureSwagger = {
               schema: {
                 type: 'object',
                 properties: {
-                  tags: {
+                  raw_captures: {
                     type: 'array',
                     items: {
-                      $ref: '#/components/schemas/Raw-Capture',
+                      $ref: '#/components/schemas/RawCapture',
                     },
                   },
                 },
@@ -115,7 +115,7 @@ const rawCaptureSwagger = {
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/Raw-Capture',
+                $ref: '#/components/schemas/RawCapture',
               },
             },
           },

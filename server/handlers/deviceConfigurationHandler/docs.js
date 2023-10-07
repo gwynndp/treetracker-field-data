@@ -13,7 +13,7 @@ const singleDeviceConfigurationResponse = {
   content: {
     'application/json': {
       schema: {
-        $ref: '#/components/schemas/Device-Configuration',
+        $ref: '#/components/schemas/DeviceConfiguration',
       },
     },
   },
@@ -41,10 +41,10 @@ const deviceConfigurationSwagger = {
               schema: {
                 type: 'object',
                 properties: {
-                  tags: {
+                  device_configurations: {
                     type: 'array',
                     items: {
-                      $ref: '#/components/schemas/Device-Configuration',
+                      $ref: '#/components/schemas/DeviceConfiguration',
                     },
                   },
                 },

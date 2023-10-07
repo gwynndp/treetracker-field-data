@@ -41,7 +41,7 @@ const sessionSwagger = {
               schema: {
                 type: 'object',
                 properties: {
-                  tags: {
+                  sessions: {
                     type: 'array',
                     items: {
                       $ref: '#/components/schemas/Session',
