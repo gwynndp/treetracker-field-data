@@ -1,4 +1,6 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const { join } = require('path');
 const cors = require('cors');
 const log = require('loglevel');
 const Sentry = require('@sentry/node');
@@ -6,6 +8,7 @@ const bodyParser = require('body-parser');
 const HttpError = require('./utils/HttpError');
 const { errorHandler, handlerWrapper } = require('./utils/utils');
 const router = require('./routes');
+const { swaggerDocument, swaggerOptions } = require('./handlers/swaggerDoc');
 
 const app = express();
 const config = require('../config/config');
@@ -37,6 +40,14 @@ app.use(
     }
     next();
   }),
+);
+
+app.use('/assets', express.static(join(__dirname, '..', '/assets')));
+
+app.use(
+  '/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, swaggerOptions),
 );
 
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
