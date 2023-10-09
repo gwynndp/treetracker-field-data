@@ -22,10 +22,10 @@ const paths = {
   ...walletRegistrationSwagger,
 };
 
-const swaggerDefinition = {
+const swaggerDocument = {
   openapi: '3.0.0',
   info: {
-    title: 'Treetracker Field API',
+    title: 'Treetracker Field Data API',
     version,
   },
   paths,
@@ -39,4 +39,15 @@ const swaggerDefinition = {
   },
 };
 
-module.exports = swaggerDefinition;
+const swaggerOptions = {
+  customCss: `
+    .topbar-wrapper img { 
+      content:url('../assets/greenstand.webp');
+      width:80px; 
+      height:auto;
+    }
+    `,
+  explorer: true,
+};
+
+module.exports = { swaggerDocument, swaggerOptions };
