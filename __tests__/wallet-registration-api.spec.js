@@ -2,7 +2,8 @@ require('dotenv').config();
 const request = require('supertest');
 const server = require('../server/app');
 const { expect } = require('chai');
-const { knex } = require('../server/infra/database/knex');
+const { knex, knexLegacyDB } = require('../server/infra/database/knex');
+const { clearDB } = require('./clear-db');
 
 const walletRegistrationObject = {
   id: '67761c8f-e077-4869-b964-a7bcb42f6aed',
@@ -21,8 +22,8 @@ const walletRegistrationObject = {
 };
 
 describe('Wallet Registration', () => {
-  after(async () => {
-    await knex('wallet_registration').del();
+  before(async () => {
+    await clearDB(knex, knexLegacyDB);
   });
 
   it(`Wallet Registration should be successfully added`, function (done) {

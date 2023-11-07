@@ -5,11 +5,8 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const server = require('../server/app');
 const { knex, knexLegacyDB } = require('../server/infra/database/knex');
-const {
-  insertTestCapture,
-  capture,
-  clearDB,
-} = require('./insert-test-capture');
+const { insertTestCapture, capture } = require('./insert-test-capture');
+const { clearDB } = require('./clear-db');
 const { SubscriptionNames } = require('../server/infra/RabbitMQ/config');
 const { config } = require('./rabbitmq-test-config');
 const { DomainEventTypes } = require('../server/utils/enums');
@@ -24,12 +21,9 @@ const domainEventObject1 = {
 
 describe('Replay Events API', () => {
   beforeEach(async () => {
+    await clearDB(knex, knexLegacyDB);
     await insertTestCapture(knex, knexLegacyDB);
     await knex('domain_event').insert(domainEventObject1);
-  });
-
-  afterEach(async () => {
-    await clearDB(knex, knexLegacyDB);
   });
 
   it(`Should process previously unprocessed events`, async () => {

@@ -2,11 +2,12 @@ require('dotenv').config();
 const request = require('supertest');
 const server = require('../server/app');
 const { expect } = require('chai');
-const { knex } = require('../server/infra/database/knex');
+const { knex, knexLegacyDB } = require('../server/infra/database/knex');
 const { walletRegistrationObject } = require('./wallet-registration-api.spec');
 const {
   deviceConfigurationObject,
 } = require('./device-configuration-api.spec');
+const { clearDB } = require('./clear-db');
 
 const sessionObject = {
   id: '25dcb2bb-d151-455a-92dd-2f5d62e69ac6',
@@ -23,17 +24,12 @@ const sessionObject = {
 
 describe('Session', () => {
   before(async () => {
+    await clearDB(knex, knexLegacyDB);
     await knex('device_configuration').insert({
       ...deviceConfigurationObject,
       created_at: new Date(),
     });
     await knex('wallet_registration').insert(walletRegistrationObject);
-  });
-
-  after(async () => {
-    await knex('session').del();
-    await knex('device_configuration').del();
-    await knex('wallet_registration').del();
   });
 
   it(`Session should be successfully added`, function (done) {

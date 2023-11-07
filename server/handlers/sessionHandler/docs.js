@@ -9,7 +9,7 @@ const { swagger: sessionPostSchema } = j2s(postJoiSchema);
 const { swagger: sessionGetSchema } = j2s(getJoiSchema);
 const { swagger: sessionIdParamSchema } = j2s(getSingleJoiSchema);
 
-const singleRawCaptureResponse = {
+const singleSessionResponse = {
   content: {
     'application/json': {
       schema: {
@@ -65,8 +65,8 @@ const sessionSwagger = {
         },
       },
       responses: {
-        201: singleRawCaptureResponse,
-        200: singleRawCaptureResponse,
+        201: singleSessionResponse,
+        200: singleSessionResponse,
       },
     },
   },
@@ -86,7 +86,7 @@ const sessionSwagger = {
         },
       ],
       responses: {
-        200: singleRawCaptureResponse,
+        200: singleSessionResponse,
       },
     },
   },

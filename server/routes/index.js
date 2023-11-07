@@ -4,4 +4,5 @@ module.exports = [
   require('./replayEventRoutes'),
   require('./sessionRoutes'),
   require('./walletRegistrationRoutes'),
+  require('./trackRoutes'),
 ];

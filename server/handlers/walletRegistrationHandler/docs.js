@@ -9,7 +9,7 @@ const { swagger: walletRegistrationPostSchema } = j2s(postJoiSchema);
 const { swagger: walletRegistrationGetSchema } = j2s(getJoiSchema);
 const { swagger: walletRegistrationIdParamSchema } = j2s(getSingleJoiSchema);
 
-const singleRawCaptureResponse = {
+const singleWalletRegistrationResponse = {
   content: {
     'application/json': {
       schema: {
@@ -65,8 +65,8 @@ const walletRegistrationSwagger = {
         },
       },
       responses: {
-        201: singleRawCaptureResponse,
-        200: singleRawCaptureResponse,
+        201: singleWalletRegistrationResponse,
+        200: singleWalletRegistrationResponse,
       },
     },
   },
@@ -86,7 +86,7 @@ const walletRegistrationSwagger = {
         },
       ],
       responses: {
-        200: singleRawCaptureResponse,
+        200: singleWalletRegistrationResponse,
       },
     },
   },
