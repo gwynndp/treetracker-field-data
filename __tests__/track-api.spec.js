@@ -39,7 +39,11 @@ describe('Track', () => {
       .get(`/track?session_id=${trackObject.session_id}`)
       .expect(200);
 
-    const tracks = response.body.tracks;
+    const { tracks, query } = response.body;
+    expect(query.count).to.equal(1);
+    expect(query.limit).to.equal(100);
+    expect(query.offset).to.equal(0);
+    expect(query.session_id).to.equal(trackObject.session_id);
     expect(tracks[0].locations_url).to.equal(trackObject.locations_url);
     expect(tracks.length).to.equal(1);
 
