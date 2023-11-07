@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.9...v1.12.0) (2023-11-07)
+
+
+### Features
+
+* tracks endpoint ([8691f7a](https://github.com/Greenstand/treetracker-field-data/commit/8691f7ab12d0f5f5c85e8e7560bebe51a81a7846))
+
 ## [1.11.9](https://github.com/Greenstand/treetracker-field-data/compare/v1.11.8...v1.11.9) (2023-10-09)
 
 
