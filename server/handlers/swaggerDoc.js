@@ -8,6 +8,7 @@ const {
 } = require('./rawCaptureHandler/docs');
 const { replayEventPostSwagger } = require('./replayEventHandler/docs');
 const { sessionSwagger, sessionComponent } = require('./sessionHandler/docs');
+const { trackSwagger, trackComponent } = require('./tracksHandler/docs');
 const {
   walletRegistrationSwagger,
   walletRegistrationComponent,
@@ -20,6 +21,7 @@ const paths = {
   ...replayEventPostSwagger,
   ...sessionSwagger,
   ...walletRegistrationSwagger,
+  ...trackSwagger,
 };
 
 const swaggerDocument = {
@@ -35,6 +37,7 @@ const swaggerDocument = {
       RawCapture: { ...rawCaptureComponent },
       Session: { ...sessionComponent },
       WalletRegistration: { ...walletRegistrationComponent },
+      Track: { ...trackComponent },
     },
   },
 };

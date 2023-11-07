@@ -8,14 +8,12 @@ const { v4: uuid } = require('uuid');
 const { knex, knexLegacyDB } = require('../server/infra/database/knex');
 const {
   insertTestCapture,
-  clearDB,
   capture,
   captureRequestObject,
   captureWithExistingTree,
-  domainEventObject,
 } = require('./insert-test-capture');
+const { clearDB } = require('./clear-db');
 const LegacyAPI = require('../server/services/LegacyAPIService');
-const { DomainEventTypes } = require('../server/utils/enums');
 
 let reference_id;
 
@@ -39,6 +37,7 @@ describe('Raw Captures', () => {
       },
     });
 
+    await clearDB(knex, knexLegacyDB);
     await insertTestCapture(knex, knexLegacyDB);
     await knex('raw_capture').insert({
       ...captureWithoutDomainEvent,
@@ -52,8 +51,6 @@ describe('Raw Captures', () => {
 
   after(async () => {
     brokerStub.restore();
-
-    await clearDB(knex, knexLegacyDB);
   });
 
   it(`Raw capture should be successfully added`, function (done) {

@@ -2,7 +2,8 @@ require('dotenv').config();
 const request = require('supertest');
 const server = require('../server/app');
 const { expect } = require('chai');
-const { knex } = require('../server/infra/database/knex');
+const { knex, knexLegacyDB } = require('../server/infra/database/knex');
+const { clearDB } = require('./clear-db');
 
 const deviceConfigurationObject = {
   id: '91ea4021-ff49-4c0b-b20c-bbd2f1f7d320',
@@ -22,8 +23,8 @@ const deviceConfigurationObject = {
 };
 
 describe('Device Configuration', () => {
-  after(async () => {
-    await knex('device_configuration').del();
+  before(async () => {
+    await clearDB(knex, knexLegacyDB);
   });
 
   it(`Device Configuration should be successfully added`, function (done) {
