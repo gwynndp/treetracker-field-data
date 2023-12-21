@@ -8,7 +8,7 @@ const sessionGetQuerySchema = Joi.object({
   target_wallet: Joi.string().uuid(),
   created_at: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   grower_account_id: Joi.string().uuid(),
-  organization_id: Joi.array(),
+  organization_id: Joi.array().items(Joi.string().uuid()),
   device_identifier: Joi.string(),
   wallet: Joi.string(),
   offset: Joi.number().integer().greater(-1),

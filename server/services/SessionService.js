@@ -5,10 +5,10 @@ class SessionService {
   constructor() {
     this._session = new Session();
     this._sessionModel = new SessionModel(this._session);
-    this._wrKeys = ['grower_account_id', 'wallet', 'user_photo_url'];
+    this._wrKeys = ['grower_account_id', 'wallet'];
   }
 
-  formatKeys(filter) {
+  addTableNames(filter) {
     return Object.entries(filter).reduce((obj, [key, val]) => {
       const copy = { ...obj };
       if (this._wrKeys.includes(key)) {
@@ -21,12 +21,12 @@ class SessionService {
   }
 
   async getSessions(filter, limitOptions) {
-    const formatedFilter = this.formatKeys(filter);
+    const formatedFilter = this.addTableNames(filter);
     return this._sessionModel.getSessions(formatedFilter, limitOptions);
   }
 
   async getSessionsCount(filter) {
-    const formatedFilter = this.formatKeys(filter);
+    const formatedFilter = this.addTableNames(filter);
     return this._sessionModel.getSessionsCount(formatedFilter);
   }
 

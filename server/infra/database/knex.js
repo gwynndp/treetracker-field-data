@@ -8,8 +8,8 @@ const connectionLegacyDB =
 const postgresPattern = /^postgresql:\//;
 
 if (
-  (connection && !postgresPattern.test(connection)) ||
-  (connectionLegacyDB && !postgresPattern.test(connectionLegacyDB))
+  !postgresPattern.test(connection) ||
+  !postgresPattern.test(connectionLegacyDB)
 ) {
   throw new Error('invalid database connection url received');
 }
@@ -18,7 +18,7 @@ const connectionObject = (connectionString) => {
   // We need to parse the connection string into a connection object
   // so that pg 8  won't throw an SSL error when connecting to the postgres database
   // when running node version greater than 12
-  const urlregexp = /postgresql:\/\/(.+):(.+)@(.+):(\d+)\/(.+)\?ssl=/g;
+  const urlregexp = /postgresql:\/\/(.+):(.+)@(.+):(\d+)\/(.+)\?ssl=true/g;
   const dbConnValues = [...connectionString.matchAll(urlregexp)][0];
   let connObject = null;
   if (dbConnValues && dbConnValues.length > 0) {
@@ -46,11 +46,9 @@ const knexConfig = {
 const knexConfigLegacyDB = {
   client: 'pg',
   debug: process.env.NODE_LOG_LEVEL === 'debug',
+  connection: connectionObject(connectionLegacyDB),
   pool: { min: 0, max: 10 },
 };
-if (connectionLegacyDB) {
-  knexConfigLegacyDB.connection = connectionObject(connectionLegacyDB);
-}
 
 log.debug(process.env.DATABASE_SCHEMA);
 if (process.env.DATABASE_SCHEMA) {

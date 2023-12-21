@@ -28,8 +28,6 @@ const sessionGet = async function (req, res) {
 
   const { filter, limitOptions } = getFilterAndLimitOptions(req.query);
 
-  // verify filter values
-
   const sessionService = new SessionService();
   const sessions = await sessionService.getSessions(filter, limitOptions);
   const count = await sessionService.getSessionsCount(filter);
